@@ -1,6 +1,4 @@
-Dora A to Z Fresh – Full-Stack Grocery & All Products Ordering Website
-Dora A to Z Fresh is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) e-commerce platform designed for seamless ordering of groceries and all essential products. It offers a user-friendly shopping experience with a smooth checkout process, secure transactions, and efficient order management.
-
+ 
 Key Features:
 ✅ Wide Range of Products – Order groceries, household essentials, and more.
 ✅ User Authentication – Secure login & signup with JWT authentication.
