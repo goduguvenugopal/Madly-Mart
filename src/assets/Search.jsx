@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { dataContext } from '../App'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { scrollToTop } from './RouteHandler'
-import InstallApp from './InstallApp'
+import InstallApp from './components/InstallApp'
 
 const Search = () => {
   scrollToTop()

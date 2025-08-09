@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import Carousel from "../assets/Carousel";
-import Footer from "./Footer";
+import Footer from "./components/Footer";
 import { dataContext } from "../App";
 import { Link } from "react-router-dom";
 import { FaDownload, FaShareSquare } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Faq from "./Faq";
+import Faq from "./components/Faq";
 import { MdClose } from "react-icons/md";
-import InstallApp from "./InstallApp";
-import Promotions from "./Promotions";
+import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./RecentlyViewedProducts";
 
 const Home = () => {

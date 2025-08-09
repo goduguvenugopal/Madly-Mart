@@ -6,15 +6,17 @@ import { FlipkartSpin, Loading, SmallLoading } from "./Loading";
 import { FaMinus, FaPhone, FaPlus, FaTruck } from "react-icons/fa";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Footer from "./Footer";
+import Footer from "./components/Footer";
 import { scrollToTop } from "./RouteHandler";
 import { locations } from "./hardCodeData";
 import axios from "axios";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
-import { Helmet } from "react-helmet";
 import ProductReviewsForm from "./ProdutReviewsForm";
 import { RiDiscountPercentFill } from "react-icons/ri";
 import RecentlyViewedProducts from "./RecentlyViewedProducts";
+import HelmetComponent from "./components/HelmetComponent";
+import DefaultAddress from "./components/DefaultAddress";
+import RelatedProducts from "./components/RelatedProducts";
 
 const ProductOverView = () => {
   scrollToTop();
@@ -39,9 +41,6 @@ const ProductOverView = () => {
   const [itemCost, setItemCost] = useState("");
   const [itemQty, setItemQty] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [areas, setAreas] = useState([]);
-  const [noServiceText, setNoServiceText] = useState("");
-  const [areaName, setAreaName] = useState();
   const [zoomImg, setZoomImg] = useState("");
   const [dis, setDis] = useState(null);
   const navigate = useNavigate();
@@ -51,15 +50,11 @@ const ProductOverView = () => {
     itemCost: product?.itemCost,
     itemImage: product?.itemImage,
     itemName: product?.itemName,
-    itemHalfKgCost: product?.itemHalfKgCost,
-    itemKgCost: product?.itemKgCost,
+    variants: product?.variants,
     minOrderQty: product?.minOrderQty,
     itemQty: itemQty,
     itemSubCategory: product?.itemSubCategory,
-    itemWeight: product?.itemWeight?.length > 0 ? itemWeight : null,
     _id: product?._id,
-    orderType: orderType,
-    days: days,
   };
 
   const [cart, setCart] = useState({
@@ -76,14 +71,7 @@ const ProductOverView = () => {
     setItemWeight("250");
   }, [orderType]);
 
-  // retrieving area name from localStorage
-  useEffect(() => {
-    const areaName = localStorage.getItem("areaName");
-    if (areaName) {
-      setAreaName(JSON.parse(areaName));
-    }
-  }, []);
-
+ 
   // related products filter function
   useEffect(() => {
     const results = products?.filter(
@@ -119,25 +107,12 @@ const ProductOverView = () => {
     }
   }, [product]);
 
-  // item weight and cost radio input handle function
-  const weightSelectFunc = (weightParam) => {
-    if (weightParam === "250") {
-      setDis("");
-      setItemWeight(weightParam);
-      setItemCost(product?.itemCost);
-    } else if (weightParam === "500") {
-      setItemWeight(weightParam);
-      setItemCost(product?.itemHalfKgCost);
-    } else if (weightParam === "1000") {
-      setItemWeight(weightParam);
-      setItemCost(product?.itemKgCost);
-    }
-  };
+ 
 
   // item image initial value function
   useEffect(() => {
     if (product?.itemImage?.length > 0) {
-      setItemImg(product?.itemImage[0]);
+      setItemImg(product?.itemImage[0]?.image);
     }
   }, [product]);
 
@@ -146,44 +121,11 @@ const ProductOverView = () => {
     try {
       await navigator.share({
         title: `Check out ${product.itemName} on Madly Mart!`,
-        text: `Hello! Welcome to Madly Mart! 🌸 Take a look at this product: "${product.itemName}"\n\nDescription: ${product.itemDescription}\nPrice: ₹${product.itemCost}\n\nDiscover more by clicking the link below:`,
+        text: `Hello! Welcome to Madly Mart! ⚡ Take a look at this product: "${product.itemName}"\n\nDescription: ${product.itemDescription}\nPrice: ₹${product.itemCost}\n\nDiscover more by clicking the link below:`,
         url: `https://www.madlymart.in/product_over_view/${itemId}`,
       });
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  // searcing for area input handle function
-  const areaInputHandleFunc = (e) => {
-    const areaName = e.target.value;
-    const results = locations.filter((item) =>
-      item.toLowerCase().includes(areaName.toLowerCase())
-    );
-    setAreas(results);
-    if (results.length > !0) {
-      setAreaName("");
-      setNoServiceText(
-        "Door delivery service is currently not available at your location. We apologize for the inconvenience."
-      );
-      setAreas([]);
-    }
-  };
-
-  const areaSelectFunc = (param) => {
-    setNoServiceText("Door delivery service is available at your location.");
-    setAreaName(param);
-    localStorage.setItem("areaName", JSON.stringify(param));
-    setAreas([]);
-  };
-
-  // order type select drop down handle func
-  const orderTypeFunc = (event) => {
-    const inputText = event.target.value;
-    if (inputText === "subscription") {
-      setOrderType(inputText);
-    } else {
-      setOrderType("buyonce");
     }
   };
 
@@ -263,48 +205,7 @@ const ProductOverView = () => {
   };
 
   // discount adding function based on weight and days
-  useEffect(() => {
-    if (days === 7) {
-      if (itemWeight === "500" || itemWeight === "1000") {
-        if (itemWeight === "500") {
-          const halfDiscount = discount.sevenDays / 2;
-
-          setDis(halfDiscount);
-        } else {
-          setDis(discount.sevenDays);
-        }
-      }
-    } else if (days === 10) {
-      if (itemWeight === "500" || itemWeight === "1000") {
-        if (itemWeight === "500") {
-          const halfDiscount = discount.tenDays / 2;
-
-          setDis(halfDiscount);
-        } else {
-          setDis(discount.tenDays);
-        }
-      }
-    } else if (days === 20) {
-      if (itemWeight === "500" || itemWeight === "1000") {
-        if (itemWeight === "500") {
-          const halfDiscount = discount.twentyDays;
-
-          setDis(halfDiscount);
-        } else {
-          setDis(discount.twentyDays);
-        }
-      }
-    } else if (days === 30) {
-      if (itemWeight === "500" || itemWeight === "1000") {
-        if (itemWeight === "500") {
-          const halfDiscount = discount.twentyDays;
-          setDis(halfDiscount);
-        } else {
-          setDis(discount.thirtyDays);
-        }
-      }
-    }
-  }, [
+  useEffect(() => {}, [
     product,
     itemId,
     products,
@@ -318,10 +219,7 @@ const ProductOverView = () => {
 
   // order check out function
   const orderCheckOutFunc = () => {
-    if (
-      itemQty < parseInt(product.minOrderQty) 
-     
-    ) {
+    if (itemQty < parseInt(product.minOrderQty)) {
       toast.info(`Minimum order qty is ${product.minOrderQty}`, {
         className: "custom-toast",
       });
@@ -346,31 +244,8 @@ const ProductOverView = () => {
         theme="dark"
       />
 
-      {/* adding product details dynamically to meta tags for seo */}
-      <Helmet>
-        <title>{`${product?.itemName
-          ?.split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ")} | Dora A to Z Fresh`}</title>
-
-        <meta name="description" content={product?.itemDescription} />
-
-        {/* Open Graph for Facebook and others */}
-        <meta property="og:title" content={product?.itemName} />
-        <meta property="og:description" content={product?.itemDescription} />
-        <meta property="og:image" content={product?.itemImage[0]} />
-        <meta
-          property="og:url"
-          content={`https://madlymart.in/product_over_view/${product._id}`}
-        />
-        <meta property="og:type" content="product" />
-
-        {/* Twitter Cards */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={product?.itemName} />
-        <meta name="twitter:description" content={product?.itemDescription} />
-        <meta name="twitter:image" content={product?.itemImage[0]} />
-      </Helmet>
+      {/* helmet tag for seo  */}
+      <HelmetComponent product={product} />
 
       <section className="text-gray-600 p-3 select-none mt-3 mb-7 pt-24">
         <div className="flex flex-row lg:pb-2 gap-2 lg:gap-0 gap-x-[3rem] lg:gap-x-0 lg:justify-around flex-wrap">
@@ -398,7 +273,7 @@ const ProductOverView = () => {
                 <LazyLoadImage
                   effect="blur"
                   key={index}
-                  src={item}
+                  src={item.image}
                   alt={product.itemName}
                   onClick={() => setItemImg(item)}
                   className="w-[5rem] h-[4rem] lg:w-32 lg:h-24 rounded-lg cursor-pointer hover:border-2 hover:border-blue-600"
@@ -431,7 +306,7 @@ const ProductOverView = () => {
 
           <hr className="border w-full sm:hidden border-gray-200 mt-3" />
           {/* item name and cost section  */}
-          <div className="w-full sm:w-[40%] ">
+          {/* <div className="w-full sm:w-[40%] ">
             <div className="flex flex-col gap-3 mb-3 ">
               <span className="text-2xl lg:text-3xl capitalize font-medium ">
                 {product.itemName}
@@ -507,77 +382,9 @@ const ProductOverView = () => {
 
             <hr className="border border-gray-200 mb-2 mt-2" />
 
-            {/* rendering elements based on stock availability  */}
-            {product.itemStock === "0" ? (
-              <>
-                {product.itemWeight.length > 0 && (
-                  <div className="flex gap-1 mb-3 items-center pointer-events-none">
-                    <span className="font-semibold text-nowrap">
-                      Quantity :{" "}
-                    </span>
-                    <span className="text-lg font-semibold text-black">
-                      {" "}
-                      {itemWeight}
-                      {product.itemSubCategory === "Milk" ? "ml" : "g"}
-                    </span>
-                  </div>
-                )}
-                <div className="flex gap-3 flex-wrap mb-3 pointer-events-none">
-                  {product.itemWeight.map((item, index) => (
-                    <div
-                      onClick={() => weightSelectFunc(item)}
-                      key={index}
-                      className="border-2 border-green-700 py-1 hover:border-blue-600 px-4 rounded-full cursor-pointer font-semibold"
-                    >
-                      {item}
-                      {product.itemSubCategory === "Milk" ? "ml" : "g"}
-                    </div>
-                  ))}
-                </div>
-                {/* item qty increment and decrement section when stock zero */}
-                <div className="flex gap-1 mb-3 items-center pointer-events-none">
-                  <span className="font-semibold text-nowrap">Quantity : </span>
-                  <span className="text-lg font-semibold text-black">
-                    {" "}
-                    {itemQty}
-                  </span>
-                </div>
-                <div className="flex gap-2 flex-wrap mb-3 pointer-events-none">
-                  <div className="border-2 border-gray-500 py-2 hover:border-gray-800 px-4 rounded-full  font-semibold flex items-center gap-5">
-                    <FaMinus
-                      className={` text-lg hover:text-blue-600 ${
-                        itemQty === 1
-                          ? "pointer-events-none "
-                          : "cursor-pointer"
-                      }`}
-                      onClick={() => setItemQty(itemQty - 1)}
-                    />
-                    <span>{itemQty}</span>
-                    <FaPlus
-                      className="cursor-pointer  text-lg hover:text-blue-600"
-                      onClick={() => {
-                        if (itemQty < parseInt(product.itemStock)) {
-                          setItemQty(itemQty + 1);
-                        } else {
-                          toast.warning(`Maximum quantity limit ${itemQty}`, {
-                            className: "custom-toast",
-                          });
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-3 justify-start my-5 w-full">
-                  <button className="w-full bg-gray-400 font-semibold text-white border-0 py-3 px-6 focus:outline-none pointer-events-none rounded-full">
-                    Sold out
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* from here the section will be render if stock is availble   */}
-                {/* item weight quantity selection section  */}
-                {product.itemWeight.length > 0 ? (
+            {/* from here the section will be render if stock is availble   */}
+            {/* item weight quantity selection section  */}
+            {/* {product.itemWeight.length > 0 ? (
                   <>
                     {product.itemWeight.length > 0 && (
                       <div className="flex gap-1 mb-3 items-center">
@@ -607,296 +414,101 @@ const ProductOverView = () => {
                         </div>
                       ))}
                     </div>
-                  </>
-                ) : (
-                  ""
-                )}
+                   
+               
+                )} */}
 
-                {/* item quantity increment and decrement section  */}
-                <div className="flex gap-1 mb-3 items-center">
-                  <span className="font-semibold text-nowrap">Quantity : </span>
-                  <span className="text-lg font-semibold text-black">
-                    {" "}
-                    {itemQty}
-                  </span>
-                </div>
-                <div className="flex gap-2 flex-wrap mb-5">
-                  <div className="border-2 border-gray-500 py-2 hover:border-gray-800 px-4 rounded-full  font-semibold flex items-center gap-5">
-                    <FaMinus
-                      className={` text-lg hover:text-blue-600 ${
-                        itemQty === 1
-                          ? "pointer-events-none "
-                          : "cursor-pointer"
-                      }`}
-                      onClick={() => setItemQty(itemQty - 1)}
-                    />
-                    <span>{itemQty}</span>
-                    <FaPlus
-                      className="cursor-pointer  text-lg hover:text-blue-600"
-                      onClick={() => {
-                        if (itemQty < parseInt(product.itemStock)) {
-                          setItemQty(itemQty + 1);
-                        } else {
-                          toast.warning(
-                            `Contact us for larger quantity orders.`,
-                            {
-                              className: "custom-toast",
-                            }
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-                {itemQty === parseInt(product.itemStock) && (
-                  <div className="mb-5 text-blue-600 flex items-center flex-wrap gap-2">
-                    <span className="text-gray-500">
-                      Contact us for larger quantity orders
-                    </span>{" "}
-                    <a
-                      href={`tel:+91${number}`}
-                      className="underline flex items-center gap-2 "
-                    >
-                      <FaPhone />
-                      {number}
-                    </a>
-                  </div>
-                )}
+            {/* item quantity increment and decrement section  */}
+            <div className="flex gap-1 mb-3 items-center">
+              <span className="font-semibold text-nowrap">Quantity : </span>
+              <span className="text-lg font-semibold text-black">
+                {" "}
+                {itemQty}
+              </span>
+            </div>
+            <div className="flex gap-2 flex-wrap mb-5">
+              <div className="border-2 border-gray-500 py-2 hover:border-gray-800 px-4 rounded-full  font-semibold flex items-center gap-5">
+                <FaMinus
+                  className={` text-lg hover:text-blue-600 ${
+                    itemQty === 1 ? "pointer-events-none " : "cursor-pointer"
+                  }`}
+                  onClick={() => setItemQty(itemQty - 1)}
+                />
+                <span>{itemQty}</span>
+                <FaPlus
+                  className="cursor-pointer  text-lg hover:text-blue-600"
+                  onClick={() => {
+                    if (itemQty < parseInt(product.itemStock)) {
+                      setItemQty(itemQty + 1);
+                    } else {
+                      toast.warning(`Contact us for larger quantity orders.`, {
+                        className: "custom-toast",
+                      });
+                    }
+                  }}
+                />
+              </div>
+            </div>
 
-                {/* order type and suscription section */}
-
-                {product.itemSubCategory === "Milk" ||
-                product.itemSubCategory === "Curd" ? (
-                  <>
-                    <div className="flex gap-1 mb-3 items-center">
-                      <span className="font-semibold text-nowrap">
-                        Order Type :{" "}
-                      </span>
-                      <select
-                        onChange={orderTypeFunc}
-                        className="py-1 outline-none border-2 rounded  border-orange-600 focus:border-blue-500"
-                      >
-                        <option value="" disabled>
-                          Select Order Type
-                        </option>
-                        <option value="buyonce">Buy Once</option>
-                        <option value="subscription">Subscription</option>
-                      </select>
-                    </div>
-                    {orderType === "buyonce" &&
-                    discount.deliveryCharges === 0 ? (
-                      <h5 className="font-semibold my-4 flex items-center gap-2 text-green-600">
-                        <FaTruck className="text-blue-500" /> Delivery charges
-                        free
-                      </h5>
-                    ) : (
-                      <>
-                        {orderType === "buyonce" && (
-                          <h5 className="font-semibold my-4 flex items-center gap-2">
-                            <FaTruck className="text-blue-500" /> Delivery
-                            charges apply at checkout
-                          </h5>
-                        )}
-                      </>
-                    )}
-
-                    {orderType === "buyonce" && (
-                      <h5 className="font-semibold my-4 flex items-center gap-2">
-                        <FaTruck className="text-black" />
-                        Delivery in 45 minutes.
-                      </h5>
-                    )}
-
-                    {orderType === "subscription" && (
-                      <>
-                        <div className="flex gap-1 mb-3 items-center">
-                          <span className="font-semibold text-nowrap">
-                            Days :{" "}
-                          </span>
-                          <span className="text-lg font-semibold text-black">
-                            {days} days
-                          </span>
-                        </div>
-                        <div className="flex gap-3 flex-wrap mb-5">
-                          <div className="text-center">
-                            <div
-                              onClick={() => setDays(30)}
-                              className="border-2 flex items-center justify-center border-green-700  h-9 hover:border-blue-600 px-4 rounded-full cursor-pointer font-semibold"
-                            >
-                              30 days
-                            </div>
-                          </div>
-                        </div>
-                        <h5 className="font-semibold mb-2 flex items-center gap-2 text-green-600">
-                          <FaTruck className="text-blue-500" /> free delivery on
-                          all subscription orders.
-                        </h5>
-                        <p className="text-gray-500 mb-3 ">
-                          Subscription orders are delivered daily at 6 AM to 8
-                          AM and 6 PM to 8 AM{" "}
-                        </p>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {discount?.deliveryCharges === 0 ? (
-                      <h5 className="font-semibold my-4 flex items-center gap-2 text-green-600">
-                        <FaTruck className="text-blue-500" /> Delivery charges
-                        free
-                      </h5>
-                    ) : (
-                      <h5 className="font-semibold my-4 flex items-center gap-2">
-                        <FaTruck className="text-blue-500" /> Delivery charges
-                        apply at checkout
-                      </h5>
-                    )}
-                    <h5 className="font-semibold my-4 flex items-center gap-2">
-                      <FaTruck className="text-black" />
-                      Delivery in 45 minutes.
-                    </h5>
-                  </>
-                )}
-
-                {/* checking delivery service to address  */}
-
-                <div>
-                  <h6 className="font-bold">
-                    Note :{" "}
-                    <span className="font-normal">
-                      Check door delivery service for your location.
-                    </span>
-                  </h6>
-                  <div className="mt-4 relative">
-                    <input
-                      onChange={areaInputHandleFunc}
-                      type="text"
-                      className="rounded w-full border-2 border-blue-500 py-[0.4rem] outline-none focus:border-orange-600 pl-3 "
-                      placeholder="Enter your location check delivery availability."
-                    />
-                    {areas.length > 0 ? (
-                      <div className="border-2 absolute top-10 left-0 bg-white z-10 mt-[0.2rem] flex flex-col outline-none border-blue-500 rounded-lg p-2 px-1 w-full">
-                        {areas.map((item, index) => (
-                          <span
-                            onClick={() => areaSelectFunc(item)}
-                            className="hover:bg-blue-600 hover:text-white cursor-pointer rounded p-1 px-2"
-                            key={index}
-                            value={item}
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="mt-3">
-                        <p
-                          className={`${
-                            areaName ? "text-green-600" : "text-red-700"
-                          }`}
-                        >
-                          {noServiceText}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* add to cart button  */}
-                <div className="flex gap-3 justify-start flex-wrap lg:flex-nowrap my-5 w-full">
-                  {token ? (
-                    <>
-                      {cartSpin ? (
-                        <FlipkartSpin />
-                      ) : (
-                        <>
-                          {cartItems?.some(
-                            (item) => item.productId === product?._id
-                          ) ? (
-                            <Link
-                              to="/cart"
-                              className="w-full text-center bg-orange-900 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-orange-700 rounded-full"
-                            >
-                              Go to cart
-                            </Link>
-                          ) : (
-                            <button
-                              onClick={addToCartFunc}
-                              className="w-full bg-blue-800  font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
-                            >
-                              Add to cart
-                            </button>
-                          )}
-                        </>
-                      )}
-
-                      <div
-                        onClick={orderCheckOutFunc}
-                        className="w-full text-center cursor-pointer bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
-                      >
-                        Buy now
-                      </div>
-                    </>
+            {/* add to cart button  */}
+            <div className="flex gap-3 justify-start flex-wrap lg:flex-nowrap my-5 w-full">
+              {token ? (
+                <>
+                  {cartSpin ? (
+                    <FlipkartSpin />
                   ) : (
                     <>
-                      <Link
-                        to="/login"
-                        className="w-full text-center bg-blue-800 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
-                      >
-                        Add to cart
-                      </Link>
-                      <Link
-                        to="/login"
-                        className="w-full text-center bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
-                      >
-                        Buy now
-                      </Link>
-                    </>
-                  )}
-                </div>
-
-                {/* add address section  */}
-                {defaultAddress.length > 0 ? (
-                  <div className="mb-3 py-3 capitalize flex items-center gap-2 justify-between w-full ">
-                    <div className="w-[60%]  ">
-                      <h5 className="text-sm font-medium text-black">
-                        Delivery to :{" "}
-                        <span className="text-gray-600">
-                          {defaultAddress[0]?.name},{" "}
-                          {defaultAddress[0]?.postalCode},{" "}
-                          {defaultAddress[0]?.village},{" "}
-                          {defaultAddress[0]?.district},{" "}
-                          {defaultAddress[0]?.street.substring(0, 35)}...
-                        </span>
-                      </h5>
-                    </div>
-
-                    <div className="w-[30%]  ">
-                      {defaultAddress.length > 0 ? (
+                      {cartItems?.some(
+                        (item) => item.productId === product?._id
+                      ) ? (
                         <Link
-                          to="/profile"
-                          className="font-semibold text-sm block p-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-[7rem] text-center text-white"
+                          to="/cart"
+                          className="w-full text-center bg-orange-900 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-orange-700 rounded-full"
                         >
-                          Change
+                          Go to cart
                         </Link>
                       ) : (
-                        <Link
-                          to="/profile"
-                          className="font-semibold text-sm block  p-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-full text-center text-white"
+                        <button
+                          onClick={addToCartFunc}
+                          className="w-full bg-blue-800  font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
                         >
-                          Add Address
-                        </Link>
+                          Add to cart
+                        </button>
                       )}
-                    </div>
+                    </>
+                  )}
+
+                  <div
+                    onClick={orderCheckOutFunc}
+                    className="w-full text-center cursor-pointer bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
+                  >
+                    Buy now
                   </div>
-                ) : (
-                  ""
-                )}
-              </>
-            )}
-          </div>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="w-full text-center bg-blue-800 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
+                  >
+                    Add to cart
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="w-full text-center bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
+                  >
+                    Buy now
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* add address component*/}
+            <DefaultAddress />
+          </div> 
 
           {/* Description section  */}
-        </div>
+    
         {product.itemDescription && (
           <div className="lg:px-9">
             <hr className="border  border-gray-200 mb-2 lg:mt-5" />
@@ -905,50 +517,8 @@ const ProductOverView = () => {
           </div>
         )}
 
-        {/* review component  */}
-
         {/* related products section  */}
-        {relatedProducts.length > 1 && (
-          <div className="mt-10 lg:px-9">
-            <h5 className="text-2xl font-medium text-black">
-              Related Products
-            </h5>
-            <hr className="border border-gray-200 mb-5 mt-3 lg:mt-3" />
-
-            <div className="mt-4 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-              {relatedProducts.map((item) => (
-                <Link
-                  to={`/product_over_view/${item._id}`}
-                  key={item._id}
-                  className="group  w-full h-full  md:w-52   lg:w-72  relative  hover:opacity-85"
-                >
-                  <div>
-                    <LazyLoadImage
-                      src={item.itemImage[0]}
-                      alt={item.itemName}
-                      effect="blur"
-                      className="h-fit w-full rounded-lg"
-                    />
-                  </div>
-
-                  <div className="mt-2 text-center">
-                    <h3 className="text-[0.9rem] capitalize lg:text-[1rem] font-bold text-black">
-                      {item?.itemName?.substring(0, 18)}..
-                    </h3>
-                    <span className="text-md text-gray-900">
-                      Rs. {parseFloat(item?.itemCost || 0).toFixed(2)}
-                    </span>
-                  </div>
-                  {item.itemStock === "0" && (
-                    <div className="absolute top-2 h-7 flex items-center justify-center  text-sm left-2 rounded px-2 bg-black text-white">
-                      <span>Sold out</span>
-                    </div>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        <RelatedProducts relatedProducts={relatedProducts} />
       </section>
       {/* recently viewed products component  */}
       <RecentlyViewedProducts />

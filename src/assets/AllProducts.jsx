@@ -4,7 +4,7 @@ import { dataContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { scrollToTop } from "./RouteHandler";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
-import InstallApp from "./InstallApp";
+import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./RecentlyViewedProducts";
 
 const AllProducts = () => {
