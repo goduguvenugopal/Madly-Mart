@@ -1,0 +1,15 @@
+export const locations = [
+  "Wanaparthy",
+  "Nagavaram",
+  "Bala nagar",
+  "Bandarnagar",
+  "Sri nagar colony",
+  "Agraharam",
+  "Srinivaspur",
+  "Sai nagar colony",
+  "Appaipalle",
+  "Thadparthy",
+  "Rajanagar",
+  "Chityala",
+  "Narsingaipally",
+];

@@ -1,0 +1,22 @@
+.number-input::-webkit-inner-spin-button {
+  appearance: none;
+}
+body::-webkit-scrollbar{
+  display: none;
+}
+
+/* body{
+  background-color: rgb(94, 94, 245);
+
+} */
+.scrollbar-hide-card::-webkit-scrollbar{
+  display: none;
+}
+
+
+
+.custom-toast {
+  @apply bg-gray-800 text-white text-sm p-4 rounded-lg w-fit my-8 m-2;
+}
+
+
