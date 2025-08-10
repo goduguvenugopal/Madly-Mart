@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { dataContext } from "../App";
+import { dataContext } from "../../App";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const RecentlyViewedProducts = () => {
-  const { viewedProducts, setViewedProducts } = useContext(dataContext);
+  const { viewedProducts } = useContext(dataContext);
 
   return (
     <>
@@ -23,7 +23,7 @@ const RecentlyViewedProducts = () => {
               >
                 <div>
                   <LazyLoadImage
-                    src={item?.itemImage[0]}
+                    src={item?.itemImage[0]?.image}
                     alt={item?.itemName}
                     effect="blur"
                     className="h-fit w-full rounded-lg"

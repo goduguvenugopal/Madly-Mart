@@ -8,7 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import Faq from "./components/Faq";
 import { MdClose } from "react-icons/md";
 import InstallApp from "./components/InstallApp";
-import RecentlyViewedProducts from "./RecentlyViewedProducts";
+import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 
 const Home = () => {
   const { categories } = useContext(dataContext);

@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { dataContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { scrollToTop } from "./RouteHandler";
+import { scrollToTop } from "./components/RouteHandler";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 import InstallApp from "./components/InstallApp";
-import RecentlyViewedProducts from "./RecentlyViewedProducts";
+import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 
 const AllProducts = () => {
   scrollToTop();

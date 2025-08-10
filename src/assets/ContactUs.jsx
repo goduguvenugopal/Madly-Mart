@@ -6,7 +6,7 @@ import { MdMail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import Footer from "./components/Footer";
 import { dataContext } from "../App";
-import { scrollToTop } from "./RouteHandler";
+import { scrollToTop } from "./components/RouteHandler";
 import Faq from "./components/Faq";
 
 const ContactUs = () => {

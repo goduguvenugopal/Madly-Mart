@@ -6,7 +6,7 @@ import PageNotFound from "./assets/components/PageNotFound";
 import Home from "./assets/Home";
 import Cart from "./assets/Cart";
 import ContactUs from "./assets/ContactUs";
-import { RouteHandler } from "./assets/RouteHandler";
+import { RouteHandler } from "./assets/components/RouteHandler";
 import Search from "./assets/Search";
 import axios from "axios";
 import Profile from "./assets/components/Profile";
@@ -74,6 +74,7 @@ function App() {
     }
   }, []);
 
+
   useEffect(() => {
     // retrieving token from localStorage
     const token = localStorage.getItem("token");
@@ -91,7 +92,6 @@ function App() {
     if (user) {
       setUser(JSON.parse(userDetails));
     }
-
     // retrieving reviewed products from session storage
     const isViewdedProducts = localStorage.getItem("viewedProducts");
     if (isViewdedProducts) {
@@ -136,7 +136,6 @@ function App() {
     // fetching all products
     const fetchProducts = async () => {
       try {
-        
         const res = await axios.get(`${api}/product/get-all-products`);
         if (res) {
           setProducts(res.data.retrievdProducts.reverse());

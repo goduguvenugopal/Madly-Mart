@@ -7,6 +7,7 @@ import { FlipkartSpin } from "./Loading";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Lottie from "lottie-react";
 import cart from "./animations/cart.json";
+import DefaultAddress from "./components/DefaultAddress";
 
 const Cart = () => {
   const {
@@ -128,45 +129,12 @@ const Cart = () => {
       />
 
       <section className="text-gray-600 body-font overflow-hidden p-3">
-        {cartItems?.length ? (
+        {!cartItems?.length ? (
           <>
             <div className="container py-24 mx-auto ">
               <div className="-my-7 divide-y-2 divide-gray-100">
                 {/* add address section  */}
-                {defaultAddress.length > 0 ? (
-                  <div className="py-6 flex items-center justify-between w-full lg:w-[60%] capitalize">
-                    <div className="w-[60%]">
-                      <h5 className="text-sm font-medium text-black">
-                        Delivery to :{" "}
-                        <span className="text-gray-600">
-                          {defaultAddress[0]?.name},{" "}
-                          {defaultAddress[0]?.postalCode},{" "}
-                          {defaultAddress[0]?.village},{" "}
-                          {defaultAddress[0]?.district},{" "}
-                          {defaultAddress[0]?.street.substring(0, 35)}...
-                        </span>
-                      </h5>
-                    </div>
-
-                    {defaultAddress.length > 0 ? (
-                      <Link
-                        to="/profile"
-                        className="font-semibold text-sm  p-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-[6rem] text-center text-white"
-                      >
-                        Change
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/profile"
-                        className="font-semibold text-sm  p-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-28 text-center text-white"
-                      >
-                        Add Address
-                      </Link>
-                    )}
-                  </div>
-                ) : (
-                  ""
-                )}
+                <DefaultAddress />
 
                 {cartItems?.map((item) => (
                   <div
@@ -211,66 +179,17 @@ const Cart = () => {
                             >
                               Select Quantity
                             </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="1"
-                            >
-                              1
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="2"
-                            >
-                              2
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="3"
-                            >
-                              3
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="4"
-                            >
-                              4
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="5"
-                            >
-                              5
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="6"
-                            >
-                              6
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="7"
-                            >
-                              7
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="8"
-                            >
-                              8
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="9"
-                            >
-                              9
-                            </option>
-                            <option
-                              className="font-semibold text-[0.9rem]"
-                              value="10"
-                            >
-                              10
-                            </option>
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                              (item, index) => (
+                                <option
+                                  key={index}
+                                  className="font-semibold text-[0.9rem]"
+                                  value={item}
+                                >
+                                  {item}
+                                </option>
+                              )
+                            )}
                           </select>
                           <span className="absolute top-0 right-6">
                             {item.itemQty}
@@ -391,7 +310,7 @@ const Cart = () => {
               <Lottie animationData={cart} className=" w-[13rem]" />
               <Link
                 to="/"
-                className="text-white px-3 py-[0.1rem] rounded-full text-[0.8rem]  font-medium bg-blue-700 hover:bg-blue-500"
+                className="text-white px-3 py-[0.1rem]  text-[1rem]  font-medium bg-blue-700 hover:bg-blue-500"
               >
                 Continue Shopping
               </Link>

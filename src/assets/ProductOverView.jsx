@@ -7,13 +7,12 @@ import { FaMinus, FaPhone, FaPlus, FaTruck } from "react-icons/fa";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Footer from "./components/Footer";
-import { scrollToTop } from "./RouteHandler";
-import { locations } from "./hardCodeData";
+import { scrollToTop } from "./components/RouteHandler";
 import axios from "axios";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 import ProductReviewsForm from "./ProdutReviewsForm";
 import { RiDiscountPercentFill } from "react-icons/ri";
-import RecentlyViewedProducts from "./RecentlyViewedProducts";
+import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 import HelmetComponent from "./components/HelmetComponent";
 import DefaultAddress from "./components/DefaultAddress";
 import RelatedProducts from "./components/RelatedProducts";
@@ -64,14 +63,6 @@ const ProductOverView = () => {
     products: [],
   });
 
-  // when order type changes set to default value to all
-  useEffect(() => {
-    setDays(30);
-    setItemQty(1);
-    setItemWeight("250");
-  }, [orderType]);
-
- 
   // related products filter function
   useEffect(() => {
     const results = products?.filter(
@@ -97,17 +88,15 @@ const ProductOverView = () => {
 
   // item weight,cost and qty initial value function
   useEffect(() => {
-    if (product && product?.itemWeight && product?.itemWeight.length > 0) {
-      setItemWeight(product?.itemWeight[0]);
-      setItemCost(product?.itemCost);
-      setItemQty(1);
-    } else {
-      setItemCost(product?.itemCost);
-      setItemQty(1);
-    }
+    // if (product && product?.itemWeight && product?.itemWeight.length > 0) {
+    //   setItemWeight(product?.itemWeight[0]);
+    //   setItemCost(product?.itemCost);
+    //   setItemQty(1);
+    // } else {
+    //   setItemCost(product?.itemCost);
+    //   setItemQty(1);
+    // }
   }, [product]);
-
- 
 
   // item image initial value function
   useEffect(() => {
@@ -135,23 +124,11 @@ const ProductOverView = () => {
       ...prevCaart,
       productId: product?._id,
       itemQty: itemQty,
-      totalAmount:
-        orderType === "subscription"
-          ? parseFloat(days * itemCost - dis || 0).toFixed(2)
-          : parseFloat(itemCost || 0).toFixed(2),
+      totalAmount: product?.totalAmount,
+
       products: [initialData],
     }));
-  }, [
-    product,
-    itemId,
-    products,
-    itemCost,
-    itemWeight,
-    days,
-    orderType,
-    itemQty,
-    dis,
-  ]);
+  }, [product, itemId, products, itemCost, itemQty, dis]);
 
   // add to cart function
   const addToCartFunc = async () => {
@@ -205,17 +182,7 @@ const ProductOverView = () => {
   };
 
   // discount adding function based on weight and days
-  useEffect(() => {}, [
-    product,
-    itemId,
-    products,
-    itemCost,
-    itemWeight,
-    days,
-    orderType,
-    itemQty,
-    discount,
-  ]);
+  useEffect(() => {}, [product, itemId, products, itemCost, itemQty, discount]);
 
   // order check out function
   const orderCheckOutFunc = () => {
@@ -246,7 +213,6 @@ const ProductOverView = () => {
 
       {/* helmet tag for seo  */}
       <HelmetComponent product={product} />
-
       <section className="text-gray-600 p-3 select-none mt-3 mb-7 pt-24">
         <div className="flex flex-row lg:pb-2 gap-2 lg:gap-0 gap-x-[3rem] lg:gap-x-0 lg:justify-around flex-wrap">
           {/* image section  */}
@@ -268,25 +234,33 @@ const ProductOverView = () => {
               title="FullScreen"
               className="absolute top-[3rem] bg-black p-1 h-7 w-9 cursor-pointer  text-white rounded-full  right-2  "
             />
-            <div className="flex gap-3 flex-wrap">
-              {product?.itemImage?.map((item, index) => (
-                <LazyLoadImage
-                  effect="blur"
-                  key={index}
-                  src={item.image}
-                  alt={product.itemName}
-                  onClick={() => setItemImg(item)}
-                  className="w-[5rem] h-[4rem] lg:w-32 lg:h-24 rounded-lg cursor-pointer hover:border-2 hover:border-blue-600"
-                />
-              ))}
+
+            <div className="w-full overflow-x-auto scrollbar-hide-card">
+              <div className="flex flex-row gap-3 w-fit flex-nowrap ">
+                {product?.itemImage?.map((item) => (
+                  <div
+                    onClick={() => setItemImg(item.image)}
+                    key={item._id}
+                    className="w-[5rem] h-fit lg:w-32 "
+                  >
+                    <LazyLoadImage
+                      effect="blur"
+                      src={item.image}
+                      alt={product.itemName}
+                      className={`w-full rounded-lg cursor-pointer hover:border-2 hover:border-blue-600 ${
+                        itemImg === item.image ? "border-2 border-blue-600" : ""
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
           {/* FullScreen product image section  */}
           {zoomImg && (
             <div
               onClick={() => setZoomImg("")}
-              className="w-screen h-screen py-2 flex flex-col items-center justify-center fixed top-0 left-0 bg-gray-600 z-50"
+              className="w-screen h-screen py-2 flex flex-col items-center justify-center fixed top-0 left-0 bg-white z-50"
             >
               <div className="w-full lg:h-[100%] lg:w-[50%]  overflow-auto flex items-center justify-center scrollbar-hide-card">
                 <img
@@ -303,58 +277,43 @@ const ProductOverView = () => {
               />
             </div>
           )}
-
           <hr className="border w-full sm:hidden border-gray-200 mt-3" />
-          {/* item name and cost section  */}
-          {/* <div className="w-full sm:w-[40%] ">
+          {/* product name and cost section  */}
+          <div className="w-full sm:w-[40%] ">
             <div className="flex flex-col gap-3 mb-3 ">
               <span className="text-2xl lg:text-3xl capitalize font-medium ">
                 {product.itemName}
               </span>
               <div className="flex gap-3 mb-1 items-center">
-                {orderType === "subscription" ? (
-                  <>
-                    <span className="text-2xl text-gray-700 font-medium">
-                      Rs.{" "}
-                      {parseFloat(
-                        (days * itemCost - dis) * itemQty || 0
-                      ).toFixed(2)}
-                    </span>
+                <>
+                  <span className="text-2xl text-gray-700 font-medium">
+                    Rs.{" "}
+                  </span>
 
-                    {dis ? (
-                      <span className="text-md line-through text-red-700 font-medium">
-                        Rs.{" "}
-                        {parseFloat(days * itemCost * itemQty || 0).toFixed(2)}
-                      </span>
-                    ) : null}
-                  </>
-                ) : (
-                  <>
-                    <span className="text-2xl text-gray-700 font-medium">
-                      Rs. {parseFloat(itemCost * itemQty || 0).toFixed(2)}
-                    </span>
-                    {itemWeight === "500" || itemWeight === "1000" ? null : (
-                      <span
-                        className={` text-md line-through text-red-700 font-medium ${
-                          product.offerCost ? "block" : "hidden"
-                        }`}
-                      >
-                        Rs.{" "}
-                        {parseFloat(product.offerCost * itemQty || 0).toFixed(
-                          2
-                        )}
-                      </span>
-                    )}
-                  </>
-                )}
+                  <span className="text-md line-through text-red-700 font-medium">
+                    Rs. {parseFloat(itemCost * itemQty || 0).toFixed(2)}
+                  </span>
+
+                  <span className="text-2xl text-gray-700 font-medium">
+                    Rs.
+                  </span>
+
+                  <span
+                    className={` text-md line-through text-red-700 font-medium ${
+                      product.offerCost ? "block" : "hidden"
+                    }`}
+                  >
+                    Rs.{" "}
+                    {parseFloat(product.offerCost * itemQty || 0).toFixed(2)}
+                  </span>
+                </>
               </div>
-              {product.minOrderQty > 1 &&
-                orderType === "buyonce" &&
-                itemWeight === "250" && (
-                  <div className="bg-orange-900 mb-2 text-sm text-white w-fit p-1 px-2 rounded ">
-                    Minimum order qty {product.minOrderQty}
-                  </div>
-                )}
+
+              {product.minOrderQty > 1 && (
+                <div className="bg-orange-900 mb-2 text-sm text-white w-fit p-1 px-2 rounded ">
+                  Minimum order qty {product.minOrderQty}
+                </div>
+              )}
 
               {product.itemStock === "0" ? (
                 <div className="bg-red-500 rounded px-2 p-1 text-white font-medium w-fit">
@@ -366,8 +325,7 @@ const ProductOverView = () => {
                 </div>
               )}
             </div>
-
-            {/* discount section  */}
+            {/* discount text section  */}
             {product.offerMessage && (
               <section className="py-3 flex items-center gap-2 flex-wrap">
                 <button className="bg-gradient-to-r flex justify-between gap-2 items-center from-pink-500 via-red-500 to-yellow-500 text-white px-5 py-2 rounded-full font-semibold shadow-lg animate-bounce hover:scale-105 transition-transform duration-300">
@@ -382,41 +340,16 @@ const ProductOverView = () => {
 
             <hr className="border border-gray-200 mb-2 mt-2" />
 
-            {/* from here the section will be render if stock is availble   */}
-            {/* item weight quantity selection section  */}
-            {/* {product.itemWeight.length > 0 ? (
-                  <>
-                    {product.itemWeight.length > 0 && (
-                      <div className="flex gap-1 mb-3 items-center">
-                        <span className="font-semibold text-nowrap">
-                          Quantity :{" "}
-                        </span>
-                        <span className="text-lg font-semibold text-black">
-                          {" "}
-                          {itemWeight}
-                          {product.itemSubCategory === "Milk" ? "ml" : "g"}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex gap-3 flex-wrap mb-5">
-                      {product.itemWeight.map((item, index) => (
-                        <div
-                          onClick={() => weightSelectFunc(item)}
-                          key={index}
-                          className={`border-2  py-1  px-4 rounded-full cursor-pointer font-semibold ${
-                            item == itemWeight
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "border-green-700"
-                          }`}
-                        >
-                          {item}
-                          {product.itemSubCategory === "Milk" ? "ml" : "g"}
-                        </div>
-                      ))}
-                    </div>
-                   
-               
-                )} */}
+            <div className="flex gap-1 mb-3 items-center">
+              <span className="font-semibold text-nowrap">Quantity : </span>
+              <span className="text-lg font-semibold text-black"> </span>
+            </div>
+
+            <div className="flex gap-3 flex-wrap mb-5">
+              <div
+                className={`border-2  py-1  px-4 rounded-full cursor-pointer font-semibold  `}
+              ></div>
+            </div>
 
             {/* item quantity increment and decrement section  */}
             <div className="flex gap-1 mb-3 items-center">
@@ -505,10 +438,11 @@ const ProductOverView = () => {
 
             {/* add address component*/}
             <DefaultAddress />
-          </div> 
+          </div>
+        </div>
 
-          {/* Description section  */}
-    
+        {/* Description section  */}
+
         {product.itemDescription && (
           <div className="lg:px-9">
             <hr className="border  border-gray-200 mb-2 lg:mt-5" />

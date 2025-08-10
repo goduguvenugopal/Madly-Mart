@@ -1,4 +1,6 @@
 import React from 'react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { Link } from 'react-router-dom'
 
 const RelatedProducts = ({relatedProducts}) => {
   return (
@@ -19,7 +21,7 @@ const RelatedProducts = ({relatedProducts}) => {
                 >
                   <div>
                     <LazyLoadImage
-                      src={item.itemImage[0]}
+                      src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
                       className="h-fit w-full rounded-lg"

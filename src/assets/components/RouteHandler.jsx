@@ -4,10 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 export const RouteHandler = (cartItems) => {
   const location = useLocation();
-
-
   useEffect(() => {
-
     // Set document title based on the current route
     switch (location.pathname) {
       case '/':

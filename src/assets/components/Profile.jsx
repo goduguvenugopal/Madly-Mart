@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import { locations } from "../../assets/hardCodeData";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 
@@ -25,7 +24,7 @@ const Profile = () => {
     district: "",
     village: "",
     street: "",
-    state: "Andhra Pradesh",
+    state: "",
     postalCode: "",
   };
   const [addressForm, setAddressForm] = useState(initialData);
@@ -253,10 +252,10 @@ const Profile = () => {
                       </h6>
                       <div
                         onClick={() => setDefaultAddressFunc(item._id)}
-                        className={` cursor-pointer absolute border-2  rounded-full h-4 w-4 right-3 p-2 ${
+                        className={` cursor-pointer absolute border-2 top-4  rounded-full h-4 w-4 right-4 p-1 ${
                           defaultAddress[0]?._id === item._id
-                            ? "bg-blue-500 border-white"
-                            : "border-gray-400"
+                            ? "bg-blue-500 outline-blue-500 outline-2 outline"
+                            : "border-blue-500 outline-blue-500 outline-2 outline outline-offset-2"
                         }`}
                       ></div>
                       {delSpin === item._id ? (
@@ -265,7 +264,7 @@ const Profile = () => {
                         <RiDeleteBin6Line
                           onClick={() => setDelModal(item._id)}
                           size={20}
-                          className="hover:text-red-600 cursor-pointer absolute right-3 top-11 text-gray-600"
+                          className="hover:text-red-600 cursor-pointer absolute right-3 top-14 text-gray-600"
                         />
                       )}
 
@@ -420,16 +419,17 @@ const Profile = () => {
                       District <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2 grid grid-cols-1">
-                      <select
+                      <input
                         id="district"
                         name="district"
                         required
+                        placeholder="enter district name"
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      >
-                        <option value="wanaprthy">Select the district</option>
-                        <option value="wanaparthy">Wanaparthy</option>
-                      </select>
+                      />
+                       
+                      
+                      
                       <svg
                         className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                         viewBox="0 0 16 16"
@@ -454,22 +454,17 @@ const Profile = () => {
                       Village <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2 grid grid-cols-1">
-                      <select
+                      <input
                         id="village"
                         name="village"
+                        type="text"
                         required
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      >
-                        <option disabled value="">
-                          Select the Village
-                        </option>
-                        {locations.map((item, index) => (
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        ))}
-                      </select>
+                      />
+                         
+                   
+                   
                       <svg
                         className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                         viewBox="0 0 16 16"
