@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { dataContext } from "../../App";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../App";
 
 const DefaultAddress = () => {
-  const { defaultAddress } = useContext(dataContext);
+  const { defaultAddress } = useContext(UserContext);
   return (
     <>
       {/* add address section  */}

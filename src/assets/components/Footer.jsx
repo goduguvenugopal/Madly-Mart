@@ -8,10 +8,10 @@ import {
   FaShareSquare,
   FaYoutube,
 } from "react-icons/fa";
-import { dataContext } from "../../App";
+import { EnvContext } from "../../App";
 
 const Footer = () => {
-  const { number } = useContext(dataContext);
+  const { number } = useContext(EnvContext);
 
   // share app function
 

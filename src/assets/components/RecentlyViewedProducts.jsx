@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { dataContext } from "../../App";
+import { ProductsContext } from "../../App";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const RecentlyViewedProducts = () => {
-  const { viewedProducts } = useContext(dataContext);
+  const { viewedProducts } = useContext(ProductsContext);
 
   return (
     <>

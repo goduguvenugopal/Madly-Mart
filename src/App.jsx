@@ -2,11 +2,11 @@ import React, { useState, createContext, useEffect } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./assets/Navbar";
-import PageNotFound from "./assets/components/PageNotFound";
+import PageNotFound from "./assets/utilis/PageNotFound";
 import Home from "./assets/Home";
 import Cart from "./assets/Cart";
 import ContactUs from "./assets/ContactUs";
-import { RouteHandler } from "./assets/components/RouteHandler";
+import { RouteHandler } from "./assets/utilis/RouteHandler";
 import Search from "./assets/Search";
 import axios from "axios";
 import Profile from "./assets/components/Profile";
@@ -19,15 +19,17 @@ import Login from "./assets/Login";
 import OrderCheckOut from "./assets/OrderCheckOut";
 import OrderOverView from "./assets/OrderOverView";
 import ProdutReviewsForm from "./assets/ProdutReviewsForm";
+import {useVisitorsTracking} from "./assets/utilis/useVisitorsTracking";
 
-export const dataContext = createContext();
+export const CartContext = createContext();
+export const UserContext = createContext();
+export const ProductsContext = createContext();
+export const EnvContext = createContext();
 
 function App() {
   const [token, setToken] = useState("");
   const api = import.meta.env.VITE_API;
-  const reviews_api = import.meta.env.VITE_REVIEWS_API;
   const number = import.meta.env.VITE_NUMBER;
-  const analytics_api = import.meta.env.VITE_ANALYTICS_API;
   const [carousel, setCarousel] = useState({});
   const [products, setProducts] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -40,40 +42,9 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
-  const todayDate = new Date().toLocaleDateString("en-GB");
-
-  //  Daily Unique Visitors Tracker
-  useEffect(() => {
-    const sendVisitorId = async (visitorId) => {
-      try {
-        const res = await axios.post(`${analytics_api}/analytics/api/visit`, {
-          visitorId,
-        });
-        if (res) {
-          localStorage.setItem("todayDate", JSON.stringify(todayDate));
-        }
-      } catch (error) {
-        console.error("Error sending visitor ID:", error);
-      }
-    };
-
-    const visitorId = localStorage.getItem("visitorId");
-    const storedDate = localStorage.getItem("todayDate");
-
-    if (!visitorId && !storedDate) {
-      const randomVisitorId = crypto.randomUUID();
-      localStorage.setItem("todayDate", JSON.stringify(todayDate));
-      localStorage.setItem("visitorId", JSON.stringify(randomVisitorId));
-      sendVisitorId(randomVisitorId);
-    } else {
-      const parsedDate = JSON.parse(storedDate);
-      if (parsedDate !== todayDate) {
-        const parsedId = JSON.parse(visitorId);
-        sendVisitorId(parsedId);
-      }
-    }
-  }, []);
-
+  
+  // calling visitors tracking custom hook 
+  // useVisitorsTracking()
 
   useEffect(() => {
     // retrieving token from localStorage
@@ -217,62 +188,71 @@ function App() {
 
   return (
     // useContext provider wrapped to child components for state management
-    <dataContext.Provider
-      value={{
-        api,
-        reviews_api,
-        number,
-        carousel,
-        setCarousel,
-        products,
-        setProducts,
-        categories,
-        setCategories,
-        token,
-        setToken,
-        user,
-        setUser,
-        defaultAddress,
-        setDefaultAddress,
-        cartItems,
-        setCartItems,
-        discount,
-        setDiscount,
-        orderProducts,
-        setOrderProducts,
-        orders,
-        setOrders,
-        viewedProducts,
-        setViewedProducts,
-      }}
-    >
-      <Navbar />
+    <EnvContext.Provider value={{ api, number }}>
+      <UserContext.Provider
+        value={{
+          token,
+          setToken,
+          user,
+          setUser,
+          defaultAddress,
+          setDefaultAddress,
+        }}
+      >
+        <CartContext.Provider
+          value={{
+            cartItems,
+            setCartItems,
+            discount,
+            setDiscount,
+            carousel,
+            setCarousel,
+          }}
+        >
+          <ProductsContext.Provider
+            value={{
+              products,
+              setProducts,
+              categories,
+              setCategories,
+              orderProducts,
+              setOrderProducts,
+              orders,
+              setOrders,
+              viewedProducts,
+              setViewedProducts,
+            }}
+          >
+            <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/products_by_category/:category"
-          element={<AllProducts />}
-        />
-        <Route
-          path="/product_over_view/:itemId"
-          element={<ProductOverView />}
-        />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/reviewform" element={<ProdutReviewsForm />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/order_check_out" element={<OrderCheckOut />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route
-          path="/orders/order_over_view/:orderId"
-          element={<OrderOverView />}
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </dataContext.Provider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/products_by_category/:category"
+                element={<AllProducts />}
+              />
+              <Route
+                path="/product_over_view/:itemId"
+                element={<ProductOverView />}
+              />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/reviewform" element={<ProdutReviewsForm />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/order_check_out" element={<OrderCheckOut />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route
+                path="/orders/order_over_view/:orderId"
+                element={<OrderOverView />}
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </ProductsContext.Provider>
+        </CartContext.Provider>
+      </UserContext.Provider>
+    </EnvContext.Provider>
   );
 }
 

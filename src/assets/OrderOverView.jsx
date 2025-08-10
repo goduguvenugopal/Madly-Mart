@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { dataContext } from '../App';
+import { EnvContext, ProductsContext } from '../App';
 import { Link, useParams } from 'react-router-dom';
 import { FlipkartSpin, Loading } from './Loading';
-import { FaCheck, FaInfo, FaSleigh } from 'react-icons/fa';
+import { FaCheck} from 'react-icons/fa';
 import axios from 'axios';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import Lottie from 'lottie-react';
@@ -11,7 +11,8 @@ import check from "./animations/check.json"
 
 
 const OrderOverView = () => {
-  const { orders, setOrders, api, number } = useContext(dataContext);
+  const { orders, setOrders} = useContext(ProductsContext);
+  const {api , number}= useContext(EnvContext)
   const { orderId } = useParams();
   const [singleOrder, setSingleOrder] = useState(null);
   const [totalAmount, setTotalAmount] = useState("")

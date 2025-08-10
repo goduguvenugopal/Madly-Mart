@@ -1,13 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { dataContext } from "../App";
+import {
+  CartContext,
+  
+  EnvContext,
+  ProductsContext,
+  UserContext,
+} from "../App";
 import { PiShareNetwork } from "react-icons/pi";
 import { FlipkartSpin, Loading, SmallLoading } from "./Loading";
 import { FaMinus, FaPhone, FaPlus, FaTruck } from "react-icons/fa";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Footer from "./components/Footer";
-import { scrollToTop } from "./components/RouteHandler";
+import { scrollToTop } from "./utilis/RouteHandler";
 import axios from "axios";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 import ProductReviewsForm from "./ProdutReviewsForm";
@@ -21,18 +27,15 @@ const ProductOverView = () => {
   scrollToTop();
   const {
     products,
-    token,
-    api,
-    cartItems,
     orderProducts,
-    number,
     viewedProducts,
     setViewedProducts,
     setOrderProducts,
-    setCartItems,
-    defaultAddress,
-    discount,
-  } = useContext(dataContext);
+  } = useContext(ProductsContext);
+  const { number, api } = useContext(EnvContext);
+  const { cartItems, setCartItems, discount } = useContext(CartContext);
+  const { defaultAddress, token } = useContext(UserContext);
+
   const { itemId } = useParams();
   const [product, setProduct] = useState({});
   const [itemImg, setItemImg] = useState("");

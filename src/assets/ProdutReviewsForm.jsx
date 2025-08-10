@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { GoUpload } from "react-icons/go";
 import { LuStar } from "react-icons/lu";
-import { dataContext } from "../App";
+import { EnvContext, UserContext } from "../App";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
@@ -15,7 +15,8 @@ const ProdutReviewsForm = ({ itemId }) => {
   const [image, setImage] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [reviewToggle, setReviewToggle] = useState(false);
-  const { user, reviews_api } = useContext(dataContext);
+  const { api } = useContext(EnvContext);
+  const { user } = useContext(UserContext);
   const [productReviewImg, setProductReviewImg] = useState(null);
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
@@ -50,7 +51,7 @@ const ProdutReviewsForm = ({ itemId }) => {
         return toast.warning("Please give rating");
       }
       setLoader(true);
-      const res = await axios.post(`${reviews_api}/api/add/reviews`, formData);
+      const res = await axios.post(`${api}/api/add/reviews`, formData);
       if (res) {
         toast.success("Thank you for sharing your valuable review!", {
           className: "custom-toast",
@@ -60,7 +61,6 @@ const ProdutReviewsForm = ({ itemId }) => {
         setRating(0);
         setImage(null);
         setProductReviewImg(null);
-        
       }
     } catch (error) {
       console.error(error);

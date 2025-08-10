@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { dataContext } from "../../App";
+import { EnvContext, UserContext } from "../../App";
 import { Loading, SmallLoading, FlipkartSpin } from "../../assets/Loading";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,9 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 
 const Profile = () => {
-  const { api, token, setUser, user, defaultAddress, setDefaultAddress } =
-    useContext(dataContext);
+  const { token, setUser, user, defaultAddress, setDefaultAddress } =
+    useContext(UserContext);
+  const { api } = useContext(EnvContext);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [address, setAddress] = useState([]);
@@ -427,9 +428,7 @@ const Profile = () => {
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
-                       
-                      
-                      
+
                       <svg
                         className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                         viewBox="0 0 16 16"
@@ -462,9 +461,7 @@ const Profile = () => {
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
-                         
-                   
-                   
+
                       <svg
                         className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                         viewBox="0 0 16 16"

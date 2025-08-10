@@ -31,9 +31,6 @@ export const RouteHandler = (cartItems) => {
       case '/orders':
         document.title = 'My Orders';
         break;
-      case '/contact':
-        document.title = 'Contact Us for Any Delivery Queries';
-        break;
       case '*':
         document.title = '404 - Page Not Found ';
         break;

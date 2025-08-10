@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Carousel from "../assets/Carousel";
 import Footer from "./components/Footer";
-import { dataContext } from "../App";
+import { CartContext, ProductsContext } from "../App";
 import { Link } from "react-router-dom";
 import { FaDownload, FaShareSquare } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -11,8 +11,8 @@ import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 
 const Home = () => {
-  const { categories } = useContext(dataContext);
-  const { carousel } = useContext(dataContext);
+  const { categories } = useContext(ProductsContext);
+  const { carousel } = useContext(CartContext);
   const [images, setImages] = useState([]);
   const [lastImg, setLastImg] = useState(images?.length);
   const [toggle, setToggle] = useState(null);

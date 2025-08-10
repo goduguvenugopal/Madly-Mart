@@ -5,13 +5,13 @@ import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import Footer from "./components/Footer";
-import { dataContext } from "../App";
-import { scrollToTop } from "./components/RouteHandler";
+import { EnvContext } from "../App";
+import { scrollToTop } from "./utilis/RouteHandler";
 import Faq from "./components/Faq";
 
 const ContactUs = () => {
   scrollToTop();
-  const { api, number } = useContext(dataContext);
+  const { api, number } = useContext(EnvContext);
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

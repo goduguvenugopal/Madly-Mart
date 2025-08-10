@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { dataContext } from "../App";
+import { ProductsContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { scrollToTop } from "./components/RouteHandler";
+import { scrollToTop } from "./utilis/RouteHandler";
 import InstallApp from "./components/InstallApp";
 
 const Search = () => {
   scrollToTop();
-  const { products } = useContext(dataContext);
+  const { products } = useContext(ProductsContext);
   const [searchProducts, setsearchProducts] = useState(products);
   const [text, setText] = useState("");
   const searchRef = useRef();

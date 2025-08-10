@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { dataContext } from "../App";
+import { ProductsContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { scrollToTop } from "./components/RouteHandler";
+import { scrollToTop } from "./utilis/RouteHandler";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
@@ -10,11 +10,11 @@ import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 const AllProducts = () => {
   scrollToTop();
   const { category } = useParams();
-  const { products } = useContext(dataContext);
+  const { products } = useContext(ProductsContext);
   const [categoryItems, setCategoryItems] = useState([]);
   const [categoryItems1, setCategoryItems1] = useState([]);
   const [pageNum, setPageNum] = useState(0);
-  const title = useRef(document.title);
+  
 
   // changing title dynamically
   useEffect(() => {

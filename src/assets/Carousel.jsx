@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
-import { dataContext } from "../App";
+import { CartContext } from "../App";
 
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { carousel } = useContext(dataContext);
+  const { carousel } = useContext(CartContext);
   const [offerTitle, setOfferTitle] = useState("");
   const [images, setImages] = useState([]);
 

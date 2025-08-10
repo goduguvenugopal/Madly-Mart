@@ -6,23 +6,17 @@ import {
   FaUpload,
   FaWhatsapp,
 } from "react-icons/fa6";
-import { dataContext } from "../App";
+import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import success from "./animations/success.json";
-import Lottie from "lottie-react";
+import OrderSuccessModal from "./components/OrderSuccessModal";
 
 const OrderCheckOut = () => {
-  const {
-    orderProducts,
-    api,
-    number,
-    token,
-    defaultAddress,
-    cartItems,
-    discount,
-  } = useContext(dataContext);
+  const { api, number } = useContext(EnvContext);
+  const { token, defaultAddress } = useContext(UserContext);
+  const { cartItems, discount } = useContext(CartContext);
+  const { orderProducts } = useContext(ProductsContext);
   const [orderOk, setOrderOk] = useState(false);
   const [orderSpin, setOrderSpin] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
@@ -285,97 +279,84 @@ const OrderCheckOut = () => {
           </details>
 
           {/* qr code payment section  */}
-          {(totalAmount) >=
-            150 ? (
-              <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
-                <h2 className="font-bold  text-orange-600">PAYMENT DETAILS</h2>
-                <h4 className="font-medium">SCAN QR CODE</h4>
-                <img
-                  src="/qrcode.png"
-                  alt="qr_code"
-                  className="border-2 my-2 h-52 w-52 rounded "
-                />
+          {totalAmount >= 150 ? (
+            <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
+              <h2 className="font-bold  text-orange-600">PAYMENT DETAILS</h2>
+              <h4 className="font-medium">SCAN QR CODE</h4>
+              <img
+                src="/qrcode.png"
+                alt="qr_code"
+                className="border-2 my-2 h-52 w-52 rounded "
+              />
 
-                <img
-                  src="/allpayments.png"
-                  className="w-[60%] mb-2 "
-                  alt="all_upi_logo"
-                />
-                <h6 className="text-blue-600 font-bold">PAY TO THIS NUMBER</h6>
-                <span
-                  onClick={() => copyNumber(9603669236)}
-                  className="font-bold my-2 cursor-pointer flex items-center gap-2 hover:text-blue-600"
-                >
-                  9603669236 <FaRegCopy />
-                </span>
-                <h4 className="text-center">
-                  Banking Name :{" "}
-                  <span className="font-bold ">BANUPRAKASH NAGARAM</span>
-                </h4>
-                <div className="hidden lg:block">
-                  <a
-                    href="/qrcode.png"
-                    className=" animate-bounce text-md font-semibold px-3 h-[2.5rem] mt-6 flex items-center gap-2 rounded-full text-white  bg-orange-600"
-                    download="/qrcode.png"
-                  >
-                    <FaDownload />
-                    Download QR Code
-                  </a>
-                </div>
+              <img
+                src="/allpayments.png"
+                className="w-[60%] mb-2 "
+                alt="all_upi_logo"
+              />
+              <h6 className="text-blue-600 font-bold">PAY TO THIS NUMBER</h6>
+              <span
+                onClick={() => copyNumber(9603669236)}
+                className="font-bold my-2 cursor-pointer flex items-center gap-2 hover:text-blue-600"
+              >
+                9603669236 <FaRegCopy />
+              </span>
+              <h4 className="text-center">
+                Banking Name :{" "}
+                <span className="font-bold ">BANUPRAKASH NAGARAM</span>
+              </h4>
+              <div className="hidden lg:block">
                 <a
-                  href={`upi://pay?pa=960366@ybl&pn=Dora A-Z Fresh&am=${totalAmount}&cu=INR`}
-                  target="_blank"
-                  rel="noopener"
-                  className="hover:bg-blue-600 lg:hidden text-md font-semibold px-4 h-[2.5rem] my-4 flex justify-center items-center gap-2 rounded-full text-white bg-blue-700 min-w-[12rem]"
+                  href="/qrcode.png"
+                  className=" animate-bounce text-md font-semibold px-3 h-[2.5rem] mt-6 flex items-center gap-2 rounded-full text-white  bg-orange-600"
+                  download="/qrcode.png"
                 >
-                  {" "}
-                  PAY ₹{totalAmount}
+                  <FaDownload />
+                  Download QR Code
                 </a>
-                <h5 className=" lg:hidden">
-                  <span className="font-bold text-red-500">Note : </span>After
-                  making the payment, please place your order and send the
-                  payment receipt via below WhatsApp number on the same day.
-                </h5>
               </div>
-            ) : (
-              <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="bg-white rounded-lg shadow-lg p-4 max-w-sm w-full"
-                >
-                  <h2 className="text-lg font-semibold mb-3 text-orange-600">
-                    Complete Your Order
-                  </h2>
-                  <p className="mb-4">
-                    Orders below{" "}
-                    <span className="text-[1rem] font-bold">Rs.150</span> are
-                    not allowed. Please add more products, increase the quantity
-                    of existing items, or place the order directly from your
-                    cart if you already have products.
-                  </p>
-                  <div className="text-end">
-                    {cartItems.length > 0 ? (
-                      <Link
-                        to="/cart"
-                        onClick={() => setModal(false)}
-                        className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                      >
-                        Go to cart
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/"
-                        onClick={() => setModal(false)}
-                        className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                      >
-                        Add More Products
-                      </Link>
-                    )}
-                  </div>
+              <a
+                href={`upi://pay?pa=960366@ybl&pn=Dora A-Z Fresh&am=${totalAmount}&cu=INR`}
+                target="_blank"
+                rel="noopener"
+                className="hover:bg-blue-600 lg:hidden text-md font-semibold px-4 h-[2.5rem] my-4 flex justify-center items-center gap-2 rounded-full text-white bg-blue-700 min-w-[12rem]"
+              >
+                {" "}
+                PAY ₹{totalAmount}
+              </a>
+            </div>
+          ) : (
+            <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white rounded-lg shadow-lg p-4 max-w-sm w-full"
+              >
+                <h2 className="text-lg font-semibold mb-3 text-orange-600">
+                  Complete Your Order
+                </h2>
+
+                <div className="text-end">
+                  {cartItems.length > 0 ? (
+                    <Link
+                      to="/cart"
+                      onClick={() => setModal(false)}
+                      className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Go to cart
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/"
+                      onClick={() => setModal(false)}
+                      className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Add More Products
+                    </Link>
+                  )}
                 </div>
               </div>
-            )
-          }
+            </div>
+          )}
 
           {/* order product details section  */}
           <div className="p-3 pb-5 pt-0 w-full lg:w-[34%] lg:h-[90vh] lg:overflow-y-auto shadow-md shadow-gray-300 rounded-lg">
@@ -464,12 +445,7 @@ const OrderCheckOut = () => {
                 TOTAL COST :
                 <span className="text-black pl-1">Rs. {totalAmount}</span>
               </h3>
-              <h5 className="mt-2 ">
-                <span className="font-bold text-red-500">Note : </span>Orders
-                will be processed only after full payment. Please send the
-                payment receipt to given below WhatsApp number the same day of
-                the order.
-              </h5>
+
               <div className="flex justify-center pt-2">
                 <a
                   href={`https://wa.me/91${number}`}
@@ -507,45 +483,11 @@ const OrderCheckOut = () => {
           </div>
         )}
 
-        {/* order placed successfully modal  */}
-        {orderOk && (
-          <div className="px-5 fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-white text-black">
-            <div className="text-center flex flex-col items-center justify-center">
-              {/* <FaCircleCheck size={150} className='text-green-500' /> */}
-              <Lottie animationData={success} className="w-[15rem]" />
-              <h4 className=" text-2xl font-semibold"> </h4>
-              <h2 className="text-black text-2xl mt-1">
-                Order Placed Successfully!
-              </h2>
-
-              <h5 className="mt-2">
-                <span className="font-bold text-red-500">Note : </span>Orders
-                will be processed only after full payment. Please send the
-                payment receipt to WhatsApp at{" "}
-                <a
-                  href={`https://wa.me/91${number}`}
-                  className="text-green-700 font-bold"
-                >
-                  {number}
-                </a>{" "}
-                on the same day of the order.
-              </h5>
-              <p className="text-black text-lg mt-2">
-                You will receive the order details in your email.
-              </p>
-
-              <Link
-                to="/orders"
-                className="text-white font-semibold bg-blue-600 mt-2 p-1 px-2 rounded"
-              >
-                Go to My Orders
-              </Link>
-            </div>
-          </div>
-        )}
+        {/* order success modal  */}
+        <OrderSuccessModal orderOk={orderOk} />
       </div>
 
-      {/* modal section  */}
+      {/*order modal section  */}
       {modal && (
         <div
           onClick={() => setModal(false)}

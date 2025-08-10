@@ -11,11 +11,12 @@ import {
 import { FaCartShopping } from "react-icons/fa6";
 import { MdClose, MdLogin, MdLogout, MdPhone } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { dataContext } from "../App";
+import { CartContext, UserContext } from "../App";
 import { Slide, toast, ToastContainer } from "react-toastify";
 
 const Navbar = () => {
-  const { token, setToken, cartItems, user, setUser } = useContext(dataContext);
+  const { token, setToken, user, setUser } = useContext(UserContext);
+  const {cartItems} = useContext(CartContext)
   const [offcanvas, setOffcanvas] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);

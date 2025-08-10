@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import { dataContext } from "../App";
+import {
+  CartContext,
+  EnvContext,
+  ProductsContext,
+  UserContext,
+} from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FlipkartSpin } from "./Loading";
@@ -10,15 +15,11 @@ import cart from "./animations/cart.json";
 import DefaultAddress from "./components/DefaultAddress";
 
 const Cart = () => {
-  const {
-    cartItems,
-    setCartItems,
-    api,
-    token,
-    defaultAddress,
-    orderProducts,
-    setOrderProducts,
-  } = useContext(dataContext);
+  const { api } = useContext(EnvContext);
+  const { token, defaultAddress } = useContext(UserContext);
+  const { cartItems, setCartItems } = useContext(CartContext);
+  const { orderProducts, setOrderProducts } = useContext(ProductsContext);
+
   const [cartSpin, setCartSpin] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const [qtySpin, setQtySpin] = useState(false);
@@ -129,7 +130,7 @@ const Cart = () => {
       />
 
       <section className="text-gray-600 body-font overflow-hidden p-3">
-        {!cartItems?.length ? (
+        {cartItems?.length ? (
           <>
             <div className="container py-24 mx-auto ">
               <div className="-my-7 divide-y-2 divide-gray-100">

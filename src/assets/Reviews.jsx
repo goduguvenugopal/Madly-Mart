@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";
-import { dataContext } from "../App";
+import { EnvContext } from "../App";
 import { div } from "framer-motion/client";
 import { CustomLoading } from "./Loading";
 import { GoPerson } from "react-icons/go";
@@ -11,7 +11,7 @@ import { LuStar } from "react-icons/lu";
 
 const Reviews = ({ itemId }) => {
   const [reviews, setReviews] = useState([]);
-  const { reviews_api } = useContext(dataContext);
+  const { api} = useContext(EnvContext);
   const [spinner, setSpinner] = useState(false);
 
   // fetching product reviews
