@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { EnvContext } from "../../App";
+import { useEffect } from "react";
+ 
 
- export const useVisitorsTracking = () => {
-  const {api} = useContext(EnvContext);
+ export const useVisitorsTracking = (api) => {
+  
   const todayDate = new Date().toLocaleDateString("en-GB");
 
   //  Daily Unique Visitors Tracker

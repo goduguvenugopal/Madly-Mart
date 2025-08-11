@@ -44,7 +44,7 @@ function App() {
   RouteHandler(cartItems);
   
   // calling visitors tracking custom hook 
-  // useVisitorsTracking()
+  useVisitorsTracking(api)
 
   useEffect(() => {
     // retrieving token from localStorage

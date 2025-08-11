@@ -1,15 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  CartContext,
-  
-  EnvContext,
-  ProductsContext,
-  UserContext,
-} from "../App";
+import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
 import { PiShareNetwork } from "react-icons/pi";
-import { FlipkartSpin, Loading, SmallLoading } from "./Loading";
-import { FaMinus, FaPhone, FaPlus, FaTruck } from "react-icons/fa";
+import { FlipkartSpin, Loading } from "./Loading";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Footer from "./components/Footer";
@@ -22,29 +16,27 @@ import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 import HelmetComponent from "./components/HelmetComponent";
 import DefaultAddress from "./components/DefaultAddress";
 import RelatedProducts from "./components/RelatedProducts";
+import ProductVariants from "./utilis/ProductVariants";
 
 const ProductOverView = () => {
   scrollToTop();
-  const {
-    products,
-    orderProducts,
-    viewedProducts,
-    setViewedProducts,
-    setOrderProducts,
-  } = useContext(ProductsContext);
+  const { products, viewedProducts, setViewedProducts, setOrderProducts } =
+    useContext(ProductsContext);
   const { number, api } = useContext(EnvContext);
   const { cartItems, setCartItems, discount } = useContext(CartContext);
   const { defaultAddress, token } = useContext(UserContext);
-
   const { itemId } = useParams();
   const [product, setProduct] = useState({});
   const [itemImg, setItemImg] = useState("");
-  const [itemWeight, setItemWeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [color, setColor] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [size, setSize] = useState("");
   const [itemCost, setItemCost] = useState("");
   const [itemQty, setItemQty] = useState(1);
+  const [originalCost, setOriginalCost] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [zoomImg, setZoomImg] = useState("");
-  const [dis, setDis] = useState(null);
   const navigate = useNavigate();
   const [cartSpin, setCartSpin] = useState(false);
   const initialData = {
@@ -52,7 +44,6 @@ const ProductOverView = () => {
     itemCost: product?.itemCost,
     itemImage: product?.itemImage,
     itemName: product?.itemName,
-    variants: product?.variants,
     minOrderQty: product?.minOrderQty,
     itemQty: itemQty,
     itemSubCategory: product?.itemSubCategory,
@@ -63,6 +54,10 @@ const ProductOverView = () => {
     productId: "",
     itemQty: "",
     totalAmount: "",
+    color: "",
+    capacity: "",
+    weight: "",
+    size: "",
     products: [],
   });
 
@@ -89,16 +84,21 @@ const ProductOverView = () => {
     }
   }, [products, itemId]);
 
-  // item weight,cost and qty initial value function
+  // item weight,cost and qty etc.. initial values
   useEffect(() => {
-    // if (product && product?.itemWeight && product?.itemWeight.length > 0) {
-    //   setItemWeight(product?.itemWeight[0]);
-    //   setItemCost(product?.itemCost);
-    //   setItemQty(1);
-    // } else {
-    //   setItemCost(product?.itemCost);
-    //   setItemQty(1);
-    // }
+    if (product && product?.color && product?.variants.length > 0) {
+      setWeight(product?.variants[0]?.weight);
+      setItemCost(product?.variants[0]?.sellingCost || product?.itemCost);
+      setCapacity(product?.variants[0]?.capacity);
+      setSize(product?.variants[0]?.size);
+      setItemQty(1);
+      setColor(product?.variants[0]?.color);
+      setOriginalCost(product?.variants[0]?.originalCost || product?.offerCost);
+    } else {
+      setItemCost(product?.itemCost);
+      setItemQty(1);
+      setOriginalCost(product?.offerCost);
+    }
   }, [product]);
 
   // item image initial value function
@@ -127,11 +127,24 @@ const ProductOverView = () => {
       ...prevCaart,
       productId: product?._id,
       itemQty: itemQty,
-      totalAmount: product?.totalAmount,
-
+      totalAmount: itemCost,
+      color: color,
+      capacity: capacity,
+      weight: weight,
+      size: size,
       products: [initialData],
     }));
-  }, [product, itemId, products, itemCost, itemQty, dis]);
+  }, [
+    product,
+    itemId,
+    products,
+    itemCost,
+    itemQty,
+    color,
+    weight,
+    size,
+    capacity,
+  ]);
 
   // add to cart function
   const addToCartFunc = async () => {
@@ -281,54 +294,46 @@ const ProductOverView = () => {
             </div>
           )}
           <hr className="border w-full sm:hidden border-gray-200 mt-3" />
-          {/* product name and cost section  */}
+
+          {/* product name section  */}
           <div className="w-full sm:w-[40%] ">
             <div className="flex flex-col gap-3 mb-3 ">
               <span className="text-2xl lg:text-3xl capitalize font-medium ">
                 {product.itemName}
               </span>
+
+              {/* cost section  */}
               <div className="flex gap-3 mb-1 items-center">
                 <>
                   <span className="text-2xl text-gray-700 font-medium">
-                    Rs.{" "}
-                  </span>
-
-                  <span className="text-md line-through text-red-700 font-medium">
                     Rs. {parseFloat(itemCost * itemQty || 0).toFixed(2)}
                   </span>
-
-                  <span className="text-2xl text-gray-700 font-medium">
-                    Rs.
-                  </span>
-
-                  <span
-                    className={` text-md line-through text-red-700 font-medium ${
-                      product.offerCost ? "block" : "hidden"
-                    }`}
-                  >
-                    Rs.{" "}
-                    {parseFloat(product.offerCost * itemQty || 0).toFixed(2)}
+                  <span className="text-md line-through text-red-700 font-medium">
+                    Rs. {parseFloat(originalCost * itemQty || 0).toFixed(2)}
                   </span>
                 </>
               </div>
 
+              {/* minimum order card section render based on condition  */}
               {product.minOrderQty > 1 && (
                 <div className="bg-orange-900 mb-2 text-sm text-white w-fit p-1 px-2 rounded ">
                   Minimum order qty {product.minOrderQty}
                 </div>
               )}
 
+              {/* stock status button  */}
               {product.itemStock === "0" ? (
-                <div className="bg-red-500 rounded px-2 p-1 text-white font-medium w-fit">
+                <div className="bg-red-500 animate-pulse rounded-full px-2 p-1 text-white font-medium w-fit">
                   Sold out
                 </div>
               ) : (
-                <div className="bg-green-500 rounded px-2 p-1 text-white font-medium w-fit">
+                <div className="bg-green-500 animate-pulse rounded-full px-2 p-1 text-white font-medium w-fit">
                   In Stock
                 </div>
               )}
             </div>
-            {/* discount text section  */}
+
+            {/* discount and offer text and button section*/}
             {product.offerMessage && (
               <section className="py-3 flex items-center gap-2 flex-wrap">
                 <button className="bg-gradient-to-r flex justify-between gap-2 items-center from-pink-500 via-red-500 to-yellow-500 text-white px-5 py-2 rounded-full font-semibold shadow-lg animate-bounce hover:scale-105 transition-transform duration-300">
@@ -342,23 +347,27 @@ const ProductOverView = () => {
             )}
 
             <hr className="border border-gray-200 mb-2 mt-2" />
+            {/* variants section component */}
+            <ProductVariants
+              product={product}
+              color={color}
+              setColor={setColor}
+              weight={weight}
+              setWeight={setWeight}
+              capacity={capacity}
+              setCapacity={setCapacity}
+              size={size}
+              setSize={setSize}
+              itemCost={itemCost}
+              setItemCost={setItemCost}
+              originalCost={originalCost}
+              setOriginalCost={setOriginalCost}
+            />
 
-            <div className="flex gap-1 mb-3 items-center">
-              <span className="font-semibold text-nowrap">Quantity : </span>
-              <span className="text-lg font-semibold text-black"> </span>
-            </div>
-
-            <div className="flex gap-3 flex-wrap mb-5">
-              <div
-                className={`border-2  py-1  px-4 rounded-full cursor-pointer font-semibold  `}
-              ></div>
-            </div>
-
-            {/* item quantity increment and decrement section  */}
+            {/* product qty increment and decrement section  */}
             <div className="flex gap-1 mb-3 items-center">
               <span className="font-semibold text-nowrap">Quantity : </span>
               <span className="text-lg font-semibold text-black">
-                {" "}
                 {itemQty}
               </span>
             </div>
