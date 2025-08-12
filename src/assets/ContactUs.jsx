@@ -34,7 +34,7 @@ const ContactUs = () => {
       setSubmitSpin(true);
       try {
         const res = await axios.post(
-          `${api}/updates-email/send-updates`,
+          `${api}/api/updates-email/send-updates`,
           formData
         );
         if (res) {

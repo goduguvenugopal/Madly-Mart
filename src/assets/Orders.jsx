@@ -17,7 +17,7 @@ const Orders = () => {
     // Fetch orders from the API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${api}/order/get-all-orders`);
+        const response = await axios.get(`${api}/api/order/get-all-orders`);
         if (response) {
           const allOrders = response.data.retrievedAllOrders.reverse();
           const userOrders = allOrders.filter(

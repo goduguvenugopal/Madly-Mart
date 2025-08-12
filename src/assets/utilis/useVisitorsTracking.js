@@ -10,7 +10,7 @@ import { useEffect } from "react";
   useEffect(() => {
     const sendVisitorId = async (visitorId) => {
       try {
-        const res = await axios.post(`${api}/analytics/api/visit`, {
+        const res = await axios.post(`${api}/api/analytics/api/visit`, {
           visitorId,
         });
         if (res) {

@@ -60,9 +60,9 @@ const OrderOverView = () => {
     } else {
       try {
         setCancelSpin(true)
-        const res = await axios.put(`${api}/order/update-order-status/${singleOrder._id}`, updataStatus)
+        const res = await axios.put(`${api}/api/order/update-order-status/${singleOrder._id}`, updataStatus)
         if (res) {
-          const response = await axios.get(`${api}/order/get-all-orders`)
+          const response = await axios.get(`${api}/api/order/get-all-orders`)
           if (response) {
             const allOrders = response.data.retrievedAllOrders.reverse()
             setOrders(allOrders);

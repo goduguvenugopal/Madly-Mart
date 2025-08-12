@@ -86,7 +86,7 @@ const ProductOverView = () => {
 
   // item weight,cost and qty etc.. initial values
   useEffect(() => {
-    if (product && product?.color && product?.variants.length > 0) {
+    if (product?.variants?.length > 0) {
       setWeight(product?.variants[0]?.weight);
       setItemCost(product?.variants[0]?.sellingCost || product?.itemCost);
       setCapacity(product?.variants[0]?.capacity);
@@ -308,9 +308,11 @@ const ProductOverView = () => {
                   <span className="text-2xl text-gray-700 font-medium">
                     Rs. {parseFloat(itemCost * itemQty || 0).toFixed(2)}
                   </span>
-                  <span className="text-md line-through text-red-700 font-medium">
-                    Rs. {parseFloat(originalCost * itemQty || 0).toFixed(2)}
-                  </span>
+                  {originalCost && (
+                    <span className="text-md line-through text-red-700 font-medium">
+                      Rs. {parseFloat(originalCost * itemQty || 0).toFixed(2)}
+                    </span>
+                  )}
                 </>
               </div>
 
@@ -455,11 +457,18 @@ const ProductOverView = () => {
 
         {/* Description section  */}
 
-        {product.itemDescription && (
+        {product?.itemDescription && (
           <div className="lg:px-9">
             <hr className="border  border-gray-200 mb-2 lg:mt-5" />
             <h5 className="font-bold text-lg mb-2">Description</h5>
-            <p className="font-serif">{product.itemDescription}</p>
+            <p className="font-serif ">{product.itemDescription}</p>
+
+            {/* decription points  */}
+            <ul className="mt-4 pl-4">
+              {product?.descriptionPoints?.map((points, index) => (
+                <li className="list-disc mt-2" key={index}>{points}</li>
+              ))}
+            </ul>
           </div>
         )}
 

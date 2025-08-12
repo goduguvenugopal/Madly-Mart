@@ -178,7 +178,7 @@ const OrderCheckOut = () => {
     } else {
       try {
         setOrderSpin(true);
-        const res = await axios.post(`${api}/order/place-order`, orderForm, {
+        const res = await axios.post(`${api}/api/order/place-order`, orderForm, {
           headers: {
             token: token,
           },
@@ -187,7 +187,7 @@ const OrderCheckOut = () => {
           setOrderOk(true);
           setOrderSpin(false);
           // if order placed successfully email confirmation wll be sent to user and seller
-          await axios.post(`${api}/updates-email/send-updates`, emailData);
+          await axios.post(`${api}/api/updates-email/send-updates`, emailData);
         }
       } catch (error) {
         console.error(error);

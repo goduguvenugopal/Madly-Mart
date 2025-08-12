@@ -11,6 +11,7 @@ const Login = () => {
   const { api } = useContext(EnvContext);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [loading , setLoading] = useState(false)
   const [otp, setOtp] = useState("");
   const [btnToggle, setBtnToggle] = useState(false);
   const [submitBtn, setSubmitBtn] = useState(false);
@@ -23,7 +24,7 @@ const Login = () => {
     event.preventDefault();
     setBtnToggle(true);
     try {
-      const response = await axios.post(`${api}/email/send-otp`, {
+      const response = await axios.post(`${api}/api/email/send-otp`, {
         email,
         fullName,
       });
@@ -42,7 +43,7 @@ const Login = () => {
     event.preventDefault();
     setSubmitBtn(true);
     try {
-      const response = await axios.post(`${api}/email/verify-otp`, {
+      const response = await axios.post(`${api}/api/email/verify-otp`, {
         email,
         fullName,
         otp,
@@ -90,7 +91,7 @@ const Login = () => {
               <div className="sm:mx-auto  sm:w-full sm:max-w-sm">
                 <img
                   className="w-28 rounded-full mx-auto"
-                  src="dora-logo.jpeg"
+                  src="/MadlyMart.jpg"
                   alt="Your Company"
                 />
                 <h2 className="mt-7 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">
@@ -175,7 +176,7 @@ const Login = () => {
               <div className="sm:mx-auto  sm:w-full sm:max-w-sm">
                 <img
                   className="w-28 rounded-full mx-auto"
-                  src="dora-logo.jpeg"
+                  src="/MadlyMart.jpg"
                   alt="Your Company"
                 />
                 <h2 className="mt-7 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">

@@ -17,6 +17,36 @@ const ProductVariants = ({
 }) => {
   return (
     <>
+  {/* color section  */}
+      {product?.variants?.some((item) => item?.color?.trim() !== "") && (
+        <>
+          <div className="flex gap-1 mb-3 items-center">
+            <span className="font-semibold text-nowrap capitalize">color : </span>
+            <span className="text-lg font-semibold text-black capitalize">{color}</span>
+          </div>
+          <div className="flex gap-3 flex-wrap mb-5">
+            {product?.variants?.map((item) => (
+              <div
+                onClick={() => {
+                  setColor(item?.color);
+                  setItemCost(item?.sellingCost);
+                  setOriginalCost(item?.originalCost);
+                }}
+                key={item._id}
+                className={`border-2 capitalize  py-1  px-4 rounded-full cursor-pointer font-semibold ${
+                  item.color === color
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-green-700"
+                }`}
+              >
+                {item.color}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+
       {/* weight section  */}
       {product?.variants?.some((item) => item?.weight?.trim() !== "") && (
         <>
@@ -63,6 +93,7 @@ const ProductVariants = ({
                   setSize(item?.size);
                   setItemCost(item?.sellingCost);
                   setOriginalCost(item?.originalCost);
+                  
                 }}
                 key={item._id}
                 className={`border-2 flex items-center justify-center capitalize min-h-10 min-w-10 px-2 rounded-full cursor-pointer font-semibold ${
@@ -82,7 +113,7 @@ const ProductVariants = ({
       {product?.variants?.some((item) => item?.capacity?.trim() !== "") && (
         <>
           <div className="flex gap-1 mb-3 items-center">
-            <span className="font-semibold text-nowrap"> capacity : </span>
+            <span className="font-semibold text-nowrap capitalize"> capacity : </span>
             <span className="text-lg font-semibold text-black capitalize">
               {capacity}
             </span>
@@ -98,7 +129,7 @@ const ProductVariants = ({
                 }}
                 key={item._id}
                 className={`border-2 flex items-center justify-center capitalize min-h-10 min-w-10 px-2 rounded-full cursor-pointer font-semibold ${
-                  item.capacity === capacity
+                  item.capacity == capacity
                     ? "bg-blue-600 text-white border-blue-600"
                     : "border-green-700"
                 }`}

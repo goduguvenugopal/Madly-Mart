@@ -74,7 +74,7 @@ function App() {
     // fetching user details
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${api}/user/get-single-user`, {
+        const response = await axios.get(`${api}/api/user/get-single-user`, {
           headers: {
             token: token,
           },
@@ -107,7 +107,7 @@ function App() {
     // fetching all products
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${api}/product/get-all-products`);
+        const res = await axios.get(`${api}/api/product/get-all-products`);
         if (res) {
           setProducts(res.data.retrievdProducts.reverse());
         }
@@ -120,7 +120,7 @@ function App() {
     // fetching carousel
     const getCarousel = async () => {
       try {
-        const res = await axios.get(`${api}/carousel/get-carousel`);
+        const res = await axios.get(`${api}/api/carousel/get-carousel`);
         if (res) {
           setCarousel(res.data.retrievedCarousel[0]);
         }
@@ -134,7 +134,7 @@ function App() {
     // fetching all categories
     const fetchAllCategories = async () => {
       try {
-        const res = await axios.get(`${api}/category/get-category-products`);
+        const res = await axios.get(`${api}/api/category/get-category-products`);
         if (res) {
           setCategories(res.data.retrievedProducts);
         }
@@ -147,7 +147,7 @@ function App() {
     // fetching discount function
     const fetchDiscount = async () => {
       try {
-        const res = await axios.get(`${api}/offer/get-offer`);
+        const res = await axios.get(`${api}/api/offer/get-offer`);
         if (res) {
           setDiscount(res.data.offers[0]);
           setSpinner(false);
@@ -164,7 +164,7 @@ function App() {
     // fetching cart products
     const fetchCartItems = async () => {
       try {
-        const res = await axios.get(`${api}/cart/get-user-cart-products`, {
+        const res = await axios.get(`${api}/api/cart/get-user-cart-products`, {
           headers: {
             token: token,
           },

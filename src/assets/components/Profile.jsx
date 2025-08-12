@@ -35,7 +35,7 @@ const Profile = () => {
     // fetching user details
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${api}/user/get-single-user`, {
+        const response = await axios.get(`${api}/api/user/get-single-user`, {
           headers: {
             token: token,
           },
@@ -60,7 +60,7 @@ const Profile = () => {
     // fetch addresses
     const fetchAddress = async () => {
       try {
-        const res = await axios.get(`${api}/address/get-user-address`, {
+        const res = await axios.get(`${api}/api/address/get-user-address`, {
           headers: {
             token: token,
           },
@@ -102,7 +102,7 @@ const Profile = () => {
       try {
         setAddressSpin(true);
         const res = await axios.post(
-          `${api}/address/save-shipping-address`,
+          `${api}/api/address/save-shipping-address`,
           addressForm,
           {
             headers: {
@@ -112,7 +112,7 @@ const Profile = () => {
         );
         if (res) {
           try {
-            const res = await axios.get(`${api}/address/get-user-address`, {
+            const res = await axios.get(`${api}/api/address/get-user-address`, {
               headers: {
                 token: token,
               },
@@ -166,7 +166,7 @@ const Profile = () => {
     setDelModal(false);
     try {
       setDelSpin(delId);
-      const res = await axios.delete(`${api}/address/delete-address/${delId}`);
+      const res = await axios.delete(`${api}/api/address/delete-address/${delId}`);
       if (res) {
         toast.success("Address deleted successfully", {
           className: "custom-toast",

@@ -41,7 +41,7 @@ const Cart = () => {
     try {
       setCartSpin(true);
       const res = await axios.delete(
-        `${api}/cart/delete-user-cart-product/${cartItemId}`
+        `${api}/api/cart/delete-user-cart-product/${cartItemId}`
       );
       if (res) {
         const remain = cartItems.filter((item) => item._id !== cartItemId);
@@ -80,10 +80,10 @@ const Cart = () => {
     } else {
       try {
         setQtySpin(true);
-        await axios.put(`${api}/cart/update-cart/${itemId}`, {
+        await axios.put(`${api}/api/cart/update-cart/${itemId}`, {
           itemQty: selectedQty,
         });
-        const response = await axios.get(`${api}/cart/get-user-cart-products`, {
+        const response = await axios.get(`${api}/api/cart/get-user-cart-products`, {
           headers: { token: token },
         });
         if (response.data?.retrievdProducts) {
