@@ -11,7 +11,6 @@ const Login = () => {
   const { api } = useContext(EnvContext);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [loading , setLoading] = useState(false)
   const [otp, setOtp] = useState("");
   const [btnToggle, setBtnToggle] = useState(false);
   const [submitBtn, setSubmitBtn] = useState(false);
@@ -76,9 +75,7 @@ const Login = () => {
     }
   }, [token]);
 
-  if (loading) {
-    return <Loading />;
-  }
+ 
 
   return (
     <>
@@ -160,7 +157,7 @@ const Login = () => {
                     your spam folder or
                   </span>
                   <a
-                    href="mailto:dora.a.to.z.fresh@gmail.com"
+                    href="mailto:madlymart@gmail.com"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     contact us
@@ -252,7 +249,7 @@ const Login = () => {
                     your spam folder or
                   </span>
                   <a
-                    href="mailto:dora.a.to.z.fresh@gmail.com"
+                    href="mailto:madlymart@gmail.com"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     contact us

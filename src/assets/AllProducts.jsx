@@ -25,7 +25,7 @@ const AllProducts = () => {
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join("")} Products`;
     } else {
-      document.title = "Welcome to Dora A to Z Fresh";
+      document.title = "Welcome to Madly Mart";
     }
   }, [category]);
 
@@ -68,27 +68,7 @@ const AllProducts = () => {
     setPageNum(pageNumber);
   };
 
-  // filter function
-  const filterFunc = (e) => {
-    const inputText = e.target.value;
-    if (inputText === "veg") {
-      const results = products.filter((item) => item.itemCategory === category);
-      setCategoryItems(results);
-    } else if (inputText === "non-veg") {
-      const results = products.filter(
-        (item) => item.itemCategory === inputText
-      );
-      setCategoryItems(results);
-    } else if (inputText === "all") {
-      const results1 = products.filter((item) => item.itemCategory === "food");
-      const results2 = products.filter(
-        (item) => item.itemCategory === "non-veg"
-      );
-      const concatArray = results1.concat(results2);
-      setCategoryItems(concatArray);
-    }
-  };
-
+  
   return (
     <>
       <div className="p-3 mt-3 mb-5 pt-24">
@@ -97,25 +77,6 @@ const AllProducts = () => {
         </h5>
         <hr className="my-2 border border-orange-500" />
 
-        {/* filters  */}
-        {category === "food" && (
-          <div className="flex justify-end mt-6">
-            <select
-              name="options"
-              onChange={filterFunc}
-              id="options"
-              className="border-2 outline-none border-blue-500 rounded p-1"
-              defaultValue=""
-            >
-              <option value="" disabled className="text-gray-400 ">
-                Filters
-              </option>
-              <option value="all">All</option>
-              <option value="non-veg">Non-Veg</option>
-              <option value="veg">Veg</option>
-            </select>
-          </div>
-        )}
 
         <div className="mt-6 w-full pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {categoryItems.length ? (
@@ -131,7 +92,7 @@ const AllProducts = () => {
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
-                      className="h-fit w-full rounded-lg"
+                      className="min-h-[180px] w-full rounded-lg"
                     />
                   </div>
 

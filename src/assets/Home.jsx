@@ -67,7 +67,7 @@ const Home = () => {
                       effect="blur"
                       src={item?.productImage.image}
                       alt={item?.productCategoryName}
-                      className="h-fit w-full rounded-lg "
+                      className="min-h-[200px] w-full rounded-lg "
                     />
                     {item.available === "no" && (
                       <div className="absolute flex items-center justify-center  top-0 left-0 w-full h-full bg-black bg-opacity-0  text-white ">

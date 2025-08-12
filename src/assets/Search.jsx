@@ -69,7 +69,7 @@ const Search = () => {
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
-                      className="h-fit w-full rounded-lg"
+                      className="min-h-[180px] w-full rounded-lg"
                     />
                   </div>
 

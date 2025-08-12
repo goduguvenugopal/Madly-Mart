@@ -163,7 +163,7 @@ const Navbar = () => {
                 title="Cart"
                 className="text-black cursor-pointer"
               />
-              <div className="absolute -top-3 right-0 p-2 bg-black w-5 h-5 rounded-full flex justify-center items-center">
+              <div className="absolute -top-3 right-0 p-2 bg-blue-600 w-5 h-5 rounded-full flex justify-center items-center">
                 <span className="text-[0.8rem] text-white font-medium">
                   {cartItems.length}
                 </span>
@@ -174,7 +174,7 @@ const Navbar = () => {
               <FaCartShopping
                 size={25}
                 title="Cart"
-                className="text-white cursor-pointer"
+                className=" cursor-pointer"
               />
             </Link>
           )}

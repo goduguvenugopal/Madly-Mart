@@ -143,7 +143,7 @@ const Cart = () => {
                     className="py-8 flex gap-x-[1.1rem] lg:gap-x-6 flex-nowrap"
                   >
                     {/* image section  */}
-                    <div className="flex flex-col gap-1 w-[30%] h-fit lg:h-auto  lg:w-[12rem] ">
+                    <div className="flex flex-col gap-1 w-[30%] min-h-[180px] lg:h-auto  lg:w-[12rem] ">
                       <Link to={`/product_over_view/${item.productId}`}>
                         <LazyLoadImage
                           effect="blur"

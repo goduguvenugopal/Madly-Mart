@@ -41,7 +41,7 @@ const Carousel = () => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images?.map((src, index) => (
-            <div className="min-w-full" key={index}>
+            <div className="min-w-full min-h-full" key={index}>
               <div className=" flex items-center justify-center">
                 <img
                   src={src.image}
@@ -53,18 +53,7 @@ const Carousel = () => {
           ))}
         </div>
 
-        {/* Optional Indicator dots */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {images?.map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 cursor-pointer rounded-full ${index === currentIndex ? "bg-white opacity-75" : "bg-gray-500 opacity-50"
-                }`}
-              onClick={() => setCurrentIndex(index)}
-            />
-          ))}
-        </div>
-
+  
       </div>
       {/* Scrolling Offer Title */}
       {offerTitle && (

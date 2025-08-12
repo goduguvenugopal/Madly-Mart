@@ -152,7 +152,7 @@ const ProductOverView = () => {
       toast.info(`Minimum order qty is ${product.minOrderQty}`, {
         className: "custom-toast",
       });
-    } else if (defaultAddress.length > 0) {
+    } else {
       try {
         setCartSpin(true);
         const res = await axios.post(`${api}/api/cart/add-to-cart`, cart, {
@@ -170,11 +170,8 @@ const ProductOverView = () => {
           className: "custom-toast",
         });
       }
-    } else {
-      toast.warning("Check door delivery service for your location.", {
-        className: "custom-toast",
-      });
-    }
+    }  
+   
   };
 
   // fetching cart products
@@ -197,8 +194,8 @@ const ProductOverView = () => {
     }
   };
 
-  // discount adding function based on weight and days
-  useEffect(() => {}, [product, itemId, products, itemCost, itemQty, discount]);
+ console.log(cart);
+ 
 
   // order check out function
   const orderCheckOutFunc = () => {
