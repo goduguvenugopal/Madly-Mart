@@ -33,6 +33,7 @@ const ProductOverView = () => {
   const [capacity, setCapacity] = useState("");
   const [size, setSize] = useState("");
   const [itemCost, setItemCost] = useState("");
+  const [stock, setStock] = useState(0);
   const [itemQty, setItemQty] = useState(1);
   const [originalCost, setOriginalCost] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -58,6 +59,7 @@ const ProductOverView = () => {
     capacity: "",
     weight: "",
     size: "",
+    stock: 0,
     products: [],
   });
 
@@ -93,6 +95,7 @@ const ProductOverView = () => {
       setSize(product?.variants[0]?.size);
       setItemQty(1);
       setColor(product?.variants[0]?.color);
+      setStock(product?.variants[0]?.stock);
       setOriginalCost(product?.variants[0]?.originalCost || product?.offerCost);
     } else {
       setItemCost(product?.itemCost);
@@ -131,6 +134,7 @@ const ProductOverView = () => {
       color: color,
       capacity: capacity,
       weight: weight,
+      stock: stock,
       size: size,
       products: [initialData],
     }));
@@ -142,6 +146,7 @@ const ProductOverView = () => {
     itemQty,
     color,
     weight,
+    stock,
     size,
     capacity,
   ]);
@@ -353,6 +358,8 @@ const ProductOverView = () => {
               setCapacity={setCapacity}
               size={size}
               setSize={setSize}
+              stock={stock}
+              setStock={setStock}
               itemCost={itemCost}
               setItemCost={setItemCost}
               originalCost={originalCost}
@@ -378,7 +385,9 @@ const ProductOverView = () => {
                 <FaPlus
                   className="cursor-pointer  text-lg hover:text-blue-600"
                   onClick={() => {
-                    if (itemQty < parseInt(product.itemStock)) {
+                    if (itemQty < stock) {
+                      setItemQty(itemQty + 1);
+                    } else if (itemQty < parseInt(product.itemStock)) {
                       setItemQty(itemQty + 1);
                     } else {
                       toast.warning(`Contact us for larger quantity orders.`, {
@@ -410,7 +419,13 @@ const ProductOverView = () => {
                       ) : (
                         <button
                           onClick={addToCartFunc}
-                          className="w-full bg-blue-800  font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
+                          className={`w-full bg-blue-800  font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full ${
+                            product.itemStock === "" ||
+                            product.itemStock === "0" ||
+                            stock <= 0
+                              ? "bg-gray-400 pointer-events-none"
+                              : ""
+                          }`}
                         >
                           Add to cart
                         </button>
@@ -418,11 +433,22 @@ const ProductOverView = () => {
                     </>
                   )}
 
+                  {/* buy now button  */}
                   <div
                     onClick={orderCheckOutFunc}
-                    className="w-full text-center cursor-pointer bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
+                    className={`w-full text-center cursor-pointer font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
+                      product.itemStock === "" ||
+                      product.itemStock === "0" ||
+                      stock <= 0
+                        ? "bg-gray-400 pointer-events-none"
+                        : "bg-yellow-400  "
+                    }`}
                   >
-                    Buy now
+                    {product.itemStock === "" ||
+                    product.itemStock === "0" ||
+                    stock <= 0
+                      ? "Sold Out"
+                      : "Buy now"}
                   </div>
                 </>
               ) : (

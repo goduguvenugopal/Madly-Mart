@@ -21,21 +21,14 @@ const DefaultAddress = () => {
           </div>
 
           <div className="w-fit">
-            {defaultAddress.length > 0 ? (
+          
               <Link
                 to="/profile"
-                className="font-semibold text-sm block px-2 py-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-fit text-center text-white"
+                className="font-semibold text-sm block px-5 py-1 bg-blue-600 hover:bg-blue-500 rounded-full border-none w-fit text-center text-white"
               >
                 Change
               </Link>
-            ) : (
-              <Link
-                to="/profile"
-                className="font-semibold  text-sm block text-nowrap px-2 py-1 bg-blue-600 hover:bg-blue-500 rounded-full   border-none w-fit text-center text-white"
-              >
-                Add Address
-              </Link>
-            )}
+            
           </div>
         </div>
       ) : (

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ProductsContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { scrollToTop } from "./utilis/RouteHandler";
-import InstallApp from "./components/InstallApp";
+ 
 
 const Search = () => {
   scrollToTop();
@@ -93,7 +93,7 @@ const Search = () => {
           </div>
         )}
       </div>
-      <InstallApp />
+  
     </>
   );
 };
