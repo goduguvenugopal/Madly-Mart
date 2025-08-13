@@ -7,6 +7,7 @@ import { MdClose } from "react-icons/md";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 const Profile = () => {
   const { token, setUser, user, defaultAddress, setDefaultAddress } =
@@ -20,16 +21,18 @@ const Profile = () => {
   const [addressToggle, setAddressToggle] = useState(false);
   const initialData = {
     name: "",
-    phone: "",
+    phone: null,
     email: user?.email,
     district: "",
     village: "",
     street: "",
     state: "",
-    postalCode: "",
+    postalCode: null,
   };
   const [addressForm, setAddressForm] = useState(initialData);
   const [addressSpin, setAddressSpin] = useState(false);
+
+  
 
   useEffect(() => {
     // fetching user details
@@ -75,7 +78,7 @@ const Profile = () => {
     fetchAddress();
   }, [token]);
 
-  // if token not navigate to home
+  // if token not navigate to login page
   useEffect(() => {
     if (!token) {
       navigate("/");
@@ -94,7 +97,11 @@ const Profile = () => {
   // address submit function
   const addressSubmit = async (e) => {
     e.preventDefault();
-    if (!addressForm.district || !addressForm.village) {
+    if (
+      !addressForm.district.trim() ||
+      !addressForm.village.trim() ||
+      !addressForm.postalCode
+    ) {
       toast.error("Please select village and district", {
         className: "custom-toast",
       });
@@ -166,7 +173,9 @@ const Profile = () => {
     setDelModal(false);
     try {
       setDelSpin(delId);
-      const res = await axios.delete(`${api}/api/address/delete-address/${delId}`);
+      const res = await axios.delete(
+        `${api}/api/address/delete-address/${delId}`
+      );
       if (res) {
         toast.success("Address deleted successfully", {
           className: "custom-toast",
@@ -190,6 +199,15 @@ const Profile = () => {
       });
     }
   };
+
+  // if there are no address added address form modal will be opened
+  useEffect(() => {
+    if (address.length <= 0) {
+      setAddressToggle(true);
+    }else{
+      setAddressToggle(false)
+    }
+  }, [address]);
 
   // loading when fetching user detailes
   if (loading) {
@@ -343,13 +361,16 @@ const Profile = () => {
                 className="absolute bg-black cursor-pointer rounded  hover:bg-blue-600 text-white right-4 top-0"
               />
               <form className="" onSubmit={addressSubmit}>
+                <h4 className="mb-3 text-[1.2rem] text-blue-500 text-center font-semibold">
+                  Add delivery Address
+                </h4>
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div className="sm:col-span-2">
                     <label
                       htmlFor="name"
                       className="block text-sm/6 font-semibold text-gray-900"
                     >
-                      Full Name
+                      Full Name <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2.5">
                       <input
@@ -394,12 +415,12 @@ const Profile = () => {
                       htmlFor="phone"
                       className="block text-sm/6 font-semibold text-gray-900"
                     >
-                      Phone number
+                      Phone number <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2.5">
                       <div className="flex rounded-md bg-white outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                         <input
-                          type="text"
+                          type="number"
                           name="phone"
                           required
                           id="phone"
@@ -414,6 +435,27 @@ const Profile = () => {
 
                   <div className="sm:col-span-3">
                     <label
+                      htmlFor="state"
+                      className="block text-sm/6 font-medium text-gray-900"
+                    >
+                      State <span className="text-red-500">*</span>
+                    </label>
+                    <div className="mt-2 grid grid-cols-1">
+                      <input
+                        id="state"
+                        name="state"
+                        type="text"
+                        required
+                        placeholder="Enter state name"
+                        value={addressForm.state}
+                        onChange={formHandleFunc}
+                        className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-3">
+                    <label
                       htmlFor="district"
                       className="block text-sm/6 font-medium text-gray-900"
                     >
@@ -423,25 +465,13 @@ const Profile = () => {
                       <input
                         id="district"
                         name="district"
+                        type="text"
                         required
-                        placeholder="enter district name"
+                        placeholder="Enter district name"
+                        value={addressForm.district}
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
-
-                      <svg
-                        className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        data-slot="icon"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
                     </div>
                   </div>
 
@@ -458,28 +488,20 @@ const Profile = () => {
                         name="village"
                         type="text"
                         required
+                        placeholder="Enter village name"
+                        value={addressForm.village}
                         onChange={formHandleFunc}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
-
-                      <svg
-                        className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        data-slot="icon"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
                     </div>
 
-                    <div className="mt-3 text-red-500">
-                      <strong className="text-black">Note</strong> : Door
-                      delivery is available only to the above villages.
+                    <div className="mt-3 text-red-500 flex justify-end">
+                      <button
+                        type="button"
+                        className="p-1 rounded capitalize flex items-center gap-2 bg-blue-500 text-white"
+                      >
+                        <FaLocationDot /> use current location
+                      </button>
                     </div>
                   </div>
 
@@ -488,7 +510,8 @@ const Profile = () => {
                       htmlFor="street"
                       className="block text-sm/6 font-semibold text-gray-900"
                     >
-                      Street Or Colony Name
+                      Street Or Colony Name{" "}
+                      <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2.5">
                       <textarea
@@ -509,12 +532,12 @@ const Profile = () => {
                       htmlFor="postalCode"
                       className="block text-sm/6 font-semibold text-gray-900"
                     >
-                      Postal Code
+                      Postal Code <span className="text-red-500">*</span>
                     </label>
                     <div className="mt-2.5">
                       <div className="flex rounded-md bg-white outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                         <input
-                          type="text"
+                          type="number"
                           name="postalCode"
                           required
                           id="postalCode"

@@ -24,7 +24,7 @@ const ProductVariants = ({
             <span className="font-semibold text-nowrap capitalize">
               color :{" "}
             </span>
-            <span className="text-lg font-semibold text-black capitalize">
+            <span className="text-lg font-semibold text-blue-600 capitalize">
               {color}
             </span>
           </div>
@@ -57,7 +57,7 @@ const ProductVariants = ({
         <>
           <div className="flex gap-1 mb-3 items-center">
             <span className="font-semibold text-nowrap">Weight : </span>
-            <span className="text-lg font-semibold text-black">{weight}</span>
+            <span className="text-lg font-semibold text-blue-600">{weight}</span>
           </div>
           <div className="flex gap-3 flex-nowrap   scrollbar-hide-card  overflow-x-auto mb-5">
             {product?.variants
@@ -88,7 +88,7 @@ const ProductVariants = ({
         <>
           <div className="flex gap-1 mb-3 items-center">
             <span className="font-semibold text-nowrap"> Size : </span>
-            <span className="text-lg font-semibold text-black capitalize">
+            <span className="text-lg font-semibold text-blue-600 capitalize">
               {size}
             </span>
           </div>
@@ -125,7 +125,7 @@ const ProductVariants = ({
               {" "}
               capacity :{" "}
             </span>
-            <span className="text-lg font-semibold text-black capitalize">
+            <span className="text-lg font-semibold text-blue-600 capitalize">
               {capacity}
             </span>
           </div>

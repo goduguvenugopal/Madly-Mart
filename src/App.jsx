@@ -136,7 +136,7 @@ function App() {
       try {
         const res = await axios.get(`${api}/api/category/get-category-products`);
         if (res) {
-          setCategories(res.data.retrievedProducts);
+          setCategories(res.data?.retrievedProducts?.reverse());
         }
       } catch (error) {
         console.error(error);

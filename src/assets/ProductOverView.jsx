@@ -170,8 +170,7 @@ const ProductOverView = () => {
           className: "custom-toast",
         });
       }
-    }  
-   
+    }
   };
 
   // fetching cart products
@@ -193,9 +192,6 @@ const ProductOverView = () => {
       console.error(error);
     }
   };
-
- console.log(cart);
- 
 
   // order check out function
   const orderCheckOutFunc = () => {
@@ -247,7 +243,7 @@ const ProductOverView = () => {
               title="FullScreen"
               className="absolute top-[3rem] bg-black p-1 h-7 w-9 cursor-pointer  text-white rounded-full  right-2  "
             />
-
+            {/* mapping list of product images  */}
             <div className="w-full overflow-x-auto scrollbar-hide-card">
               <div className="flex flex-row gap-3 w-fit flex-nowrap ">
                 {product?.itemImage?.map((item) => (
@@ -463,7 +459,9 @@ const ProductOverView = () => {
             {/* decription points  */}
             <ul className="mt-4 pl-4">
               {product?.descriptionPoints?.map((points, index) => (
-                <li className="list-disc mt-2" key={index}>{points}</li>
+                <li className="list-disc mt-2" key={index}>
+                  {points}
+                </li>
               ))}
             </ul>
           </div>

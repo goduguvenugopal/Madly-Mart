@@ -1,11 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import {
-  CartContext,
-  EnvContext,
-  ProductsContext,
-  UserContext,
-} from "../App";
+import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FlipkartSpin } from "./Loading";
@@ -19,11 +14,12 @@ const Cart = () => {
   const { token, defaultAddress } = useContext(UserContext);
   const { cartItems, setCartItems } = useContext(CartContext);
   const { orderProducts, setOrderProducts } = useContext(ProductsContext);
-
   const [cartSpin, setCartSpin] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const [qtySpin, setQtySpin] = useState(false);
   const navigate = useNavigate();
+
+ 
 
   useEffect(() => {
     // total amount caluculating function
@@ -61,19 +57,9 @@ const Cart = () => {
   };
 
   // qty select and update function
-  const selectHandle = async (
-    itemId,
-    e,
-    itemWeight,
-    minOrderQty,
-    orderType
-  ) => {
+  const selectHandle = async (itemId, e, minOrderQty) => {
     const selectedQty = e.target.value;
-    if (
-      selectedQty < parseInt(minOrderQty) &&
-      orderType === "buyonce" &&
-      itemWeight === "250"
-    ) {
+    if (selectedQty < parseInt(minOrderQty)) {
       toast.warning(`Minimum order qty is ${minOrderQty}`, {
         className: "custom-toast",
       });
@@ -83,9 +69,12 @@ const Cart = () => {
         await axios.put(`${api}/api/cart/update-cart/${itemId}`, {
           itemQty: selectedQty,
         });
-        const response = await axios.get(`${api}/api/cart/get-user-cart-products`, {
-          headers: { token: token },
-        });
+        const response = await axios.get(
+          `${api}/api/cart/get-user-cart-products`,
+          {
+            headers: { token: token },
+          }
+        );
         if (response.data?.retrievdProducts) {
           setCartItems(response.data.retrievdProducts.reverse());
         }
@@ -100,7 +89,6 @@ const Cart = () => {
   // order check out function
   const orderCheckOutFunc = (orderItem) => {
     if (defaultAddress.length <= 0) {
-      // toast.warning(`Please Add address`, { className: "custom-toast" })
       navigate("/profile");
     } else if (defaultAddress.length > 0) {
       if (orderItem.length > 0) {
@@ -134,8 +122,10 @@ const Cart = () => {
           <>
             <div className="container py-24 mx-auto ">
               <div className="-my-7 divide-y-2 divide-gray-100">
-                {/* add address section  */}
+                {/* delivery address section  */}
+                <div className="lg:w-2/4 ">
                 <DefaultAddress />
+                </div>
 
                 {cartItems?.map((item) => (
                   <div
@@ -147,12 +137,13 @@ const Cart = () => {
                       <Link to={`/product_over_view/${item.productId}`}>
                         <LazyLoadImage
                           effect="blur"
-                          src={item?.products[0].itemImage[0]}
+                          src={item?.products[0]?.itemImage[0]?.image}
                           alt={item.itemName}
                           className="w-full h-full
                     rounded-lg"
                         />
                       </Link>
+                      {/* product quantity update dropdown  */}
                       <div className="flex justify-center gap-[0.4rem]">
                         <h6 className="text-sm font-semibold capitalize ">
                           qty
@@ -164,9 +155,7 @@ const Cart = () => {
                               selectHandle(
                                 item._id,
                                 e,
-                                item.products[0].itemWeight,
-                                item.products[0].minOrderQty,
-                                item.products[0].orderType
+                                item.products[0].minOrderQty
                               )
                             }
                             name="itemQty"
@@ -199,40 +188,52 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    {/* details section */}
-                    <div className="flex flex-col items-start w-[60%]  lg:w-[17rem]  capitalize">
+                    {/*product details section */}
+                    <div className="flex flex-col items-start w-[60%]  lg:w-[17rem]  ">
                       <Link
                         to={`/product_over_view/${item.productId}`}
                         className="flex gap-1 mb-1 justify-start  items-start "
                       >
-                        <span className="text-sm lg:text-xl text-black lg:text-gray-600 font-semibold">
+                        {/* item name  */}
+                        <span className="text-sm lg:text-xl text-black lg:text-gray-600 font-semibold capitalize">
                           {item.products[0].itemName.substring(0, 25)}...
                         </span>
                       </Link>
+                      {/* total amount  */}
                       <h6 className="text-lg lg:text-2xl  text-gray-700 font-medium">
                         Rs.{" "}
                         {parseFloat(
                           item.totalAmount * item.itemQty || 0
                         ).toFixed(2)}
                       </h6>
-                      <h6 className="text-sm mb-1 text-gray-700 font-medium capitalize">
-                        {item.orderType === "buyonce" ? null : item.orderType}
-                      </h6>
-                      <div className="mb-3">
-                        {item.products[0].itemWeight && (
-                          <div className="flex items-center justify-center">
-                            <h5 className="font-semibold text-[0.9rem]">
-                              {item.products[0].itemWeight}
-                              {item.products[0].itemSubCategory === "Milk"
-                                ? "ml"
-                                : "g"}
-                            </h5>
-                          </div>
-                        )}
-                      </div>
+                      {/*  weight  */}
+                      {item.weight && (
+                        <h5 className="font-semibold text-[0.9rem] mt-1">
+                          {item.weight}
+                        </h5>
+                      )}
+                        {/*  size  */}
+                      {item.size && (
+                        <h5 className="font-semibold text-[0.9rem] mt-1 capitalize">
+                          Size : {item.size}
+                        </h5>
+                      )}
+                        {/*  color  */}
+                      {item.color  && (
+                        <h5 className="font-semibold text-[0.9rem] mt-1">
+                          {item.color}
+                        </h5>
+                      )}
+                        {/*  capacity  */}
+                      {item.capacity && (
+                        <h5 className="font-semibold text-[0.9rem] mt-1">
+                          {item.capacity}
+                        </h5>
+                      )}
+                      
 
                       {/* buy button and remove btn section  */}
-                      <div className="flex items-center gap-2  flex-wrap w-full">
+                      <div className="flex items-center gap-2 mt-3 flex-wrap w-full">
                         {cartSpin ? (
                           <>
                             <FlipkartSpin />
