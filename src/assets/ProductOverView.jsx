@@ -101,6 +101,7 @@ const ProductOverView = () => {
       setItemCost(product?.itemCost);
       setItemQty(1);
       setOriginalCost(product?.offerCost);
+      setStock(products?.itemStock)
     }
   }, [product]);
 
@@ -322,7 +323,7 @@ const ProductOverView = () => {
               )}
 
               {/* stock status button  */}
-              {product.itemStock === "0" ? (
+              {product.itemStock === "0" || stock === 0 ? (
                 <div className="bg-red-500 animate-pulse rounded-full px-2 p-1 text-white font-medium w-fit">
                   Sold out
                 </div>
