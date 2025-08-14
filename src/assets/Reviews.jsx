@@ -18,7 +18,7 @@ const Reviews = ({ itemId }) => {
   async function getProducts() {
     try {
       setSpinner(true);
-      const res = await axios.get(`${reviews_api}/api/get/reviews/${itemId}`);
+      const res = await axios.get(`${api}/api/get/reviews/${itemId}`);
       if (res) {
         setReviews(res.data);
       }

@@ -19,8 +19,6 @@ const Cart = () => {
   const [qtySpin, setQtySpin] = useState(false);
   const navigate = useNavigate();
 
- 
-
   useEffect(() => {
     // total amount caluculating function
     const totalAmount = cartItems.reduce((acc, item) => {
@@ -57,31 +55,38 @@ const Cart = () => {
   };
 
   // qty select and update function
-  const selectHandle = async (itemId, e, minOrderQty) => {
+  const selectHandle = async (itemId, e, minOrderQty, stock) => {
     const selectedQty = e.target.value;
+
     if (selectedQty < parseInt(minOrderQty)) {
       toast.warning(`Minimum order qty is ${minOrderQty}`, {
         className: "custom-toast",
       });
     } else {
-      try {
-        setQtySpin(true);
-        await axios.put(`${api}/api/cart/update-cart/${itemId}`, {
-          itemQty: selectedQty,
-        });
-        const response = await axios.get(
-          `${api}/api/cart/get-user-cart-products`,
-          {
-            headers: { token: token },
+      if (selectedQty <= stock) {
+        try {
+          setQtySpin(true);
+          await axios.put(`${api}/api/cart/update-cart/${itemId}`, {
+            itemQty: selectedQty,
+          });
+          const response = await axios.get(
+            `${api}/api/cart/get-user-cart-products`,
+            {
+              headers: { token: token },
+            }
+          );
+          if (response.data?.retrievdProducts) {
+            setCartItems(response.data.retrievdProducts.reverse());
           }
-        );
-        if (response.data?.retrievdProducts) {
-          setCartItems(response.data.retrievdProducts.reverse());
+        } catch (error) {
+          console.error("Error updating cart:", error);
+        } finally {
+          setQtySpin(false);
         }
-      } catch (error) {
-        console.error("Error updating cart:", error);
-      } finally {
-        setQtySpin(false);
+      } else {
+        toast.warning(`Only ${stock} Produts left`, {
+          className: "custom-toast",
+        });
       }
     }
   };
@@ -124,7 +129,7 @@ const Cart = () => {
               <div className="-my-7 divide-y-2 divide-gray-100">
                 {/* delivery address section  */}
                 <div className="lg:w-2/4 ">
-                <DefaultAddress />
+                  <DefaultAddress />
                 </div>
 
                 {cartItems?.map((item) => (
@@ -155,7 +160,8 @@ const Cart = () => {
                               selectHandle(
                                 item._id,
                                 e,
-                                item.products[0].minOrderQty
+                                item.products[0].minOrderQty,
+                                item?.stock
                               )
                             }
                             name="itemQty"
@@ -212,25 +218,24 @@ const Cart = () => {
                           {item.weight}
                         </h5>
                       )}
-                        {/*  size  */}
+                      {/*  size  */}
                       {item.size && (
                         <h5 className="font-semibold text-[0.9rem] mt-1 capitalize">
                           Size : {item.size}
                         </h5>
                       )}
-                        {/*  color  */}
-                      {item.color  && (
+                      {/*  color  */}
+                      {item.color && (
                         <h5 className="font-semibold text-[0.9rem] mt-1">
                           {item.color}
                         </h5>
                       )}
-                        {/*  capacity  */}
+                      {/*  capacity  */}
                       {item.capacity && (
                         <h5 className="font-semibold text-[0.9rem] mt-1">
                           {item.capacity}
                         </h5>
                       )}
-                      
 
                       {/* buy button and remove btn section  */}
                       <div className="flex items-center gap-2 mt-3 flex-wrap w-full">

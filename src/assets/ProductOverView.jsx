@@ -101,10 +101,12 @@ const ProductOverView = () => {
       setItemCost(product?.itemCost);
       setItemQty(1);
       setOriginalCost(product?.offerCost);
-      setStock(products?.itemStock)
+      setStock(products?.itemStock);
     }
   }, [product]);
 
+   
+  
   // item image initial value function
   useEffect(() => {
     if (product?.itemImage?.length > 0) {
@@ -328,8 +330,15 @@ const ProductOverView = () => {
                   Sold out
                 </div>
               ) : (
-                <div className="bg-green-500 animate-pulse rounded-full px-2 p-1 text-white font-medium w-fit">
-                  In Stock
+                <div className="flex gap-3 items-center">
+                  <div className="bg-green-500 animate-pulse rounded-full px-2 p-1 text-white font-medium w-fit">
+                    In Stock
+                  </div>
+                  {product?.itemStock < 6 && (
+                    <button className=" bg-red-400 rounded text-[14px] text-white px-[3px] w-fit border ">
+                      Left {product?.itemStock}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
