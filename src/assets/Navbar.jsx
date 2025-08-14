@@ -16,7 +16,7 @@ import { Slide, toast, ToastContainer } from "react-toastify";
 
 const Navbar = () => {
   const { token, setToken, user, setUser } = useContext(UserContext);
-  const {cartItems} = useContext(CartContext)
+  const { cartItems } = useContext(CartContext);
   const [offcanvas, setOffcanvas] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
@@ -86,6 +86,9 @@ const Navbar = () => {
         draggable
         transition={Slide}
         theme="dark"
+        closeOnClick
+        autoClose={2000}
+        hideProgressBar={false}
       />
       <div
         className="bg-white w-full shadow-md h-[4.5rem] flex justify-between pl-3 pr-4 fixed top-0 left-0 items-center 
@@ -141,8 +144,6 @@ const Navbar = () => {
                 </Link>
               </>
             )}
-            
-           
           </div>
         </nav>
 

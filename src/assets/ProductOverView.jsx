@@ -105,8 +105,6 @@ const ProductOverView = () => {
     }
   }, [product]);
 
-   
-  
   // item image initial value function
   useEffect(() => {
     if (product?.itemImage?.length > 0) {
@@ -154,11 +152,14 @@ const ProductOverView = () => {
     capacity,
   ]);
 
+  console.log(cart);
+
   // add to cart function
   const addToCartFunc = async () => {
     if (itemQty < parseInt(product.minOrderQty)) {
       toast.info(`Minimum order qty is ${product.minOrderQty}`, {
         className: "custom-toast",
+        autoClose: 2000,
       });
     } else {
       try {
@@ -176,6 +177,7 @@ const ProductOverView = () => {
         setCartSpin(false);
         toast.error("Please try again", {
           className: "custom-toast",
+          autoClose: 2000,
         });
       }
     }
@@ -193,6 +195,7 @@ const ProductOverView = () => {
         setCartItems(res.data.retrievdProducts.reverse());
         toast.success("Item added to Cart", {
           className: "custom-toast",
+          autoClose: 2000,
         });
         setCartSpin(false);
       }
@@ -206,6 +209,7 @@ const ProductOverView = () => {
     if (itemQty < parseInt(product.minOrderQty)) {
       toast.info(`Minimum order qty is ${product.minOrderQty}`, {
         className: "custom-toast",
+        autoClose: 2000,
       });
     } else if (defaultAddress.length > 0) {
       setOrderProducts([cart]);
@@ -224,6 +228,8 @@ const ProductOverView = () => {
       <ToastContainer
         position="bottom-center"
         draggable
+        closeOnClick
+        hideProgressBar={false}
         transition={Slide}
         theme="dark"
       />
@@ -402,6 +408,7 @@ const ProductOverView = () => {
                     } else {
                       toast.warning(`Contact us for larger quantity orders.`, {
                         className: "custom-toast",
+                        autoClose: 2000,
                       });
                     }
                   }}

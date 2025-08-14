@@ -79,6 +79,9 @@ const ProdutReviewsForm = ({ itemId }) => {
         transition={Slide}
         draggable
         theme="dark"
+        closeOnClick
+        autoClose={2000}
+        hideProgressBar={false}
       />
       <div className="p-3 mt-8  lg:px-9 text-center">
         <h5 className="text-2xl font-medium text-black text-center">
@@ -201,6 +204,7 @@ const ProdutReviewsForm = ({ itemId }) => {
                     type="file"
                     onChange={fileHandling}
                     className="hidden"
+                    accept="image/jpeg, image/png, image/jpg, image/webp"
                     name="productReviewImg"
                     id="productReviewImg"
                   />

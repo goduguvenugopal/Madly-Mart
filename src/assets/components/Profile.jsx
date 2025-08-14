@@ -32,8 +32,6 @@ const Profile = () => {
   const [addressForm, setAddressForm] = useState(initialData);
   const [addressSpin, setAddressSpin] = useState(false);
 
-  
-
   useEffect(() => {
     // fetching user details
     const fetchUser = async () => {
@@ -204,8 +202,8 @@ const Profile = () => {
   useEffect(() => {
     if (address.length <= 0) {
       setAddressToggle(true);
-    }else{
-      setAddressToggle(false)
+    } else {
+      setAddressToggle(false);
     }
   }, [address]);
 
@@ -217,7 +215,14 @@ const Profile = () => {
   return (
     <>
       <div className="bg-gray-100  p-3 lg:px-16 select-none mt-3 mb-7 pt-24">
-        <ToastContainer position="top-center" theme="dark" transition={Slide} />
+        <ToastContainer
+          position="top-center"
+          theme="dark"
+          transition={Slide}
+          closeOnClick
+          autoClose={2000}
+          hideProgressBar={false}
+        />
         {/* Profile Container */}
         <div className="w-full bg-white shadow-md rounded-lg p-4 sm:p-6">
           {/* Profile Header */}

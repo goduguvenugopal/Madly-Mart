@@ -32,10 +32,11 @@ const OrderCheckOut = () => {
     totalAmount: null,
   };
   const [orderForm, setOrderForm] = useState(initialOrderData);
+  console.log(orderProducts);
 
   const emailData = {
     email: `${defaultAddress[0]?.email}, dora.a.to.z.fresh@gmail.com`,
-    subject: "Dora A to Z Fresh Order Placed Successfully",
+    subject: "Madly Mart Order Placed Successfully",
     html: `
       <h3>Dear ${defaultAddress[0]?.name},</h3>
       <p>Thank you for your order! Below are the details of your Shipping Address:</p>
@@ -81,18 +82,11 @@ const OrderCheckOut = () => {
                   ${item.itemQty}
                 </span>
               </p>
+              
                <p style="font-weight: 600;">
-                Order Type :
+                Product weight :
                 <span style="font-weight: 500; color: black; padding-left: 4px;">
-                  ${item.products[0].orderType.replace("buyonce", "buy once")}
-                </span>
-              </p>
-               <p style="font-weight: 600;">
-                Product weight Qty :
-                <span style="font-weight: 500; color: black; padding-left: 4px;">
-                  ${item.products[0].itemWeight}${
-              item.products[0].itemSubCategory === "Milk" ? "ml" : "g"
-            }
+                  ${item.products[0].weight} 
                 </span>
               </p>
             </div>
@@ -110,7 +104,7 @@ const OrderCheckOut = () => {
           
       </ul>
 
-<h3>Dora A to Z Fresh Address:</h3>
+<h3>Madly Mart Address:</h3>
       <ul>
       <li><strong>Mobile :</strong> <a href="tel:+91${number}"> ${number}</a></li>
       <li><strong>Address :</strong> Noori majid opposite,
@@ -126,7 +120,7 @@ const OrderCheckOut = () => {
       <li><strong>Email :</strong> ${defaultAddress[0]?.email}</li>
       </ul>
       <p>If you have any questions, feel free to contact us at dora.a.to.z.fresh@gmail.com.</p>
-      <p>Thank you for shopping with Dora A to Z Fresh!</p>
+      <p>Thank you for shopping with Madly Mart!</p>
       <a href="https://doraatozfresh.vercel.app">Continue Shopping</a>
     `,
   };
@@ -138,21 +132,11 @@ const OrderCheckOut = () => {
       const qty = item.itemQty;
       return acc + total * qty;
     }, 0);
-
-    const isOrderType = orderProducts?.some(
-      (item) => item.orderType === "subscription"
-    );
-    // checking if any order has subscription deliveryCharges will be zero
-    if (isOrderType === false) {
-      const withDeliveryCharges = discount.deliveryCharges + totalAmount;
-      setTotalAmount(withDeliveryCharges.toFixed(2));
-      setOriginalAmount(totalAmount);
-      setChargesToggle(true);
-    } else {
-      setChargesToggle(false);
-      setOriginalAmount(totalAmount);
-      setTotalAmount(totalAmount.toFixed(2));
-    }
+    // adding delivery charges
+    const withDeliveryCharges = discount.deliveryCharges + totalAmount;
+    setTotalAmount(withDeliveryCharges.toFixed(2));
+    setOriginalAmount(totalAmount);
+    setChargesToggle(true);
   }, [orderProducts]);
 
   // initializing order form with data
@@ -178,11 +162,15 @@ const OrderCheckOut = () => {
     } else {
       try {
         setOrderSpin(true);
-        const res = await axios.post(`${api}/api/order/place-order`, orderForm, {
-          headers: {
-            token: token,
-          },
-        });
+        const res = await axios.post(
+          `${api}/api/order/place-order`,
+          orderForm,
+          {
+            headers: {
+              token: token,
+            },
+          }
+        );
         if (res) {
           setOrderOk(true);
           setOrderSpin(false);
@@ -223,6 +211,9 @@ const OrderCheckOut = () => {
         draggable
         transition={Slide}
         theme="dark"
+        closeOnClick
+        autoClose={2000}
+        hideProgressBar={false}
       />
       <div className="mt-20 py-5 px-3 pb-10 ">
         <div className=" flex flex-wrap gap-5 lg:gap-0 justify-around ">
@@ -283,38 +274,20 @@ const OrderCheckOut = () => {
             <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
               <h2 className="font-bold  text-orange-600">PAYMENT DETAILS</h2>
               <h4 className="font-medium">SCAN QR CODE</h4>
-              <img
-                src="/qrcode.png"
-                alt="qr_code"
-                className="border-2 my-2 h-52 w-52 rounded "
-              />
-
+             
               <img
                 src="/allpayments.png"
                 className="w-[60%] mb-2 "
                 alt="all_upi_logo"
               />
-              <h6 className="text-blue-600 font-bold">PAY TO THIS NUMBER</h6>
+               
               <span
                 onClick={() => copyNumber(9603669236)}
                 className="font-bold my-2 cursor-pointer flex items-center gap-2 hover:text-blue-600"
               >
                 9603669236 <FaRegCopy />
               </span>
-              <h4 className="text-center">
-                Banking Name :{" "}
-                <span className="font-bold ">BANUPRAKASH NAGARAM</span>
-              </h4>
-              <div className="hidden lg:block">
-                <a
-                  href="/qrcode.png"
-                  className=" animate-bounce text-md font-semibold px-3 h-[2.5rem] mt-6 flex items-center gap-2 rounded-full text-white  bg-orange-600"
-                  download="/qrcode.png"
-                >
-                  <FaDownload />
-                  Download QR Code
-                </a>
-              </div>
+               
               <a
                 href={`upi://pay?pa=960366@ybl&pn=Dora A-Z Fresh&am=${totalAmount}&cu=INR`}
                 target="_blank"
@@ -487,47 +460,7 @@ const OrderCheckOut = () => {
         <OrderSuccessModal orderOk={orderOk} />
       </div>
 
-      {/*order modal section  */}
-      {modal && (
-        <div
-          onClick={() => setModal(false)}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-3"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-lg shadow-lg p-4 max-w-sm w-full"
-          >
-            <h2 className="text-lg font-semibold mb-3 text-orange-600">
-              Complete Your Order
-            </h2>
-            <p className="mb-4">
-              Orders below <span className="text-[1rem] font-bold">Rs.150</span>{" "}
-              are not allowed. Please add more products, increase the quantity
-              of existing items, or place the order directly from your cart if
-              you already have products.
-            </p>
-            <div className="text-end">
-              {cartItems.length > 0 ? (
-                <Link
-                  to="/cart"
-                  onClick={() => setModal(false)}
-                  className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Go to cart
-                </Link>
-              ) : (
-                <Link
-                  to="/"
-                  onClick={() => setModal(false)}
-                  className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Add More Products
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+    
     </>
   );
 };

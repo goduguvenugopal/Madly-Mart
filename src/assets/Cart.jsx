@@ -42,6 +42,7 @@ const Cart = () => {
         setCartItems(remain);
         toast.success(`${itemName.substring(0, 20)} item removed from cart`, {
           className: "custom-toast",
+          autoClose: 2000,
         });
         setCartSpin(false);
       }
@@ -50,6 +51,7 @@ const Cart = () => {
       setCartSpin(false);
       toast.success("Please try again", {
         className: "custom-toast",
+        autoClose: 2000,
       });
     }
   };
@@ -57,13 +59,13 @@ const Cart = () => {
   // qty select and update function
   const selectHandle = async (itemId, e, minOrderQty, stock) => {
     const selectedQty = e.target.value;
-
     if (selectedQty < parseInt(minOrderQty)) {
       toast.warning(`Minimum order qty is ${minOrderQty}`, {
         className: "custom-toast",
+        autoClose: 2000,
       });
     } else {
-      if (selectedQty <= stock) {
+      if (selectedQty <= parseInt(stock)) {
         try {
           setQtySpin(true);
           await axios.put(`${api}/api/cart/update-cart/${itemId}`, {
@@ -86,6 +88,7 @@ const Cart = () => {
       } else {
         toast.warning(`Only ${stock} Produts left`, {
           className: "custom-toast",
+          autoClose: 2000,
         });
       }
     }
@@ -118,6 +121,8 @@ const Cart = () => {
       <ToastContainer
         position="bottom-center"
         draggable
+        closeOnClick
+        hideProgressBar={false}
         transition={Slide}
         theme="dark"
       />
@@ -175,17 +180,17 @@ const Cart = () => {
                             >
                               Select Quantity
                             </option>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
-                              (item, index) => (
-                                <option
-                                  key={index}
-                                  className="font-semibold text-[0.9rem]"
-                                  value={item}
-                                >
-                                  {item}
-                                </option>
-                              )
-                            )}
+                            {[
+                              1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                            ].map((item, index) => (
+                              <option
+                                key={index}
+                                className="font-semibold text-[0.9rem]"
+                                value={item}
+                              >
+                                {item}
+                              </option>
+                            ))}
                           </select>
                           <span className="absolute top-0 right-6">
                             {item.itemQty}

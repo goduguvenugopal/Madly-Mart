@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {  EnvContext, UserContext } from "../App";
+import { EnvContext, UserContext } from "../App";
 import axios from "axios";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { Loading } from "./Loading";
@@ -75,11 +75,16 @@ const Login = () => {
     }
   }, [token]);
 
- 
-
   return (
     <>
-      <ToastContainer position="top-center" transition={Slide} theme="dark" />
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        theme="dark"
+        closeOnClick
+        autoClose={2000}
+        hideProgressBar={false}
+      />
       <div className="flex justify-center items-center  p-3 select-none mt-3 mb-7 pt-24">
         {loginToggle ? (
           <>

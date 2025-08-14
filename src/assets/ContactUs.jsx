@@ -66,6 +66,9 @@ const ContactUs = () => {
         draggable
         transition={Slide}
         theme="dark"
+        closeOnClick
+        autoClose={2000}
+        hideProgressBar={false}
       />
 
       <section className="text-gray-600 body-font relative flex justify-center pb-10 px-5 pt-24">
