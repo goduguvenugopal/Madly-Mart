@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  FaCircleCheck,
-  FaDownload,
-  FaRegCopy,
-  FaUpload,
-  FaWhatsapp,
-} from "react-icons/fa6";
+import { FaRegCopy, FaWhatsapp } from "react-icons/fa6";
 import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import OrderSuccessModal from "./components/OrderSuccessModal";
+import useEmailTemplate from "./utilis/useEmailTemplate";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
@@ -32,98 +27,7 @@ const OrderCheckOut = () => {
     totalAmount: null,
   };
   const [orderForm, setOrderForm] = useState(initialOrderData);
-  console.log(orderProducts);
-
-  const emailData = {
-    email: `${defaultAddress[0]?.email}, dora.a.to.z.fresh@gmail.com`,
-    subject: "Madly Mart Order Placed Successfully",
-    html: `
-      <h3>Dear ${defaultAddress[0]?.name},</h3>
-      <p>Thank you for your order! Below are the details of your Shipping Address:</p>
-      <h4>Shipping Address:</h4>
-      <ul>
-        <li><strong>City :</strong> ${defaultAddress[0]?.district}</li>
-        <li><strong>Phone :</strong> ${defaultAddress[0]?.phone}</li>
-        <li><strong>Address :</strong> ${defaultAddress[0]?.street}, ${
-      defaultAddress[0]?.village
-    }, ${defaultAddress[0]?.postalCode}</li>
-        <li><strong>State :</strong> ${defaultAddress[0]?.state}</li>
-      </ul>
-      <h4 style="font-weight: bold; margin-bottom: 4px;">
-        Product Details :
-      </h4>
-      <div style="width: 100%; border: 1px solid gray;">
-        ${orderProducts
-          .map(
-            (item) => `
-          <div key="${
-            item._id
-          }" style="display: flex; gap: 12px; border-bottom: 2px solid gray; padding: 12px;">
-            <img
-              src="${item?.products[0]?.itemImage[0]}"
-              style="height: 10rem; width: 9rem; border-radius: 8px;"
-              alt=${item?.products[0]?.itemName.substring(0, 20)}
-            />
-            <div style="padding-left:10px;">
-              <p style="font-weight: 600; width: 100%; overflow-x: auto;">
-                <span style="font-weight: 500; display: block; color: black;">
-                  ${item?.products[0]?.itemName.substring(0, 20)}..
-                </span>
-              </p>
-              <p style="font-weight: 600;">
-                Price :
-                <span style="font-weight: 500; color: black; padding-left: 4px;">
-                  Rs. ${item?.products[0]?.itemName.substring(0, 20)}
-                </span>
-              </p>
-              <p style="font-weight: 600;">
-                Quantity :
-                <span style="font-weight: 500; color: black; padding-left: 4px;">
-                  ${item.itemQty}
-                </span>
-              </p>
-              
-               <p style="font-weight: 600;">
-                Product weight :
-                <span style="font-weight: 500; color: black; padding-left: 4px;">
-                  ${item.products[0].weight} 
-                </span>
-              </p>
-            </div>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-      <h4>Payment Details</h4>
-      <h4><span>Note : </span>Orders will be processed only after full payment. Please send the payment receipt to WhatsApp at <a href='https://wa.me/919603669236'>9603669236</a> on the same day of the order.
-</h4>
-      <h3><strong>Total Amount :</strong> Rs. ${totalAmount}</h3>
-      <ul>
-        <li><strong>Total Items:</strong> ${orderProducts.length}</li>
-          
-      </ul>
-
-<h3>Madly Mart Address:</h3>
-      <ul>
-      <li><strong>Mobile :</strong> <a href="tel:+91${number}"> ${number}</a></li>
-      <li><strong>Address :</strong> Noori majid opposite,
-                     Pathabazar, Gopalpet road,
-                     Wanaparthy 509103</li>
-        <li><strong>Email :</strong>dora.a.to.z.fresh@gmail.com</li>
-        <li><strong>Google Map Location :</strong> <a href="https://maps.app.goo.gl/YmA4dbsdDkvRfr6t5">Location</a></li>
-      </ul>
-
-      <h3>Customer Information:</h3>
-      <ul>
-      <li><strong>Name :</strong> ${defaultAddress[0]?.name}</li>
-      <li><strong>Email :</strong> ${defaultAddress[0]?.email}</li>
-      </ul>
-      <p>If you have any questions, feel free to contact us at dora.a.to.z.fresh@gmail.com.</p>
-      <p>Thank you for shopping with Madly Mart!</p>
-      <a href="https://doraatozfresh.vercel.app">Continue Shopping</a>
-    `,
-  };
+  const { emailData } = useEmailTemplate({ totalAmount });
 
   useEffect(() => {
     // total amount caluculating function
@@ -157,8 +61,6 @@ const OrderCheckOut = () => {
       toast.warning("Please add address next place the order", {
         className: "custom-toast",
       });
-    } else if (totalAmount < 150) {
-      setModal(true);
     } else {
       try {
         setOrderSpin(true);
@@ -172,28 +74,15 @@ const OrderCheckOut = () => {
           }
         );
         if (res) {
-          setOrderOk(true);
+          // setOrderOk(true);
           setOrderSpin(false);
           // if order placed successfully email confirmation wll be sent to user and seller
-          await axios.post(`${api}/api/updates-email/send-updates`, emailData);
+          // await axios.post(`${api}/api/updates-email/send-updates`, emailData);
         }
       } catch (error) {
         console.error(error);
         setOrderSpin(false);
       }
-    }
-  };
-
-  // number copy function
-  const copyNumber = async (number) => {
-    try {
-      await navigator.clipboard.writeText(number);
-      toast.success("Number Copied to clipboard", {
-        className: "custom-toast",
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error("Number not Copied", { className: "custom-toast" });
     }
   };
 
@@ -269,71 +158,10 @@ const OrderCheckOut = () => {
             </div>
           </details>
 
-          {/* qr code payment section  */}
-          {totalAmount >= 150 ? (
-            <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
-              <h2 className="font-bold  text-orange-600">PAYMENT DETAILS</h2>
-              <h4 className="font-medium">SCAN QR CODE</h4>
-             
-              <img
-                src="/allpayments.png"
-                className="w-[60%] mb-2 "
-                alt="all_upi_logo"
-              />
-               
-              <span
-                onClick={() => copyNumber(9603669236)}
-                className="font-bold my-2 cursor-pointer flex items-center gap-2 hover:text-blue-600"
-              >
-                9603669236 <FaRegCopy />
-              </span>
-               
-              <a
-                href={`upi://pay?pa=960366@ybl&pn=Dora A-Z Fresh&am=${totalAmount}&cu=INR`}
-                target="_blank"
-                rel="noopener"
-                className="hover:bg-blue-600 lg:hidden text-md font-semibold px-4 h-[2.5rem] my-4 flex justify-center items-center gap-2 rounded-full text-white bg-blue-700 min-w-[12rem]"
-              >
-                {" "}
-                PAY ₹{totalAmount}
-              </a>
-            </div>
-          ) : (
-            <div className="p-3 flex flex-col w-full lg:w-[34%]  items-center  shadow-md shadow-gray-300 rounded-lg">
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="bg-white rounded-lg shadow-lg p-4 max-w-sm w-full"
-              >
-                <h2 className="text-lg font-semibold mb-3 text-orange-600">
-                  Complete Your Order
-                </h2>
-
-                <div className="text-end">
-                  {cartItems.length > 0 ? (
-                    <Link
-                      to="/cart"
-                      onClick={() => setModal(false)}
-                      className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                      Go to cart
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/"
-                      onClick={() => setModal(false)}
-                      className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                      Add More Products
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* order product details section  */}
-          <div className="p-3 pb-5 pt-0 w-full lg:w-[34%] lg:h-[90vh] lg:overflow-y-auto shadow-md shadow-gray-300 rounded-lg">
-            <details>
+          <div className="p-3 flex flex-col w-full lg:w-[34%]  items-start  shadow-md shadow-gray-300 rounded-lg">
+            <h2 className="font-bold  text-orange-600">PRODUCT DETAILS</h2>
+            <details open>
               <summary className="font-bold py-3 lg:bg-white lg:sticky lg:top-0 cursor-pointer text-orange-600">
                 ORDER SUMMARY
               </summary>
@@ -344,7 +172,7 @@ const OrderCheckOut = () => {
                     className="flex gap-3 overflow-hidden pb-3 border-b border-gray-400"
                   >
                     <img
-                      src={item?.products[0]?.itemImage[0]}
+                      src={item?.products[0]?.itemImage[0]?.image}
                       className="h-fit w-[5rem] rounded-lg"
                       alt="Book 1"
                     />
@@ -357,37 +185,60 @@ const OrderCheckOut = () => {
                           {item?.products[0]?.itemName.substring(0, 30)}..
                         </span>
                       </p>
+
                       <p className="font-semibold text-sm">
                         Price :
                         <span className="font-medium text-black pl-1 text-sm  ">
                           ₹{item.totalAmount}
                         </span>
                       </p>
+
                       <p className="font-semibold text-sm ">
-                        {item.products[0].itemWeight && (
+                        {item.weight && (
                           <span className="font-semibold text-sm text-gray-600 ">
-                            {item.products[0].itemWeight}
-                            {item.products[0].itemSubCategory === "Milk"
-                              ? "ml ,"
-                              : "g ,"}
+                            {item.weight}
                           </span>
-                        )}{" "}
+                        )}
+                      </p>
+
+                      <p className="font-semibold text-sm ">
+                        {item.capacity && (
+                          <span className="font-semibold text-sm text-gray-600 ">
+                            {item.capacity}
+                          </span>
+                        )}
+                      </p>
+
+                      <p className="font-semibold text-sm ">
+                        {item.size && (
+                          <span className="font-semibold text-sm text-gray-600 ">
+                            Size: {item.size}
+                          </span>
+                        )}
+                      </p>
+
+                      <p className="font-semibold text-sm ">
+                        {item.color && (
+                          <span className="font-semibold text-sm text-gray-600 ">
+                            {item.color}
+                          </span>
+                        )}
+                      </p>
+
+                      <p className="font-semibold text-sm">
                         Qty :
                         <span className="font-medium text-sm   text-gray-700 pl-1">
                           {item.itemQty}
                         </span>
-                      </p>
-                      <p className="font-semibold capitalize text-sm text-blue-600">
-                        {item.products[0].orderType === "buyonce"
-                          ? null
-                          : item.products[0].orderType}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
             </details>
+          </div>
 
+          <div className="p-3 pb-5 pt-0 w-full lg:w-[34%] lg:h-[90vh] lg:overflow-y-auto shadow-md shadow-gray-300 rounded-lg">
             {/* order summary total amount section   */}
             <div>
               <div className="flex justify-between py-2 pt-2 border-b w-full">
@@ -419,17 +270,6 @@ const OrderCheckOut = () => {
                 <span className="text-black pl-1">Rs. {totalAmount}</span>
               </h3>
 
-              <div className="flex justify-center pt-2">
-                <a
-                  href={`https://wa.me/91${number}`}
-                  className="text-green-700 font-bold flex items-center gap-1 "
-                >
-                  {" "}
-                  <FaWhatsapp size={21} />
-                  {number}
-                </a>
-              </div>
-
               <button
                 onClick={placeOrder}
                 type="submit"
@@ -459,8 +299,6 @@ const OrderCheckOut = () => {
         {/* order success modal  */}
         <OrderSuccessModal orderOk={orderOk} />
       </div>
-
-    
     </>
   );
 };

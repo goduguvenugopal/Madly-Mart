@@ -19,7 +19,7 @@ const Footer = () => {
     try {
       await navigator.share({
         text: "Madly Mart - Your one-stop shop for fresh milk, groceries, and all your needs, delivered to your doorstep with quality assurance. Shop now! :",
-        url: "https://doraatozfresh.vercel.app",
+        url: "https://madlymart.in",
       });
     } catch (error) {
       console.error(error);
@@ -27,10 +27,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="text-white-600 body-font text-white bg-black">
+    <footer className="text-white-600 body-font text-white bg-blue-900">
       <div className="container px-5 pt-10 mx-auto flex items-center md:flex-row flex-col">
         <div className="flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center">
-          <h2 className="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+          <h2 className="text-xs text-orange-600 tracking-widest font-medium title-font mb-1">
             Madly Mart
           </h2>
           <h1 className=" text-md font-medium title-font text-white">
@@ -63,8 +63,8 @@ const Footer = () => {
             className="flex title-font font-medium items-center md:justify-start justify-center text-white"
           >
             <img
-              src="/dora-logo.jpeg"
-              className="w-[7.5rem] h-16 text-white rounded-full"
+              src="/MadlyMart.jpg"
+              className="w-fit h-16 text-white rounded-full"
               alt="logo"
             />
           </Link>

@@ -2,19 +2,16 @@ import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
 
-
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { carousel } = useContext(CartContext);
   const [offerTitle, setOfferTitle] = useState("");
   const [images, setImages] = useState([]);
 
-
   useEffect(() => {
-    setImages(carousel?.carouselImage)
-    setOfferTitle(carousel?.offerTitle)
-  }, [carousel])
-
+    setImages(carousel?.carouselImage);
+    setOfferTitle(carousel?.offerTitle);
+  }, [carousel]);
 
   const totalItems = images?.length;
 
@@ -52,8 +49,6 @@ const Carousel = () => {
             </div>
           ))}
         </div>
-
-  
       </div>
       {/* Scrolling Offer Title */}
       {offerTitle && (
@@ -65,10 +60,7 @@ const Carousel = () => {
           </div>
         </div>
       )}
-
-
     </>
-
   );
 };
 

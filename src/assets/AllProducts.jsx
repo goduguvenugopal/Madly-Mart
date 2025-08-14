@@ -14,7 +14,6 @@ const AllProducts = () => {
   const [categoryItems, setCategoryItems] = useState([]);
   const [categoryItems1, setCategoryItems1] = useState([]);
   const [pageNum, setPageNum] = useState(0);
-  
 
   // changing title dynamically
   useEffect(() => {
@@ -68,7 +67,6 @@ const AllProducts = () => {
     setPageNum(pageNumber);
   };
 
-  
   return (
     <>
       <div className="p-3 mt-3 mb-5 pt-24">
@@ -76,7 +74,6 @@ const AllProducts = () => {
           {category.replace("vegetables", "vegetable")} Products
         </h5>
         <hr className="my-2 border border-orange-500" />
-
 
         <div className="mt-6 w-full pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {categoryItems.length ? (

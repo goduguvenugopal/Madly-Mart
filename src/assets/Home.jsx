@@ -40,7 +40,7 @@ const Home = () => {
 
   return (
     <>
-    {/* offers pop up component  */}
+      {/* offers pop up component  */}
       <OffersPopUp />
       {/* categories section  */}
       <Carousel />

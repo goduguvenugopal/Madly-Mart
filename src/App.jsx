@@ -19,7 +19,7 @@ import Login from "./assets/Login";
 import OrderCheckOut from "./assets/OrderCheckOut";
 import OrderOverView from "./assets/OrderOverView";
 import ProdutReviewsForm from "./assets/ProdutReviewsForm";
-import {useVisitorsTracking} from "./assets/utilis/useVisitorsTracking";
+import { useVisitorsTracking } from "./assets/utilis/useVisitorsTracking";
 
 export const CartContext = createContext();
 export const UserContext = createContext();
@@ -42,9 +42,9 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
-  
-  // calling visitors tracking custom hook 
-  useVisitorsTracking(api)
+
+  // calling visitors tracking custom hook
+  useVisitorsTracking(api);
 
   useEffect(() => {
     // retrieving token from localStorage
@@ -134,7 +134,9 @@ function App() {
     // fetching all categories
     const fetchAllCategories = async () => {
       try {
-        const res = await axios.get(`${api}/api/category/get-category-products`);
+        const res = await axios.get(
+          `${api}/api/category/get-category-products`
+        );
         if (res) {
           setCategories(res.data?.retrievedProducts?.reverse());
         }

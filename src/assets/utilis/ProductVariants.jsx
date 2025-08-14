@@ -130,7 +130,7 @@ const ProductVariants = ({
                       setOriginalCost(item?.originalCost || originalCost);
                     }}
                     key={item._id}
-                    className={`borderborder-black flex items-center justify-center capitalize min-h-10 min-w-10 px-2 rounded-full cursor-pointer font-semibold ${
+                    className={`border border-black flex items-center justify-center capitalize min-h-10 min-w-10 px-2 rounded-full cursor-pointer font-semibold ${
                       item.stock <= 0
                         ? "cursor-not-allowed text-white border-none bg-gray-400"
                         : ""
