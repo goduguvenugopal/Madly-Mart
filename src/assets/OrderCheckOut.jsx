@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { createElement, useContext, useEffect, useState } from "react";
 import { FaRegCopy, FaWhatsapp } from "react-icons/fa6";
 import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
 import axios from "axios";
@@ -28,6 +28,19 @@ const OrderCheckOut = () => {
   };
   const [orderForm, setOrderForm] = useState(initialOrderData);
   const { emailData } = useEmailTemplate({ totalAmount });
+
+  // integrating razorpay script link dynamically
+  useEffect(() => {
+    const scriptElement = document.createElement("script");
+    scriptElement.src = "https://checkout.razorpay.com/v1/checkout.js";
+    scriptElement.async = true;
+    document.body.appendChild(scriptElement);
+
+    // remove the script link when component unmount
+    return () => {
+      document.body.removeChild(scriptElement);
+    };
+  }, []);
 
   useEffect(() => {
     // total amount caluculating function
@@ -74,8 +87,7 @@ const OrderCheckOut = () => {
           }
         );
         if (res) {
-          // setOrderOk(true);
-          setOrderSpin(false);
+          openRazorpay(res.data);
           // if order placed successfully email confirmation wll be sent to user and seller
           // await axios.post(`${api}/api/updates-email/send-updates`, emailData);
         }
@@ -85,6 +97,46 @@ const OrderCheckOut = () => {
       }
     }
   };
+
+  // Function to start Razorpay payment
+  function openRazorpay(order) {
+    const options = {
+      key: order.razorpay_key_id,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Madly Mart",
+      description: "Purchase from Madly Mart",
+      // image: "https://madlymart.in/Madlypng",
+      order_id: order.razorpay_order_id, // from backend Razorpay order creation order id
+
+      // Success handler
+      handler: function (response) {
+        console.log("Payment successful:", response);
+        // Send details to backend for verification
+        setOrderSpin(false);
+        setOrderOk(true);
+      },
+
+      // customer details
+      prefill: {
+        name: defaultAddress[0]?.name,
+        email: defaultAddress[0]?.email,
+        contact: defaultAddress[0]?.phone,
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    // Failure handler
+    rzp.on("payment.failed", function (response) {
+      console.error("Payment Failed:", response.error);
+      alert(`Payment Failed: ${response.error.description}`);
+      setOrderSpin(false);
+    });
+
+    // Open Razorpay payment popup
+    rzp.open();
+  }
 
   // if not token available or orderProducts length empty page navigate to home
   useEffect(() => {
