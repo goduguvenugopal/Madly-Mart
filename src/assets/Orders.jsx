@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import {   EnvContext, ProductsContext, UserContext } from "../App";
+import { EnvContext, ProductsContext, UserContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
 
@@ -40,14 +40,7 @@ const Orders = () => {
     const selectInput = e.target.value;
     if (selectInput === "all") {
       setOrders(filterOrders);
-    } else if (selectInput === "subscription") {
-      const results = filterOrders.filter((order) =>
-        order.orderedProdcuts.some(
-          (product) => product.orderType === "subscription"
-        )
-      );
-      setOrders(results);
-    } else {
+    }  else {
       const results = filterOrders.filter(
         (item) => item.orderStatus === selectInput
       );
@@ -55,6 +48,8 @@ const Orders = () => {
     }
   };
 
+  console.log(orders);
+  
   //  if token not navigate to home
   useEffect(() => {
     if (!token) {
@@ -81,7 +76,6 @@ const Orders = () => {
             Filters
           </option>
           <option value="all">All</option>
-          <option value="subscription">Subscriptions</option>
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
           <option value="shipped">Shipped</option>
@@ -104,7 +98,10 @@ const Orders = () => {
             >
               <div className="w-[6.8rem] h-fit lg:w-[9.5rem] ">
                 <img
-                  src={product?.orderedProdcuts[0]?.products[0]?.itemImage[0]}
+                  src={
+                    product?.orderedProdcuts[0]?.products[0]?.itemImage[0]
+                      ?.image
+                  }
                   alt={product?.orderedProdcuts[0]?.products[0]?.itemName}
                   className="w-full h-fit object-cover rounded-lg"
                 />
@@ -112,11 +109,6 @@ const Orders = () => {
 
               {/* Product Details */}
               <div className="">
-                <h3 className="text-[0.65rem] lg:text-[0.8rem] font-bold uppercase  text-gray-500">
-                  {product?.orderedProdcuts[0]?.orderType === "buyonce"
-                    ? null
-                    : product?.orderedProdcuts[0]?.orderType}
-                </h3>
                 <h2 className=" text-sm lg:text-lg font-semibold text-black">
                   {product?.orderedProdcuts[0]?.products[0]?.itemName.substring(
                     0,
@@ -161,6 +153,37 @@ const Orders = () => {
                   )}{" "}
                   on {product.orderStatusDate}
                 </p>
+                <p className="font-semibold text-sm ">
+                  { product?.orderedProdcuts[0]?.weight && (
+                    <span className="font-semibold text-sm text-gray-600 ">
+                      { product?.orderedProdcuts[0]?.weight}
+                    </span>
+                  )}
+                </p>
+
+                <p className="font-semibold text-sm ">
+                  { product?.orderedProdcuts[0]?.capacity && (
+                    <span className="font-semibold text-sm text-gray-600 ">
+                      { product?.orderedProdcuts[0]?.capacity}
+                    </span>
+                  )}
+                </p>
+
+                <p className="font-semibold text-sm ">
+                  { product?.orderedProdcuts[0]?.size && (
+                    <span className="font-semibold text-sm text-gray-600 ">
+                      Size: { product?.orderedProdcuts[0]?.size}
+                    </span>
+                  )}
+                </p>
+
+                <p className="font-semibold text-sm ">
+                  { product?.orderedProdcuts[0]?.color && (
+                    <span className="font-semibold text-sm text-gray-600 ">
+                      { product?.orderedProdcuts[0]?.color}
+                    </span>
+                  )}
+                </p>
                 <h2 className=" text-sm lg:text-lg font-semibold text-gray-500">
                   qty : {product?.orderedProdcuts[0]?.itemQty}
                 </h2>
@@ -188,7 +211,7 @@ const Orders = () => {
                     >
                       <div className="w-[5.3rem] h-fit lg:w-[6.8rem] ">
                         <img
-                          src={item.products[0]?.itemImage[0]}
+                          src={item.products[0]?.itemImage[0]?.image}
                           alt={item.products[0]?.itemName}
                           className="w-full h-fit object-cover rounded-lg"
                         />
@@ -202,6 +225,37 @@ const Orders = () => {
                         <h2 className=" text-sm lg:text-lg font-semibold text-black">
                           {item.products[0]?.itemName.substring(0, 25)}..
                         </h2>
+                        <p className="font-semibold text-sm ">
+                          {item.weight && (
+                            <span className="font-semibold text-sm text-gray-600 ">
+                              {item.weight}
+                            </span>
+                          )}
+                        </p>
+
+                        <p className="font-semibold text-sm ">
+                          {item.capacity && (
+                            <span className="font-semibold text-sm text-gray-600 ">
+                              {item.capacity}
+                            </span>
+                          )}
+                        </p>
+
+                        <p className="font-semibold text-sm ">
+                          {item.size && (
+                            <span className="font-semibold text-sm text-gray-600 ">
+                              Size: {item.size}
+                            </span>
+                          )}
+                        </p>
+
+                        <p className="font-semibold text-sm ">
+                          {item.color && (
+                            <span className="font-semibold text-sm text-gray-600 ">
+                              {item.color}
+                            </span>
+                          )}
+                        </p>
                         <h2 className=" text-sm lg:text-lg font-semibold text-gray-500">
                           qty : {item.itemQty}
                         </h2>

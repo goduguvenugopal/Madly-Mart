@@ -20,17 +20,9 @@ const OrderSuccessModal = ({orderOk}) => {
                     Order Placed Successfully!
                   </h2>
     
-                  <h5 className="mt-2">
-                    <span className="font-bold text-red-500">Note : </span>Orders
-                    will be processed only after full payment. Please send the
-                    payment receipt to WhatsApp at{" "}
-                    <a
-                      href={`https://wa.me/91${number}`}
-                      className="text-green-700 font-bold"
-                    >
-                      {number}
-                    </a>{" "}
-                    on the same day of the order.
+                  <h5 className="mt-2 text-green-700">
+                    <span className="font-bold text-red-500">Note : </span>Once your order has shipped, the 'Track Order' button on order status page will be enabled, allowing you to view your shipment's live status.
+                     
                   </h5>
                   <p className="text-black text-lg mt-2">
                     You will receive the order details in your email.

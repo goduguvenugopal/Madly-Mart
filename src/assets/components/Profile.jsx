@@ -253,6 +253,15 @@ const Profile = () => {
                 <FaPlus size={14} /> Add
               </button>
             </div>
+            {address.length > 0 && (
+              <p
+                className={`mt-2 ${
+                  defaultAddress.length <= 0 ? "text-red-600" : "text-gray-600"
+                }`}
+              >
+                Set the address below as your default delivery address.
+              </p>
+            )}
             {/* No Address Placeholder */}
             <div className="mt-4 bg-gray-100  text-gray-600  rounded-lg">
               {address.length > 0 ? (

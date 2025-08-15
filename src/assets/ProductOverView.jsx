@@ -229,6 +229,7 @@ const ProductOverView = () => {
         position="bottom-center"
         draggable
         closeOnClick
+        autoClose={2000}
         hideProgressBar={false}
         transition={Slide}
         theme="dark"

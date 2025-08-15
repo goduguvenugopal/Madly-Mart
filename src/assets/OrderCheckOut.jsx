@@ -18,7 +18,6 @@ const OrderCheckOut = () => {
   const navigate = useNavigate();
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
-  const [modal, setModal] = useState(false);
   const initialOrderData = {
     orderedProdcuts: [],
     shippingAddress: [],
@@ -335,16 +334,19 @@ const OrderCheckOut = () => {
 
         {/* order  progress spinner  */}
         {orderSpin && (
-          <div className="fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-gray-800 opacity-85">
-            <div
-              className="border-t-4 border-solid rounded-full w-12 h-12 animate-spin"
-              style={{
-                borderWidth: "7px",
-                borderColor: "white",
-                borderTopColor: "blue",
-                borderStyle: "solid",
-              }}
-            ></div>
+          <div className="flex fixed w-screen top-0 left-0 items-center justify-center h-screen bg-gray-100 p-3">
+            <div className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-2xl">
+              <div className="w-10 h-10 mb-4 ease-linear border-4 border-t-4 border-blue-500 border-t-white rounded-full spinner animate-spin" />
+              <p className=" text-[1.2rem] lg:text-2xl font-bold text-gray-800">
+                Processing your request.
+              </p>
+              <p className="mt-2 text-base lg:text-lg text-gray-600">
+                Please do not refresh this page or click the back button.
+              </p>
+              <p className="mt-6 text-sm text-gray-400">
+                This may take a moment...
+              </p>
+            </div>
           </div>
         )}
 
