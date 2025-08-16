@@ -111,9 +111,7 @@ const Footer = () => {
               Address
             </h2>
             <nav className="list-none mb-10">
-              <li>
-                Noori majid opposite Pathabazar, Gopalpet road Wanaparthy 509103
-              </li>
+              <li>Hyderabd , Telangana , India.</li>
               <li className="flex items-center lg:items-start flex-col">
                 <a
                   href={`tel:+91${number}`}
@@ -122,7 +120,7 @@ const Footer = () => {
                   Customer Care : {number}
                 </a>
                 <a
-                  href="mailto:dora.a.to.z.fresh@gmail.com"
+                  href="mailto:madlymart@gmail.com"
                   className="flex items-center gap-3"
                 >
                   Email us
@@ -136,22 +134,34 @@ const Footer = () => {
             </h2>
             <nav className="list-none mb-10">
               <li>
-                <Link className="text-white-600 hover:text-white-800">
+                <Link
+                  to="/terms_and_conditions"
+                  className="text-white-600 hover:text-white-800"
+                >
                   Terms and Conditions
                 </Link>
               </li>
               <li>
-                <Link className="text-white-600 hover:text-white-800">
+                <Link
+                  to="/privacypolicy"
+                  className="text-white-600 hover:text-white-800"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link className="text-white-600 hover:text-white-800">
+                <Link
+                  to="/refund_and_cancellation"
+                  className="text-white-600 hover:text-white-800"
+                >
                   Refund and Cancellation
                 </Link>
               </li>
               <li>
-                <Link className="text-white-600 hover:text-white-800">
+                <Link
+                  to="/shipping_and_delivery"
+                  className="text-white-600 hover:text-white-800"
+                >
                   Shipping and Delivery Policy{" "}
                 </Link>
               </li>

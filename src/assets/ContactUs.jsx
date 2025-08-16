@@ -18,8 +18,8 @@ const ContactUs = () => {
   const [submitSpin, setSubmitSpin] = useState(false);
 
   const formData = {
-    email: "dora.a.to.z.fresh@gmail.com",
-    subject: "Dora A to Z Fresh Customer product query",
+    email: "madlymart@gmail.com",
+    subject: "Madly Mart Customer product query",
     html: `<h3>Customer Name : ${name}</h3>
     <h3>Customer email : ${email}</h3>
     <h3>Customer message : ${message}</h3>`,
@@ -80,15 +80,13 @@ const ContactUs = () => {
 
             <div className="space-y-4">
               <a
-                href="mailto:dora.a.to.z.fresh@gmail.com"
+                href="mailto:madlymart@gmail.com"
                 className="flex items-center active:bg-blue-300 gap-3"
               >
                 <MdMail className="h-6 w-6 text-blue-500" />
                 <div>
                   <p className="text-lg font-medium">Email Us</p>
-                  <p className="text-sm text-gray-600">
-                    dora.a.to.z.fresh@gmail.com
-                  </p>
+                  <p className="text-sm text-gray-600">madlymart@gmail.com</p>
                 </div>
               </a>
 
@@ -120,8 +118,7 @@ const ContactUs = () => {
                 <div className="w-full">
                   <p className="text-lg font-medium">Address</p>
                   <p className="text-sm text-gray-600">
-                    Noori majid opposite Pathabazar, Gopalpet road Wanaparthy
-                    509103
+                    Hyderabd , Telangana , India.
                   </p>
                 </div>
               </a>

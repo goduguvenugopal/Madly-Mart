@@ -20,6 +20,10 @@ import OrderCheckOut from "./assets/OrderCheckOut";
 import OrderOverView from "./assets/OrderOverView";
 import ProdutReviewsForm from "./assets/ProdutReviewsForm";
 import { useVisitorsTracking } from "./assets/utilis/useVisitorsTracking";
+import TermsAndConditions from "./assets/pages/TermsAndConditions";
+import PrivacyPolicy from "./assets/pages/PrivacyPolicy";
+import RefundAndCancellation from "./assets/pages/RefundAndCancellation";
+import ShippingAndDelivery from "./assets/pages/ShippingAndDelivery";
 
 export const CartContext = createContext();
 export const UserContext = createContext();
@@ -249,6 +253,12 @@ function App() {
                 element={<OrderOverView />}
               />
               <Route path="/login" element={<Login />} />
+
+              <Route path="/terms_and_conditions" element={<TermsAndConditions />} />
+              <Route path="/privacypolicy" element={<PrivacyPolicy/>} />
+              <Route path="/refund_and_cancellation" element={<RefundAndCancellation />} />
+              <Route path="/shipping_and_delivery" element={<ShippingAndDelivery/>} />
+
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ProductsContext.Provider>
