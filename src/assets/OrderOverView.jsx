@@ -14,6 +14,7 @@ const OrderOverView = () => {
   const { api, number } = useContext(EnvContext);
   const { orderId } = useParams();
   const [singleOrder, setSingleOrder] = useState(null);
+  const [orderIdLocal, setOrderIdLocal] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [cancelSpin, setCancelSpin] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
@@ -23,9 +24,18 @@ const OrderOverView = () => {
     if (singleOrder) {
       document.title = "Track & Manage Orders";
     } else {
-      document.title = "Welcome to Dora A to Z Fresh";
+      document.title = "Welcome to Madly Mart";
     }
   }, [singleOrder]);
+
+  useEffect(() => {
+    // storing order id in localStorage
+    localStorage.setItem("orderId", JSON.stringify(orderId));
+    const isOrderId = localStorage.getItem("orderId");
+    if (isOrderId) {
+      setOrderIdLocal(JSON.parse(isOrderId));
+    }
+  }, []);
 
   // Finding single order based on order ID
   useEffect(() => {
@@ -285,7 +295,7 @@ const OrderOverView = () => {
                         Order In Pending {singleOrder.orderDate}
                       </div>
                       <h5 className="text-sm">
-                        <span className="font-bold text-red-500">Note:</span>{" "}
+                        <span className="font-bold text-red-500">Reason:</span>{" "}
                         Payment not completed
                       </h5>
                     </div>
@@ -304,12 +314,15 @@ const OrderOverView = () => {
                     )}
                     <div className=" rounded-md ">
                       <div className="font-bold  text-[0.9rem] lg:text-lg">
-                        Order Confirmed
+                        Order Confirmed{" "}
+                        <span className="text-gray-800 font-normal">
+                          {singleOrder?.orderDate}
+                        </span>
                       </div>
                       {singleOrder.orderStatus === "confirmed" && (
                         <p className="text-sm">
-                          Your Order has been confirmed on{" "}
-                          {singleOrder?.orderStatusDate}
+                          Your Order has been confirmed, We're processing your
+                          order.
                         </p>
                       )}
                     </div>
@@ -318,133 +331,62 @@ const OrderOverView = () => {
 
                 {singleOrder?.orderStatus === "pending" ? null : (
                   <>
-                    {/* Shipped */}
-                    {/* {singleOrder.orderStatus === "shipped" ||
-                    singleOrder.orderStatus === "outofdelivery" ||
-                    singleOrder.orderStatus === "delivered" ? ( */}
-                      <div className="bg-gray-300  rounded flex items-center gap-3 p-3">
-                        {singleOrder?.orderStatus === "shipped" ? (
-                          <Lottie
-                            className="w-5 rounded-full bg-green-500"
-                            animationData={check}
-                          />
-                        ) : (
-                          <div className="w-5 h-5 flex items-center  justify-center rounded-full bg-green-500 text-white">
-                            <FaCheck size={13} className="" />
-                          </div>
-                        )}
-                        <div className=" rounded-md ">
-                          <div className="font-bold  text-[0.9rem] lg:text-lg">
-                            Order Shipped
-                          </div>
-                          {singleOrder.orderStatus === "shipped" && (
-                            <p className="text-sm">
-                              Your Order has been Shipped on{" "}
-                              {singleOrder?.orderStatusDate}
-                            </p>
-                          )}{" "}
+                    <div
+                      className={` ${
+                        singleOrder?.orderStatus === "shipped"
+                          ? "bg-green-200"
+                          : "bg-gray-300"
+                      } rounded flex items-center gap-3 p-3`}
+                    >
+                      {singleOrder?.orderStatus === "shipped" ? (
+                        <Lottie
+                          className="w-5 rounded-full bg-green-500"
+                          animationData={check}
+                        />
+                      ) : (
+                        <div className="w-7 h-5 flex items-center  justify-center rounded-full bg-gray-400 text-white">
+                          <FaCheck size={13} className="" />
                         </div>
-                      </div>
-
-                      
-                    {/* ) : (
-                      ""
-                      // <div className="bg-gray-100  rounded flex items-center gap-3 p-3">
-                      //   <div className="w-5 h-5 flex items-center justify-center rounded-full border-2 border-gray-500 text-white"></div>
-                      //   <div className=" rounded-md ">
-                      //     <div className="font-bold  text-[0.9rem] lg:text-lg">
-                      //       Order Shipping
-                      //     </div>
-                      //     <p className="text-sm">
-                      //       Your Order will be shipped after order confirmed
-                      //     </p>
-                      //   </div>
-                      // </div>
-                    )} */}
-
-                    {/* out of delivery  */}
-                    {/* {singleOrder.orderStatus === "outofdelivery" ||
-                    singleOrder.orderStatus === "delivered" ? (
-                      <div className="bg-green-200  rounded flex items-center gap-3 p-3">
-                        {singleOrder?.orderStatus === "outofdelivery" ? (
-                          <Lottie
-                            className="w-5 rounded-full bg-green-500"
-                            animationData={check}
-                          />
-                        ) : (
-                          <div className="w-5 h-5 flex items-center  justify-center rounded-full bg-green-500 text-white">
-                            <FaCheck size={13} className="" />
-                          </div>
-                        )}
-                        <div className=" rounded-md ">
-                          <div className="font-bold  text-[0.9rem] lg:text-lg">
-                            Order Out Of Delivery
-                          </div>
-                          {singleOrder.orderStatus === "outofdelivery" && (
-                            <p className="text-sm">
-                              Your Order has been out of delivery on{" "}
-                              {singleOrder?.orderStatusDate}
-                            </p>
-                          )}{" "}
+                      )}
+                      <div className="flex flex-col  rounded-md ">
+                        <div className="font-bold  text-[0.9rem] lg:text-lg">
+                          {singleOrder.orderStatus === "shipped"
+                            ? `Order Shipped On ${singleOrder?.orderStatusDate}`
+                            : "We're getting your items ready for shipment."}
                         </div>
-                      </div>
-                    ) : (
-                      <div className="bg-gray-100  rounded flex items-center gap-3 p-3">
-                        <div className="w-5 h-5 flex items-center justify-center rounded-full border-2 border-gray-500 text-white"></div>
-                        <div className=" rounded-md ">
-                          <div className="font-bold text-[0.9rem] lg:text-lg">
-                            Order Out Of Delivery
-                          </div>
-                          <p className="text-sm">
-                            Your Order will be out of delivery after order
-                            shipped
+                        {singleOrder.orderStatus === "shipped" ? (
+                          <>
+                            <p className="text-sm mt-1">
+                              Your Order has been Shipped For a live status
+                              update, simply click the 'Track Order' button
+                              below.
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm mt-1">
+                            Once your order has shipped, the 'Track Order'
+                            button on this page will be enabled, allowing you to
+                            view your shipment's live status.
                           </p>
-                        </div>
-                      </div>
-                    )} */}
-
-                    {/* Delivery */}
-                    {/* {singleOrder?.orderStatus === "delivered" ? (
-                      <div className="bg-green-200  rounded flex items-center gap-3 p-3">
-                        {singleOrder?.orderStatus === "delivered" ? (
-                          <Lottie
-                            className="w-5 rounded-full bg-green-500"
-                            animationData={check}
-                          />
-                        ) : (
-                          <div className="w-5 h-5 flex items-center  justify-center rounded-full bg-green-500 text-white">
-                            <FaCheck size={13} className="" />
-                          </div>
                         )}
-                        <div className=" rounded-md ">
-                          <div className="font-bold  text-[0.9rem] lg:text-lg">
-                            Order Delivered
-                          </div>
-                          {singleOrder?.orderStatus === "delivered" && (
-                            <p className="text-sm">
-                              Your Order has been delivered on{" "}
-                              {singleOrder?.orderStatusDate}
-                            </p>
-                          )}{" "}
+
+                        {/* track order button  */}
+                        <div className="text-center flex mt-4 w-full">
+                          <a
+                            href={`https://shiprocket.co/tracking/view/${singleOrder?.order_tracking_id}`}
+                            target="_blank"
+                            class={` ${
+                              singleOrder?.orderStatus === "shipped" &&
+                              singleOrder?.order_tracking_id
+                                ? "bg-blue-600  hover:bg-blue-700"
+                                : "bg-gray-400 pointer-events-none"
+                            } text-white w-full font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300`}
+                          >
+                            Track Order
+                          </a>
                         </div>
                       </div>
-                    ) : (
-                      <div className="bg-gray-100  rounded flex items-center gap-3 p-3">
-                        <div className="w-5 h-5 flex items-center justify-center rounded-full border-2 border-gray-500 text-white"></div>
-                        <div className=" rounded-md w-full ">
-                          <div className="font-bold  text-[0.9rem] lg:text-lg">
-                            Order Delivery
-                          </div>
-                          <p className="text-sm">
-                            {singleOrder?.orderedProdcuts?.some(
-                              (item) => item.orderType === "subscription"
-                            )
-                              ? "Subscription orders are delivered daily at 6 AM to 8 AM and 6 PM to 8 AM after order confirmed"
-                              : "Your Order will be delivered in 45 minutes after order confirmed"}{" "}
-                          </p>
-                        </div>
-                      </div>
-                    )} */}
+                    </div>
                   </>
                 )}
               </div>

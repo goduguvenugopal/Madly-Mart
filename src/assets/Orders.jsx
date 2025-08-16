@@ -40,7 +40,7 @@ const Orders = () => {
     const selectInput = e.target.value;
     if (selectInput === "all") {
       setOrders(filterOrders);
-    }  else {
+    } else {
       const results = filterOrders.filter(
         (item) => item.orderStatus === selectInput
       );
@@ -48,8 +48,12 @@ const Orders = () => {
     }
   };
 
-  console.log(orders);
-  
+  // navigate order status page
+  const openOrderStatusPage = (orderId) => {
+    localStorage.setItem("orderId", JSON.stringify(orderId));
+    navigate(`/orders/order_over_view/${orderId}`);
+  };
+
   //  if token not navigate to home
   useEffect(() => {
     if (!token) {
@@ -154,33 +158,33 @@ const Orders = () => {
                   on {product.orderStatusDate}
                 </p>
                 <p className="font-semibold text-sm ">
-                  { product?.orderedProdcuts[0]?.weight && (
+                  {product?.orderedProdcuts[0]?.weight && (
                     <span className="font-semibold text-sm text-gray-600 ">
-                      { product?.orderedProdcuts[0]?.weight}
+                      {product?.orderedProdcuts[0]?.weight}
                     </span>
                   )}
                 </p>
 
                 <p className="font-semibold text-sm ">
-                  { product?.orderedProdcuts[0]?.capacity && (
+                  {product?.orderedProdcuts[0]?.capacity && (
                     <span className="font-semibold text-sm text-gray-600 ">
-                      { product?.orderedProdcuts[0]?.capacity}
+                      {product?.orderedProdcuts[0]?.capacity}
                     </span>
                   )}
                 </p>
 
                 <p className="font-semibold text-sm ">
-                  { product?.orderedProdcuts[0]?.size && (
+                  {product?.orderedProdcuts[0]?.size && (
                     <span className="font-semibold text-sm text-gray-600 ">
-                      Size: { product?.orderedProdcuts[0]?.size}
+                      Size: {product?.orderedProdcuts[0]?.size}
                     </span>
                   )}
                 </p>
 
                 <p className="font-semibold text-sm ">
-                  { product?.orderedProdcuts[0]?.color && (
+                  {product?.orderedProdcuts[0]?.color && (
                     <span className="font-semibold text-sm text-gray-600 ">
-                      { product?.orderedProdcuts[0]?.color}
+                      {product?.orderedProdcuts[0]?.color}
                     </span>
                   )}
                 </p>
