@@ -64,7 +64,7 @@ const Footer = () => {
           >
             <img
               src="/MadlyMart.jpg"
-              className="w-fit h-16 text-white rounded-full"
+              className="w-fit h-24 lg:h-32 text-white rounded-full"
               alt="logo"
             />
           </Link>

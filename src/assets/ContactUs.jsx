@@ -73,12 +73,12 @@ const ContactUs = () => {
 
       <section className="text-gray-600 body-font relative flex justify-center pb-10 px-5 pt-24">
         <div className="container flex flex-wrap justify-between ">
-          <div className="bg-white p-8 w-full lg:w-[30%] mx-auto rounded shadow-lg">
+          <div className="bg-white p-8 w-full lg:w-[30%] mx-auto rounded-3xl shadow-lg">
             <h2 className="text-3xl font-semibold text-center mb-6">
               Contact Us
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               <a
                 href="mailto:madlymart@gmail.com"
                 className="flex items-center active:bg-blue-300 gap-3"
@@ -132,12 +132,12 @@ const ContactUs = () => {
                 here. We’re here to help!
               </p>
             </div>
-            <div className="flex flex-wrap -m-2">
-              <div className="p-2 w-1/2">
+            <div className="flex flex-col w-full flex-wrap -m-2">
+              <div className="p-2 w-full">
                 <div className="relative">
                   <label
                     htmlFor="name"
-                    className="leading-7 text-sm text-gray-600"
+                    className="leading-7 text-sm lg:text-lg text-blue-700"
                   >
                     Name
                   </label>
@@ -150,15 +150,15 @@ const ContactUs = () => {
                     type="text"
                     id="name"
                     name="name"
-                    className="w-full bg-gray-100 bg-opacity-50 rounded border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="w-full mt-1 bg-gray-100 bg-opacity-50 rounded-full border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
               </div>
-              <div className="p-2 w-1/2">
+              <div className="p-2 w-full">
                 <div className="relative">
                   <label
                     htmlFor="email"
-                    className="leading-7 text-sm text-gray-600"
+                    className="leading-7 text-sm lg:text-lg text-blue-700"
                   >
                     Email
                   </label>
@@ -171,7 +171,7 @@ const ContactUs = () => {
                     type="email"
                     id="email"
                     name="email"
-                    className="w-full bg-gray-100 bg-opacity-50 rounded border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="w-full mt-1 bg-gray-100 bg-opacity-50 rounded-full border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
               </div>
@@ -179,7 +179,7 @@ const ContactUs = () => {
                 <div className="relative">
                   <label
                     htmlFor="message"
-                    className="leading-7 text-sm text-gray-600"
+                    className="leading-7 text-sm lg:text-lg text-blue-700"
                   >
                     Message
                   </label>
@@ -190,20 +190,20 @@ const ContactUs = () => {
                     value={message}
                     id="message"
                     name="message"
-                    className="w-full bg-gray-100 bg-opacity-50 rounded border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                    className="w-full mt-1 bg-gray-100 bg-opacity-50 rounded-3xl border-2 border-2-gray-300 focus:border-2-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-4 resize-none leading-6 transition-colors duration-200 ease-in-out"
                     placeholder="Enter your query"
                   />
                 </div>
               </div>
               <div className="p-2 w-full">
                 {submitSpin ? (
-                  <button className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                  <button className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg">
                     Submitting...
                   </button>
                 ) : (
                   <button
                     onClick={submitFunc}
-                    className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                    className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg"
                   >
                     Submit
                   </button>

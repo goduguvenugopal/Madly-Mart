@@ -105,7 +105,7 @@ const OrderCheckOut = () => {
       currency: order.currency,
       name: "Madly Mart",
       description: "Purchase from Madly Mart",
-      // image: "https://madlymart.in/Madlypng",
+      image: "https://madlymartadmin.vercel.app/MadlyMart.jpg",
       order_id: order.razorpay_order_id, // from backend Razorpay order creation order id
 
       // Success handler
