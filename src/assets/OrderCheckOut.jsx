@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import OrderSuccessModal from "./components/OrderSuccessModal";
 import useEmailTemplate from "./utilis/useEmailTemplate";
+import PaymentFailedModal from "./components/PaymentFailedModal";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
@@ -16,8 +17,11 @@ const OrderCheckOut = () => {
   const [orderSpin, setOrderSpin] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const navigate = useNavigate();
+  const [orderResponse, setOrderResponse] = useState({});
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
+  const [failedToggle, setFailedToggle] = useState(false);
+  const [paymentResponse, setPaymentResponse] = useState({});
   const initialOrderData = {
     orderedProdcuts: [],
     shippingAddress: [],
@@ -26,7 +30,10 @@ const OrderCheckOut = () => {
     totalAmount: null,
   };
   const [orderForm, setOrderForm] = useState(initialOrderData);
-  const { emailData } = useEmailTemplate({ totalAmount });
+  const { emailData, failedEmailData } = useEmailTemplate({
+    totalAmount,
+    paymentResponse,
+  });
 
   // integrating razorpay script link dynamically
   useEffect(() => {
@@ -86,9 +93,9 @@ const OrderCheckOut = () => {
           }
         );
         if (res) {
+          // if order created successfully next razorpay modal opens
+          setOrderResponse(res.data);
           openRazorpay(res.data);
-          // if order placed successfully email confirmation wll be sent to user and seller
-          // await axios.post(`${api}/api/updates-email/send-updates`, emailData);
         }
       } catch (error) {
         console.error(error);
@@ -98,22 +105,47 @@ const OrderCheckOut = () => {
   };
 
   // Function to start Razorpay payment
-  function openRazorpay(order) {
+  function openRazorpay() {
     const options = {
-      key: order.razorpay_key_id,
-      amount: order.amount,
-      currency: order.currency,
+      key: orderResponse.razorpay_key_id,
+      amount: orderResponse.amount,
+      currency: orderResponse.currency,
       name: "Madly Mart",
       description: "Purchase from Madly Mart",
-      image: "https://madlymartadmin.vercel.app/MadlyMart.jpg",
-      order_id: order.razorpay_order_id, // from backend Razorpay order creation order id
+      image: "https://madlymartuser.vercel.app/MadlyMart.jpg",
+      order_id: orderResponse.razorpay_order_id, // from backend Razorpay order creation order id
 
       // Success handler
-      handler: function (response) {
-        console.log("Payment successful:", response);
+      handler: async function (response) {
         // Send details to backend for verification
-        setOrderSpin(false);
-        setOrderOk(true);
+        const paymentSuccessData = {
+          userEmail: defaultAddress[0]?.email,
+          mongoOrderId: orderResponse?.mongoOrderId,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+          totalAmount: totalAmount,
+        };
+
+        setPaymentResponse(paymentSuccessData);
+        try {
+          const res = await axios.post(
+            `${api}/api/payment/verify-payment`,
+            paymentSuccessData
+          );
+          if (res) {
+            setOrderOk(true);
+            // if payment verifys successfully email confirmation wll be sent to user and seller
+            await axios.post(
+              `${api}/api/updates-email/send-updates`,
+              emailData
+            );
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setOrderSpin(false);
+        }
       },
 
       // customer details
@@ -127,10 +159,40 @@ const OrderCheckOut = () => {
     const rzp = new window.Razorpay(options);
 
     // Failure handler
-    rzp.on("payment.failed", function (response) {
-      console.error("Payment Failed:", response.error);
-      alert(`Payment Failed: ${response.error.description}`);
-      setOrderSpin(false);
+    rzp.on("payment.failed", async function (response) {
+      const failedPaymentData = {
+        userEmail: defaultAddress[0]?.email,
+        mongoOrderId: orderResponse?.mongoOrderId,
+        orderId: response.error.metadata.order_id,
+        paymentId: response.error.metadata.payment_id,
+        totalAmount: totalAmount,
+        error: {
+          code: response.error.code,
+          description: response.error.description,
+          source: response.error.source,
+          step: response.error.step,
+          reason: response.error.reason,
+          metadata: response.error.metadata,
+        },
+      };
+
+      setPaymentResponse(failedEmailData);
+
+      try {
+        const res = await axios.post(
+          `${api}/api/payments/failed-payment`,
+          failedPaymentData
+        );
+        if (res) {
+          setFailedToggle(true);
+          // if payment verification failed email will be sent to user and seller
+          await axios.post(`${api}/api/updates-email/send-updates`, emailData);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setOrderSpin(false);
+      }
     });
 
     // Open Razorpay payment popup
@@ -350,8 +412,15 @@ const OrderCheckOut = () => {
           </div>
         )}
 
-        {/* order success modal  */}
+        {/* order and payment success modal  */}
         <OrderSuccessModal orderOk={orderOk} />
+
+        {/* payment failed modal  */}
+        <PaymentFailedModal
+          paymentResponse={paymentResponse}
+          failedToggle={failedToggle}
+          openRazorpay={openRazorpay}
+        />
       </div>
     </>
   );

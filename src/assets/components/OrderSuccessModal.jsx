@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-import { EnvContext } from '../../App'
 import { Link } from 'react-router-dom'
 import Lottie from "lottie-react";
 import success from "../animations/success.json";
 
 
 const OrderSuccessModal = ({orderOk}) => {
-    const {number} = useContext(EnvContext)
+ 
     
   return (
     <>

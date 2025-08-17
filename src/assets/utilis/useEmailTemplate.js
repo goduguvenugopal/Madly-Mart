@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import { EnvContext, ProductsContext, UserContext } from "../../App";
 
-const useEmailTemplate = ({ totalAmount }) => {
+const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
   const { defaultAddress } = useContext(UserContext);
   const { orderProducts } = useContext(ProductsContext);
   const { number } = useContext(EnvContext);
+
+  // success payment email confirmation
 
   const emailData = {
     email: `${defaultAddress[0]?.email}, madlymart@gmail.com`,
@@ -19,7 +21,11 @@ const useEmailTemplate = ({ totalAmount }) => {
 
     <!-- Greeting -->
     <div style="padding: 20px;">
+        <h2>Payment Successful ✅</h2>
       <p>Dear <strong>${defaultAddress[0]?.name}</strong>,</p>
+       <p>Your payment has been received successfully for <b>Order ID: ${
+         paymentResponse?.mongoOrderId
+       }</b>.</p>
       <p>Thank you for your order! Below are your order and shipping details.</p>
     </div>
 
@@ -87,7 +93,30 @@ const useEmailTemplate = ({ totalAmount }) => {
   `,
   };
 
-  return emailData;
+  // failed payment email confirmation
+  const failedEmailData = {
+    email: `${paymentResponse?.userEmail},madlymart@gmail.com`,
+    subject: `Payment Failed - Order ${paymentResponse?.mongoOrderId}`,
+    html: `
+    <h2>Payment Failed</h2>
+    <p>Dear Customer,</p>
+    <p>Unfortunately, your payment for <b>Order ID: ${paymentResponse?.mongoOrderId}</b> could not be completed.</p>
+    <p><strong>Total Amount:</strong> Rs. ${paymentResponse?.totalAmount}</p>
+    <h3>Details:</h3>
+    <ul>
+      <li><b>Payment ID:</b> ${paymentResponse?.paymentId}</li>
+      <li><b>Reason:</b> ${paymentResponse?.error?.reason}</li>
+    </ul>
+
+    <p>If the amount was deducted, it will be refunded to your account within 5–7 business days.</p>
+    <p>You may try again using another payment method.</p>
+    
+    <br/>
+    <p>Thank you,<br/>Team MadlyMart</p>
+  `,
+  };
+
+  return { emailData, failedEmailData };
 };
 
 export default useEmailTemplate;
