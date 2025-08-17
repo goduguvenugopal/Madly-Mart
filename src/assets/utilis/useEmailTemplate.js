@@ -53,11 +53,11 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
             </td>
             <td style="padding: 10px; vertical-align: top;">
               <p style="margin: 0; font-weight: bold;">${item?.products[0]?.itemName}</p>
-              <p style="margin: 4px 0;"><strong>Price:</strong> Rs. ${item.products[0].price}</p>
-              <p style="margin: 4px 0;"><strong>Weight:</strong> ${item.weight}</p>
-              <p style="margin: 4px 0;"><strong>Weight:</strong> ${item.size}</p>
-              <p style="margin: 4px 0;"><strong>Weight:</strong> ${item.capacity}</p>
-              <p style="margin: 4px 0;"><strong>Weight:</strong> ${item.color}</p>
+              <p style="margin: 4px 0;"><strong>Price:</strong> Rs. ${item.products[0]?.itemAmount}</p>
+              ${item.weight && `<p style="margin: 4px 0;"><strong>Weight:</strong> ${item.weight}</p>`}
+             ${item.size && `<p style="margin: 4px 0;"><strong>Size:</strong> ${item.size}</p>`}
+              ${item.capacity && `<p style="margin: 4px 0;"><strong>Capacity:</strong> ${item.capacity}</p>`}
+              ${item.color && `<p style="margin: 4px 0;"><strong>Color:</strong> ${item.color}</p>`}
               <p style="margin: 4px 0;"><strong>Quantity:</strong> ${item.itemQty}</p>
 
             </td>

@@ -15,7 +15,6 @@ const OrderOverView = () => {
   const { orderId } = useParams();
   const [singleOrder, setSingleOrder] = useState(null);
   const [orderIdLocal, setOrderIdLocal] = useState("");
-  const [totalAmount, setTotalAmount] = useState("");
   const [cancelSpin, setCancelSpin] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
 
@@ -45,15 +44,6 @@ const OrderOverView = () => {
     }
   }, [orderId, orders]);
 
-  useEffect(() => {
-    // total amount caluculating function
-    const totalAmount = singleOrder?.orderedProdcuts.reduce((acc, item) => {
-      const total = parseFloat(item.totalAmount || 0);
-      const qty = item.itemQty;
-      return acc + total * qty;
-    }, 0);
-    setTotalAmount(parseInt(totalAmount).toFixed(2));
-  }, [singleOrder]);
 
   // cancel order function
   const cancelOrderFunc = async (updataStatus) => {
@@ -338,16 +328,6 @@ const OrderOverView = () => {
                           : "bg-gray-300"
                       } rounded flex items-center gap-3 p-3`}
                     >
-                      {singleOrder?.orderStatus === "shipped" ? (
-                        <Lottie
-                          className="w-5 rounded-full bg-green-500"
-                          animationData={check}
-                        />
-                      ) : (
-                        <div className="w-7 h-5 flex items-center  justify-center rounded-full bg-gray-400 text-white">
-                          <FaCheck size={13} className="" />
-                        </div>
-                      )}
                       <div className="flex flex-col  rounded-md ">
                         <div className="font-bold  text-[0.9rem] lg:text-lg">
                           {singleOrder.orderStatus === "shipped"
@@ -504,16 +484,16 @@ const OrderOverView = () => {
                 Price ({singleOrder?.orderedProdcuts?.length} items)
               </span>
               <span className="font-semibold text-gray-700">
-                Rs. {totalAmount?.toLocaleString("en-In")}
+                Rs. {singleOrder?.totalAmount?.toLocaleString("en-In") - singleOrder?.deliveryCharges}
               </span>
             </div>
 
             <div className="flex justify-between py-3 border-b w-full ">
               <span className="text-gray-900">Delivery Charges</span>
               <div className="flex items-center">
-                {singleOrder?.totalAmount > totalAmount ? (
+                {singleOrder?.deliveryCharges ? (
                   <span className="font-semibold text-gray-700">
-                    Rs. {singleOrder?.totalAmount - totalAmount}
+                    Rs. {singleOrder?.deliveryCharges}
                   </span>
                 ) : (
                   <span className="fxont-semibold text-green-600">Rs. 00</span>

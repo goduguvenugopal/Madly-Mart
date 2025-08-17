@@ -60,7 +60,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
           );
           if (res) {
             setOrderOk(true);
-            localStorage.removeItem("paymentDetails");
             setPaymentDetails({});
             // if payment verifys successfully email confirmation wll be sent to user and seller
             await axios.post(

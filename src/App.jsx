@@ -69,12 +69,6 @@ function App() {
       setUser(JSON.parse(userDetails));
     }
 
-    // retrieving user details
-    const paymentData = localStorage.getItem("paymentDetails");
-    if (paymentData) {
-      setPaymentDetails(JSON.parse(paymentData));
-    }
-
     // retrieving reviewed products from session storage
     const isViewdedProducts = localStorage.getItem("viewedProducts");
     if (isViewdedProducts) {

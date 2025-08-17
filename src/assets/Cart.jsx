@@ -301,9 +301,9 @@ const Cart = () => {
                   <div className="mt-2">
                     <button
                       onClick={() => orderCheckOutFunc(cartItems)}
-                      className="w-full bg-orange-500 text-white h-[3rem] rounded text-lg font-semibold hover:bg-orange-700"
+                      className="w-full bg-orange-500 text-white h-[3rem] rounded-full text-lg font-semibold hover:bg-orange-700"
                     >
-                      PLACE ORDER
+                      Proceed to Checkout
                     </button>
                   </div>
                   <h5 className="text-md text-center mt-3 font-semibold">
