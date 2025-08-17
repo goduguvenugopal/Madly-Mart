@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { EnvContext, ProductsContext, UserContext } from "../../App";
 
 const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
-  const { defaultAddress } = useContext(UserContext);
+  const { defaultAddress, paymentDetails } = useContext(UserContext);
   const { orderProducts } = useContext(ProductsContext);
   const { number } = useContext(EnvContext);
 
@@ -24,7 +24,7 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
         <h2>Payment Successful ✅</h2>
       <p>Dear <strong>${defaultAddress[0]?.name}</strong>,</p>
        <p>Your payment has been received successfully for <b>Order ID: ${
-         paymentResponse?.mongoOrderId
+         paymentDetails?.mongoOrderId
        }</b>.</p>
       <p>Thank you for your order! Below are your order and shipping details.</p>
     </div>

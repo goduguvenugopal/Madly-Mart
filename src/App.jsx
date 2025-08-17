@@ -44,6 +44,7 @@ function App() {
   const [discount, setDiscount] = useState({});
   const [orderProducts, setOrderProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [paymentDetails, setPaymentDetails] = useState({});
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
 
@@ -67,6 +68,13 @@ function App() {
     if (user) {
       setUser(JSON.parse(userDetails));
     }
+
+    // retrieving user details
+    const paymentData = localStorage.getItem("paymentDetails");
+    if (paymentData) {
+      setPaymentDetails(JSON.parse(paymentData));
+    }
+
     // retrieving reviewed products from session storage
     const isViewdedProducts = localStorage.getItem("viewedProducts");
     if (isViewdedProducts) {
@@ -203,6 +211,8 @@ function App() {
           setUser,
           defaultAddress,
           setDefaultAddress,
+          paymentDetails,
+          setPaymentDetails,
         }}
       >
         <CartContext.Provider
@@ -254,10 +264,19 @@ function App() {
               />
               <Route path="/login" element={<Login />} />
 
-              <Route path="/terms_and_conditions" element={<TermsAndConditions />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy/>} />
-              <Route path="/refund_and_cancellation" element={<RefundAndCancellation />} />
-              <Route path="/shipping_and_delivery" element={<ShippingAndDelivery/>} />
+              <Route
+                path="/terms_and_conditions"
+                element={<TermsAndConditions />}
+              />
+              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+              <Route
+                path="/refund_and_cancellation"
+                element={<RefundAndCancellation />}
+              />
+              <Route
+                path="/shipping_and_delivery"
+                element={<ShippingAndDelivery />}
+              />
 
               <Route path="*" element={<PageNotFound />} />
             </Routes>

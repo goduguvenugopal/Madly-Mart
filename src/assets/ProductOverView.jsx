@@ -152,7 +152,7 @@ const ProductOverView = () => {
     capacity,
   ]);
 
-  console.log(cart);
+ 
 
   // add to cart function
   const addToCartFunc = async () => {

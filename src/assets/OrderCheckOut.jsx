@@ -7,10 +7,12 @@ import { Slide, toast, ToastContainer } from "react-toastify";
 import OrderSuccessModal from "./components/OrderSuccessModal";
 import useEmailTemplate from "./utilis/useEmailTemplate";
 import PaymentFailedModal from "./components/PaymentFailedModal";
+import useRazorpayPayment from "./utilis/useRazorpayPayment";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
-  const { token, defaultAddress } = useContext(UserContext);
+  const { token, defaultAddress, paymentDetails, setPaymentDetails } =
+    useContext(UserContext);
   const { cartItems, discount } = useContext(CartContext);
   const { orderProducts } = useContext(ProductsContext);
   const [orderOk, setOrderOk] = useState(false);
@@ -20,8 +22,7 @@ const OrderCheckOut = () => {
   const [orderResponse, setOrderResponse] = useState({});
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
-  const [failedToggle, setFailedToggle] = useState(false);
-  const [paymentResponse, setPaymentResponse] = useState({});
+
   const initialOrderData = {
     orderedProdcuts: [],
     shippingAddress: [],
@@ -30,23 +31,11 @@ const OrderCheckOut = () => {
     totalAmount: null,
   };
   const [orderForm, setOrderForm] = useState(initialOrderData);
-  const { emailData, failedEmailData } = useEmailTemplate({
+  const { openRazorpay, paymentResponse, failedToggle } = useRazorpayPayment({
+    setOrderSpin,
+    setOrderOk,
     totalAmount,
-    paymentResponse,
   });
-
-  // integrating razorpay script link dynamically
-  useEffect(() => {
-    const scriptElement = document.createElement("script");
-    scriptElement.src = "https://checkout.razorpay.com/v1/checkout.js";
-    scriptElement.async = true;
-    document.body.appendChild(scriptElement);
-
-    // remove the script link when component unmount
-    return () => {
-      document.body.removeChild(scriptElement);
-    };
-  }, []);
 
   useEffect(() => {
     // total amount caluculating function
@@ -74,7 +63,7 @@ const OrderCheckOut = () => {
     }));
   }, [orderProducts, totalAmount]);
 
-  // placing order function
+  // create order
   const placeOrder = async () => {
     if (defaultAddress.length <= 0) {
       toast.warning("Please add address next place the order", {
@@ -94,110 +83,18 @@ const OrderCheckOut = () => {
         );
         if (res) {
           // if order created successfully next razorpay modal opens
-          setOrderResponse(res.data);
-          openRazorpay(res.data);
-        }
-      } catch (error) {
-        console.error(error);
-        setOrderSpin(false);
-      }
-    }
-  };
-
-  // Function to start Razorpay payment
-  function openRazorpay() {
-    const options = {
-      key: orderResponse.razorpay_key_id,
-      amount: orderResponse.amount,
-      currency: orderResponse.currency,
-      name: "Madly Mart",
-      description: "Purchase from Madly Mart",
-      image: "https://madlymartuser.vercel.app/MadlyMart.jpg",
-      order_id: orderResponse.razorpay_order_id, // from backend Razorpay order creation order id
-
-      // Success handler
-      handler: async function (response) {
-        // Send details to backend for verification
-        const paymentSuccessData = {
-          userEmail: defaultAddress[0]?.email,
-          mongoOrderId: orderResponse?.mongoOrderId,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_signature: response.razorpay_signature,
-          totalAmount: totalAmount,
-        };
-
-        setPaymentResponse(paymentSuccessData);
-        try {
-          const res = await axios.post(
-            `${api}/api/payment/verify-payment`,
-            paymentSuccessData
-          );
-          if (res) {
-            setOrderOk(true);
-            // if payment verifys successfully email confirmation wll be sent to user and seller
-            await axios.post(
-              `${api}/api/updates-email/send-updates`,
-              emailData
-            );
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setOrderSpin(false);
-        }
-      },
-
-      // customer details
-      prefill: {
-        name: defaultAddress[0]?.name,
-        email: defaultAddress[0]?.email,
-        contact: defaultAddress[0]?.phone,
-      },
-    };
-
-    const rzp = new window.Razorpay(options);
-
-    // Failure handler
-    rzp.on("payment.failed", async function (response) {
-      const failedPaymentData = {
-        userEmail: defaultAddress[0]?.email,
-        mongoOrderId: orderResponse?.mongoOrderId,
-        orderId: response.error.metadata.order_id,
-        paymentId: response.error.metadata.payment_id,
-        totalAmount: totalAmount,
-        error: {
-          code: response.error.code,
-          description: response.error.description,
-          source: response.error.source,
-          step: response.error.step,
-          reason: response.error.reason,
-          metadata: response.error.metadata,
-        },
-      };
-
-      setPaymentResponse(failedEmailData);
-
-      try {
-        const res = await axios.post(
-          `${api}/api/payments/failed-payment`,
-          failedPaymentData
-        );
-        if (res) {
-          setFailedToggle(true);
-          // if payment verification failed email will be sent to user and seller
-          await axios.post(`${api}/api/updates-email/send-updates`, emailData);
+          const orderRes = res.data;
+          localStorage.setItem("paymentDetails", JSON.stringify(orderRes));
+          setPaymentDetails(orderRes);
+          openRazorpay();
         }
       } catch (error) {
         console.error(error);
       } finally {
         setOrderSpin(false);
       }
-    });
-
-    // Open Razorpay payment popup
-    rzp.open();
-  }
+    }
+  };
 
   // if not token available or orderProducts length empty page navigate to home
   useEffect(() => {
@@ -382,14 +279,24 @@ const OrderCheckOut = () => {
                 TOTAL COST :
                 <span className="text-black pl-1">Rs. {totalAmount}</span>
               </h3>
-
-              <button
-                onClick={placeOrder}
-                type="submit"
-                className="mt-4  bg-yellow-500 hover:bg-yellow-700 text-white w-full font-bold h-12 rounded-full"
-              >
-                PLACE ORDER
-              </button>
+              {/* place order button  */}
+              {Object.keys(paymentDetails).length > 0 ? (
+                <button
+                  onClick={openRazorpay}
+                  type="button"
+                  className="mt-4  bg-yellow-500 hover:bg-yellow-700 text-white w-full font-bold h-12 rounded-full"
+                >
+                  PLACE ORDER
+                </button>
+              ) : (
+                <button
+                  onClick={placeOrder}
+                  type="submit"
+                  className="mt-4  bg-yellow-500 hover:bg-yellow-700 text-white w-full font-bold h-12 rounded-full"
+                >
+                  PLACE ORDER
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -419,7 +326,6 @@ const OrderCheckOut = () => {
         <PaymentFailedModal
           paymentResponse={paymentResponse}
           failedToggle={failedToggle}
-          openRazorpay={openRazorpay}
         />
       </div>
     </>
