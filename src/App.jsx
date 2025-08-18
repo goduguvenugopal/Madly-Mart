@@ -50,7 +50,7 @@ function App() {
   const [orderedItems, setOrderedItems] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
-
+  
   // calling visitors tracking custom hook
   useVisitorsTracking(api);
 

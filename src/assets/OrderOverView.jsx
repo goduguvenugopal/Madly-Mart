@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { EnvContext, ProductsContext } from "../App";
-import { Link, useParams } from "react-router-dom";
+import { EnvContext, OrderContext, ProductsContext } from "../App";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FlipkartSpin, Loading } from "./Loading";
 import { FaCheck } from "react-icons/fa";
 import axios from "axios";
@@ -8,15 +8,29 @@ import { Slide, toast, ToastContainer } from "react-toastify";
 import Lottie from "lottie-react";
 import warning from "./animations/warning.json";
 import check from "./animations/check.json";
+import useRazorpayPayment from "./utilis/useRazorpayPayment";
+import {
+  OrderSpinner,
+  OrderSuccessModal,
+} from "./components/OrderSuccessModal";
+import PaymentFailedModal from "./components/PaymentFailedModal";
 
 const OrderOverView = () => {
   const { orders, setOrders } = useContext(ProductsContext);
   const { api, number } = useContext(EnvContext);
   const { orderId } = useParams();
   const [singleOrder, setSingleOrder] = useState(null);
-  const [orderIdLocal, setOrderIdLocal] = useState("");
   const [cancelSpin, setCancelSpin] = useState(false);
+  const [orderOk, setOrderOk] = useState(false);
+  const [orderSpin, setOrderSpin] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
+  const navigate = useNavigate();
+  const { setOrderedItems, setOrderedAddress, setPaymentDetails } =
+    useContext(OrderContext);
+  const { openRazorpay, paymentResponse, failedToggle } = useRazorpayPayment({
+    setOrderSpin,
+    setOrderOk,
+  });
 
   // changing title dynamically
   useEffect(() => {
@@ -27,23 +41,36 @@ const OrderOverView = () => {
     }
   }, [singleOrder]);
 
-  useEffect(() => {
-    // storing order id in localStorage
-    localStorage.setItem("orderId", JSON.stringify(orderId));
-    const isOrderId = localStorage.getItem("orderId");
-    if (isOrderId) {
-      setOrderIdLocal(JSON.parse(isOrderId));
-    }
-  }, []);
-
   // Finding single order based on order ID
   useEffect(() => {
+    if (!orderId) {
+      navigate("/orders"); // No orderId → redirect
+      return;
+    }
+
     if (orders) {
       const order = orders.find((item) => item._id === orderId);
-      setSingleOrder(order || null); // Fallback to null if not found
+      if (order) {
+        setSingleOrder(order);
+      } else {
+        navigate("/orders"); // Order not found → redirect
+      }
     }
-  }, [orderId, orders]);
+  }, [orderId, orders, navigate]);
 
+  // if payment failed here the data will send again to make payemnt
+  useEffect(() => {
+    setPaymentDetails({
+      razorpay_order_id: singleOrder?.razorpay_order_id,
+      amount: parseInt(singleOrder?.totalAmount) * 100,
+      currency: "INR",
+      mongoOrderId: singleOrder?._id,
+      razorpay_key_id: singleOrder?.razorpay_key_id,
+    });
+
+    setOrderedItems(singleOrder?.orderedProdcuts);
+    setOrderedAddress(singleOrder?.shippingAddress[0]);
+  }, [singleOrder]);
 
   // cancel order function
   const cancelOrderFunc = async (updataStatus) => {
@@ -82,8 +109,6 @@ const OrderOverView = () => {
       }
     }
   };
-
-
 
   // Handle loading state
   if (!singleOrder) {
@@ -290,6 +315,12 @@ const OrderOverView = () => {
                         <span className="font-bold text-red-500">Reason:</span>{" "}
                         Payment not completed
                       </h5>
+                      <button
+                        onClick={openRazorpay}
+                        className="bg-blue-600 mt-2 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
+                      >
+                        Retry Payment
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -486,7 +517,9 @@ const OrderOverView = () => {
                 Price ({singleOrder?.orderedProdcuts?.length} items)
               </span>
               <span className="font-semibold text-gray-700">
-                Rs. {singleOrder?.totalAmount?.toLocaleString("en-In") - singleOrder?.deliveryCharges}
+                Rs.{" "}
+                {singleOrder?.totalAmount?.toLocaleString("en-In") -
+                  singleOrder?.deliveryCharges}
               </span>
             </div>
 
@@ -512,6 +545,19 @@ const OrderOverView = () => {
           </div>
         </div>
       </div>
+
+      {/* order  progress spinner  */}
+      {orderSpin && <OrderSpinner />}
+
+      {/* order and payment success modal  */}
+      <OrderSuccessModal orderOk={orderOk} />
+
+      {/* payment failed modal  */}
+      <PaymentFailedModal
+        paymentResponse={paymentResponse}
+        failedToggle={failedToggle}
+        openRazorpay={openRazorpay}
+      />
     </>
   );
 };

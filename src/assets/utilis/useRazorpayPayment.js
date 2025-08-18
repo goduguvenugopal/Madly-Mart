@@ -3,14 +3,13 @@ import { EnvContext, OrderContext } from "../../App";
 import axios from "axios";
 import useEmailTemplate from "./useEmailTemplate";
 
-const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
+const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
   const { paymentDetails, setPaymentDetails, orderedAddress } =
     useContext(OrderContext);
   const { api } = useContext(EnvContext);
   const [paymentResponse, setPaymentResponse] = useState({});
   const [failedToggle, setFailedToggle] = useState(false);
   const { emailData, failedEmailData } = useEmailTemplate({
-    totalAmount,
     paymentResponse,
   });
 
@@ -44,12 +43,12 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
         setFailedToggle(false);
 
         const paymentSuccessData = {
-          userEmail: orderedAddress[0]?.email,
+          userEmail: orderedAddress?.email,
           mongoOrderId: paymentDetails?.mongoOrderId,
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature,
-          totalAmount: totalAmount,
+          totalAmount: paymentDetails?.amount / 100,
         };
 
         setPaymentResponse(paymentSuccessData);
@@ -78,9 +77,9 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
 
       // customer details
       prefill: {
-        name: orderedAddress[0]?.name,
-        email: orderedAddress[0]?.email,
-        contact: orderedAddress[0]?.phone,
+        name: orderedAddress?.name,
+        email: orderedAddress?.email,
+        contact: orderedAddress?.phone,
       },
     };
 
@@ -88,14 +87,12 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
 
     // Failure handler
     rzp.on("payment.failed", async function (response) {
-      setFailedToggle(true);
-
       const failedPaymentData = {
-        userEmail: orderedAddress[0]?.email,
+        userEmail: orderedAddress?.email,
         mongoOrderId: paymentDetails?.mongoOrderId,
         orderId: response.error.metadata.order_id,
         paymentId: response.error.metadata.payment_id,
-        totalAmount: totalAmount,
+        totalAmount: paymentDetails?.amount / 100,
         error: {
           code: response.error.code,
           description: response.error.description,
@@ -108,6 +105,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
 
       if (response) {
         setPaymentResponse(failedEmailData);
+        setFailedToggle(true);
       }
 
       try {

@@ -22,9 +22,7 @@ const OrderCheckOut = () => {
   const {
     paymentDetails,
     setPaymentDetails,
-    orderedItems,
     setOrderedItems,
-    orderedAddress,
     setOrderedAddress,
   } = useContext(OrderContext);
   const { cartItems, discount } = useContext(CartContext);
@@ -48,7 +46,6 @@ const OrderCheckOut = () => {
   const { openRazorpay, paymentResponse, failedToggle } = useRazorpayPayment({
     setOrderSpin,
     setOrderOk,
-    totalAmount,
   });
 
   useEffect(() => {
@@ -78,7 +75,7 @@ const OrderCheckOut = () => {
     }));
     setPaymentDetails({});
     setOrderedItems(orderProducts);
-    setOrderedAddress(defaultAddress);
+    setOrderedAddress(defaultAddress[0]);
   }, [orderProducts, totalAmount, discount]);
 
   // create order

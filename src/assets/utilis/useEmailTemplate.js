@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { EnvContext, OrderContext } from "../../App";
 
-const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
+const useEmailTemplate = ({ paymentResponse }) => {
   const { number } = useContext(EnvContext);
   const {orderedItems , orderedAddress, paymentDetails} = useContext(OrderContext)
 
   // success payment email confirmation
 
   const emailData = {
-    email: `${orderedAddress[0]?.email}, madlymart@gmail.com`,
+    email: `${orderedAddress?.email}, madlymart@gmail.com`,
     subject: "Madly Mart - Order Placed Successfully",
     html: `
   <div style="font-family: Arial, sans-serif; max-width: 700px; margin: auto; background: #ffffff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
@@ -21,7 +21,7 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
     <!-- Greeting -->
     <div style="padding: 20px;">
         <h2>Payment Successful ✅</h2>
-      <p>Dear <strong>${orderedAddress[0]?.name}</strong>,</p>
+      <p>Dear <strong>${orderedAddress?.name}</strong>,</p>
        <p>Your payment has been received successfully for <b>Order ID: ${
          paymentDetails?.mongoOrderId
        }</b>.</p>
@@ -31,19 +31,19 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
     <!-- Shipping Address -->
     <div style="padding: 0 20px;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Shipping Address</h3>
-      <p><strong>City:</strong> ${orderedAddress[0]?.district}</p>
-      <p><strong>Phone:</strong> ${orderedAddress[0]?.phone}</p>
-      <p><strong>Address:</strong> ${orderedAddress[0]?.street}, ${
-      orderedAddress[0]?.village
-    }, ${orderedAddress[0]?.postalCode}</p>
-      <p><strong>State:</strong> ${orderedAddress[0]?.state}</p>
+      <p><strong>City:</strong> ${orderedAddress?.district}</p>
+      <p><strong>Phone:</strong> ${orderedAddress?.phone}</p>
+      <p><strong>Address:</strong> ${orderedAddress?.street}, ${
+      orderedAddress?.village
+    }, ${orderedAddress?.postalCode}</p>
+      <p><strong>State:</strong> ${orderedAddress?.state}</p>
     </div>
 
     <!-- Product Details -->
     <div style="padding: 20px;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Product Details</h3>
       ${orderedItems
-        .map(
+        ?.map(
           (item) => `
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1px solid #ddd;">
           <tr>
@@ -71,8 +71,8 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
     <div style="padding: 20px; background: #f9f9f9;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Payment Details</h3>
       <p><strong>Payment Status:</strong> Paid</p>
-      <p><strong>Total Amount:</strong> Rs. ${totalAmount}</p>
-      <p><strong>Total Items:</strong> ${orderedItems.length}</p>
+      <p><strong>Total Amount:</strong> Rs. ${paymentDetails?.amount / 100}</p>
+      <p><strong>Total Items:</strong> ${orderedItems?.length}</p>
     </div>
 
     <!-- Company Info -->
@@ -94,13 +94,13 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
 
   // failed payment email confirmation
   const failedEmailData = {
-    email: `${orderedAddress?.email},madlymart@gmail.com`,
-    subject: `Payment Failed - Order ${paymentDetails?.mongoOrderId}`,
+    email:`${orderedAddress?.email},madlymart@gmail.com`,
+    subject:`Payment Failed - Order ${paymentDetails?.mongoOrderId}`,
     html: `
     <h2>Payment Failed</h2>
     <p>Dear Customer,</p>
     <p>Unfortunately, your payment for <b>Order ID: ${paymentDetails?.mongoOrderId}</b> could not be completed.</p>
-    <p><strong>Total Amount:</strong> Rs. ${paymentResponse?.totalAmount}</p>
+    <p><strong>Total Amount:</strong> Rs. ${paymentDetails?.amount / 100}</p>
     <h3>Details:</h3>
     <ul>
       <li><b>Payment ID:</b> ${paymentResponse?.paymentId}</li>
