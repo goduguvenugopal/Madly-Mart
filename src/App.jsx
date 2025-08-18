@@ -29,6 +29,7 @@ export const CartContext = createContext();
 export const UserContext = createContext();
 export const ProductsContext = createContext();
 export const EnvContext = createContext();
+export const OrderContext = createContext();
 
 function App() {
   const [token, setToken] = useState("");
@@ -45,6 +46,8 @@ function App() {
   const [orderProducts, setOrderProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState({});
+  const [orderedAddress, setOrderedAddress] = useState({});
+  const [orderedItems, setOrderedItems] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
 
@@ -205,8 +208,6 @@ function App() {
           setUser,
           defaultAddress,
           setDefaultAddress,
-          paymentDetails,
-          setPaymentDetails,
         }}
       >
         <CartContext.Provider
@@ -233,47 +234,58 @@ function App() {
               setViewedProducts,
             }}
           >
-            <Navbar />
+            <OrderContext.Provider
+              value={{
+                paymentDetails,
+                setPaymentDetails,
+                orderedItems,
+                setOrderedItems,
+                orderedAddress,
+                setOrderedAddress,
+              }}
+            >
+              <Navbar />
 
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/products_by_category/:category"
-                element={<AllProducts />}
-              />
-              <Route
-                path="/product_over_view/:itemId"
-                element={<ProductOverView />}
-              />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/contact" element={<ContactUs />} />
-              <Route path="/reviewform" element={<ProdutReviewsForm />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/order_check_out" element={<OrderCheckOut />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route
-                path="/orders/order_over_view/:orderId"
-                element={<OrderOverView />}
-              />
-              <Route path="/login" element={<Login />} />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/products_by_category/:category"
+                  element={<AllProducts />}
+                />
+                <Route
+                  path="/product_over_view/:itemId"
+                  element={<ProductOverView />}
+                />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/reviewform" element={<ProdutReviewsForm />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/order_check_out" element={<OrderCheckOut />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route
+                  path="/orders/order_over_view/:orderId"
+                  element={<OrderOverView />}
+                />
+                <Route path="/login" element={<Login />} />
 
-              <Route
-                path="/terms_and_conditions"
-                element={<TermsAndConditions />}
-              />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route
-                path="/refund_and_cancellation"
-                element={<RefundAndCancellation />}
-              />
-              <Route
-                path="/shipping_and_delivery"
-                element={<ShippingAndDelivery />}
-              />
+                <Route
+                  path="/terms_and_conditions"
+                  element={<TermsAndConditions />}
+                />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route
+                  path="/refund_and_cancellation"
+                  element={<RefundAndCancellation />}
+                />
+                <Route
+                  path="/shipping_and_delivery"
+                  element={<ShippingAndDelivery />}
+                />
 
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </OrderContext.Provider>
           </ProductsContext.Provider>
         </CartContext.Provider>
       </UserContext.Provider>

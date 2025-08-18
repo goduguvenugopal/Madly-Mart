@@ -19,4 +19,11 @@ body::-webkit-scrollbar{
   @apply bg-gray-800 text-white text-sm p-4 rounded-lg w-fit my-8 m-2;
 }
 
+@keyframes scaleIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
 

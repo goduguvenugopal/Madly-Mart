@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext, EnvContext, ProductsContext, UserContext } from "../App";
+import {
+  CartContext,
+  EnvContext,
+  OrderContext,
+  ProductsContext,
+  UserContext,
+} from "../App";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
@@ -12,15 +18,21 @@ import useRazorpayPayment from "./utilis/useRazorpayPayment";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
-  const { token, defaultAddress, paymentDetails, setPaymentDetails } =
-    useContext(UserContext);
+  const { token, defaultAddress } = useContext(UserContext);
+  const {
+    paymentDetails,
+    setPaymentDetails,
+    orderedItems,
+    setOrderedItems,
+    orderedAddress,
+    setOrderedAddress,
+  } = useContext(OrderContext);
   const { cartItems, discount } = useContext(CartContext);
   const { orderProducts } = useContext(ProductsContext);
   const [orderOk, setOrderOk] = useState(false);
   const [orderSpin, setOrderSpin] = useState(false);
   const [totalAmount, setTotalAmount] = useState(null);
   const navigate = useNavigate();
-  const [orderResponse, setOrderResponse] = useState({});
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
 
@@ -65,6 +77,8 @@ const OrderCheckOut = () => {
       deliveryCharges: discount?.deliveryCharges,
     }));
     setPaymentDetails({});
+    setOrderedItems(orderProducts);
+    setOrderedAddress(defaultAddress);
   }, [orderProducts, totalAmount, discount]);
 
   // create order
@@ -97,6 +111,13 @@ const OrderCheckOut = () => {
       }
     }
   };
+
+  useEffect(() => {
+    // if order id available then opens the razorpay pop up modal
+    if (paymentDetails?.razorpay_order_id) {
+      openRazorpay();
+    }
+  }, [paymentDetails]);
 
   // if not token available or orderProducts length empty page navigate to home
   useEffect(() => {
@@ -283,23 +304,14 @@ const OrderCheckOut = () => {
               </h3>
 
               {/* place order button  */}
-              {paymentDetails?.mongoOrderId ? (
-                <button
-                  onClick={openRazorpay}
-                  type="button"
-                  className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
-                >
-                  Pay Now ₹{totalAmount}
-                </button>
-              ) : (
-                <button
-                  onClick={placeOrder}
-                  type="submit"
-                  className="mt-4 text-lg bg-yellow-500 hover:bg-yellow-600 text-white w-full font-bold h-12 rounded-full"
-                >
-                  Place Order
-                </button>
-              )}
+
+              <button
+                onClick={placeOrder}
+                type="submit"
+                className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
+              >
+                Place Order ₹{totalAmount}
+              </button>
             </div>
           </div>
         </div>
@@ -314,6 +326,7 @@ const OrderCheckOut = () => {
         <PaymentFailedModal
           paymentResponse={paymentResponse}
           failedToggle={failedToggle}
+          openRazorpay={openRazorpay}
         />
       </div>
     </>

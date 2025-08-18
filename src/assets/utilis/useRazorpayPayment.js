@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { EnvContext, UserContext } from "../../App";
+import { EnvContext, OrderContext } from "../../App";
 import axios from "axios";
 import useEmailTemplate from "./useEmailTemplate";
 
 const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
-  const { paymentDetails, defaultAddress, setPaymentDetails } =
-    useContext(UserContext);
+  const { paymentDetails, setPaymentDetails, orderedAddress } =
+    useContext(OrderContext);
   const { api } = useContext(EnvContext);
   const [paymentResponse, setPaymentResponse] = useState({});
   const [failedToggle, setFailedToggle] = useState(false);
@@ -41,8 +41,10 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
       // Success handler
       handler: async function (response) {
         // Send details to backend for verification
+        setFailedToggle(false);
+
         const paymentSuccessData = {
-          userEmail: defaultAddress[0]?.email,
+          userEmail: orderedAddress[0]?.email,
           mongoOrderId: paymentDetails?.mongoOrderId,
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
@@ -76,9 +78,9 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
 
       // customer details
       prefill: {
-        name: defaultAddress[0]?.name,
-        email: defaultAddress[0]?.email,
-        contact: defaultAddress[0]?.phone,
+        name: orderedAddress[0]?.name,
+        email: orderedAddress[0]?.email,
+        contact: orderedAddress[0]?.phone,
       },
     };
 
@@ -86,8 +88,10 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
 
     // Failure handler
     rzp.on("payment.failed", async function (response) {
+      setFailedToggle(true);
+
       const failedPaymentData = {
-        userEmail: defaultAddress[0]?.email,
+        userEmail: orderedAddress[0]?.email,
         mongoOrderId: paymentDetails?.mongoOrderId,
         orderId: response.error.metadata.order_id,
         paymentId: response.error.metadata.payment_id,
@@ -102,19 +106,21 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk, totalAmount }) => {
         },
       };
 
-      setPaymentResponse(failedEmailData);
+      if (response) {
+        setPaymentResponse(failedEmailData);
+      }
 
       try {
-        setOrderSpin(true);
-
         const res = await axios.post(
           `${api}/api/payments/failed-payment`,
           failedPaymentData
         );
         if (res) {
-          setFailedToggle(true);
           // if payment verification failed email will be sent to user and seller
-          await axios.post(`${api}/api/updates-email/send-updates`, emailData);
+          await axios.post(
+            `${api}/api/updates-email/send-updates`,
+            failedEmailData
+          );
         }
       } catch (error) {
         console.error(error);

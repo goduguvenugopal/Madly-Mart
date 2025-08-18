@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
-import { EnvContext, ProductsContext, UserContext } from "../../App";
+import { EnvContext, OrderContext } from "../../App";
 
 const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
-  const { defaultAddress, paymentDetails } = useContext(UserContext);
-  const { orderProducts } = useContext(ProductsContext);
   const { number } = useContext(EnvContext);
+  const {orderedItems , orderedAddress, paymentDetails} = useContext(OrderContext)
 
   // success payment email confirmation
 
   const emailData = {
-    email: `${defaultAddress[0]?.email}, madlymart@gmail.com`,
+    email: `${orderedAddress[0]?.email}, madlymart@gmail.com`,
     subject: "Madly Mart - Order Placed Successfully",
     html: `
   <div style="font-family: Arial, sans-serif; max-width: 700px; margin: auto; background: #ffffff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
@@ -22,7 +21,7 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
     <!-- Greeting -->
     <div style="padding: 20px;">
         <h2>Payment Successful ✅</h2>
-      <p>Dear <strong>${defaultAddress[0]?.name}</strong>,</p>
+      <p>Dear <strong>${orderedAddress[0]?.name}</strong>,</p>
        <p>Your payment has been received successfully for <b>Order ID: ${
          paymentDetails?.mongoOrderId
        }</b>.</p>
@@ -32,18 +31,18 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
     <!-- Shipping Address -->
     <div style="padding: 0 20px;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Shipping Address</h3>
-      <p><strong>City:</strong> ${defaultAddress[0]?.district}</p>
-      <p><strong>Phone:</strong> ${defaultAddress[0]?.phone}</p>
-      <p><strong>Address:</strong> ${defaultAddress[0]?.street}, ${
-      defaultAddress[0]?.village
-    }, ${defaultAddress[0]?.postalCode}</p>
-      <p><strong>State:</strong> ${defaultAddress[0]?.state}</p>
+      <p><strong>City:</strong> ${orderedAddress[0]?.district}</p>
+      <p><strong>Phone:</strong> ${orderedAddress[0]?.phone}</p>
+      <p><strong>Address:</strong> ${orderedAddress[0]?.street}, ${
+      orderedAddress[0]?.village
+    }, ${orderedAddress[0]?.postalCode}</p>
+      <p><strong>State:</strong> ${orderedAddress[0]?.state}</p>
     </div>
 
     <!-- Product Details -->
     <div style="padding: 20px;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Product Details</h3>
-      ${orderProducts
+      ${orderedItems
         .map(
           (item) => `
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1px solid #ddd;">
@@ -53,7 +52,7 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
             </td>
             <td style="padding: 10px; vertical-align: top;">
               <p style="margin: 0; font-weight: bold;">${item?.products[0]?.itemName}</p>
-              <p style="margin: 4px 0;"><strong>Price:</strong> Rs. ${item.products[0]?.itemAmount}</p>
+              <p style="margin: 4px 0;"><strong>Price:</strong> Rs. ${item.products[0]?.itemCost}</p>
               ${item.weight && `<p style="margin: 4px 0;"><strong>Weight:</strong> ${item.weight}</p>`}
              ${item.size && `<p style="margin: 4px 0;"><strong>Size:</strong> ${item.size}</p>`}
               ${item.capacity && `<p style="margin: 4px 0;"><strong>Capacity:</strong> ${item.capacity}</p>`}
@@ -73,14 +72,14 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Payment Details</h3>
       <p><strong>Payment Status:</strong> Paid</p>
       <p><strong>Total Amount:</strong> Rs. ${totalAmount}</p>
-      <p><strong>Total Items:</strong> ${orderProducts.length}</p>
+      <p><strong>Total Items:</strong> ${orderedItems.length}</p>
     </div>
 
     <!-- Company Info -->
     <div style="padding: 20px;">
       <h3 style="color: #ff6600; border-bottom: 2px solid #eee; padding-bottom: 5px;">Madly Mart Contact</h3>
       <p><strong>Mobile:</strong> <a href="tel:+91${number}">${number}</a></p>
-      <p><strong>Address:</strong>Hyderabad , Telangana , India.</p>
+      <p><strong>Address: </strong>Hyderabad , Telangana , India.</p>
       <p><strong>Email:</strong> madlymart@gmail.com</p>
     </div>
 
@@ -95,12 +94,12 @@ const useEmailTemplate = ({ totalAmount, paymentResponse }) => {
 
   // failed payment email confirmation
   const failedEmailData = {
-    email: `${paymentResponse?.userEmail},madlymart@gmail.com`,
-    subject: `Payment Failed - Order ${paymentResponse?.mongoOrderId}`,
+    email: `${orderedAddress?.email},madlymart@gmail.com`,
+    subject: `Payment Failed - Order ${paymentDetails?.mongoOrderId}`,
     html: `
     <h2>Payment Failed</h2>
     <p>Dear Customer,</p>
-    <p>Unfortunately, your payment for <b>Order ID: ${paymentResponse?.mongoOrderId}</b> could not be completed.</p>
+    <p>Unfortunately, your payment for <b>Order ID: ${paymentDetails?.mongoOrderId}</b> could not be completed.</p>
     <p><strong>Total Amount:</strong> Rs. ${paymentResponse?.totalAmount}</p>
     <h3>Details:</h3>
     <ul>

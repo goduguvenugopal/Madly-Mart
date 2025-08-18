@@ -8,7 +8,7 @@ export const OrderSuccessModal = ({ orderOk }) => {
     <>
       {/* order placed successfull modal  */}
       {orderOk && (
-        <div className="px-5 fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-white text-black">
+        <div className="px-5 z-10 fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-white text-black ">
           <div className="text-center flex flex-col items-center justify-center">
             <Lottie animationData={success} className="w-[15rem]" />
             <h4 className=" text-2xl font-semibold"> </h4>
