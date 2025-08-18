@@ -115,7 +115,67 @@ const useEmailTemplate = ({ paymentResponse }) => {
   `,
   };
 
-  return { emailData, failedEmailData };
+// Payment attempt closed by user (no completion)
+const closedEmailData = {
+  email: `${orderedAddress?.email},madlymart@gmail.com`,
+  subject: `Payment Not Completed - Order ${paymentDetails?.mongoOrderId}`,
+  html: `
+  <div style="font-family: Arial, sans-serif; background-color:#f4f4f4; padding:20px;">
+    <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:8px; padding:30px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+      
+      <!-- Header -->
+      <h2 style="color:#333333; text-align:center; margin-bottom:20px;">Payment Not Completed</h2>
+      
+      <!-- Body -->
+      <p style="font-size:15px; color:#555555;">Dear Customer,</p>
+      <p style="font-size:15px; color:#555555; line-height:1.6;">
+        We noticed that you initiated a payment for 
+        <b>Order ID: ${paymentDetails?.mongoOrderId}</b>, 
+        but the payment process was not completed.
+      </p>
+
+      <p style="font-size:15px; color:#555555; margin:10px 0;">
+        <strong>Total Amount:</strong> <span style="color:#000;">Rs. ${paymentDetails?.amount / 100}</span>
+      </p>
+
+      <p style="font-size:15px; color:#555555; line-height:1.6;">
+        No charges have been made for this order.
+        To complete your purchase, please go to the 
+        <b>Orders</b> section of your account and click 
+        <b>"Retry Payment"</b> for this order.
+      </p>
+
+      <!-- CTA Button -->
+      <div style="text-align:center; margin:30px 0;">
+        <a href="https://madlymart.in/orders" 
+          style="background-color:#007bff; 
+                 color:#ffffff; 
+                 padding:12px 24px; 
+                 font-size:16px; 
+                 text-decoration:none; 
+                 border-radius:6px; 
+                 display:inline-block; 
+                 font-weight:bold;">
+          Go to My Orders
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <p style="font-size:14px; color:#777777; line-height:1.6;">
+        If you faced any issues during checkout, feel free to reach out to us — we’ll be happy to assist you.
+      </p>
+
+      <p style="font-size:14px; color:#555555; margin-top:25px;">
+        Thank you for choosing <b>MadlyMart</b>.<br/>
+        <span style="color:#007bff; font-weight:bold;">Team MadlyMart</span>
+      </p>
+    </div>
+  </div>
+  `,
+};
+
+  
+  return { emailData, failedEmailData,closedEmailData };
 };
 
 export default useEmailTemplate;

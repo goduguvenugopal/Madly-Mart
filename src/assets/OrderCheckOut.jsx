@@ -34,6 +34,7 @@ const OrderCheckOut = () => {
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
 
+ 
   const initialOrderData = {
     orderedProdcuts: [],
     shippingAddress: [],

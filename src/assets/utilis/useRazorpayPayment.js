@@ -9,7 +9,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
   const { api } = useContext(EnvContext);
   const [paymentResponse, setPaymentResponse] = useState({});
   const [failedToggle, setFailedToggle] = useState(false);
-  const { emailData, failedEmailData } = useEmailTemplate({
+  const { emailData, failedEmailData, closedEmailData } = useEmailTemplate({
     paymentResponse,
   });
 
@@ -36,7 +36,21 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       description: "Purchase from Madly Mart",
       image: "https://madlymartuser.vercel.app/MadlyMart.jpg",
       order_id: paymentDetails.razorpay_order_id, // from backend Razorpay order creation order id
-
+      modal: {
+        ondismiss: async function () {
+          // ✅ This triggers when user closes popup manually
+          try {
+            await axios.post(
+              `${api}/api/updates-email/send-updates`,
+              closedEmailData
+            );
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setPaymentDetails({});
+          }
+        },
+      },
       // Success handler
       handler: async function (response) {
         // Send details to backend for verification
