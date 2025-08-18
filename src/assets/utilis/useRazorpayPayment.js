@@ -38,12 +38,13 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       order_id: paymentDetails.razorpay_order_id, // from backend Razorpay order creation order id
       modal: {
         ondismiss: async function () {
-          // ✅ This triggers when user closes popup manually
+          // This triggers when user closes popup manually
           try {
             await axios.post(
               `${api}/api/updates-email/send-updates`,
               closedEmailData
             );
+            setPaymentDetails({});
           } catch (error) {
             console.error(error);
           } finally {
@@ -55,6 +56,8 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       handler: async function (response) {
         // Send details to backend for verification
         setFailedToggle(false);
+        setOrderSpin(true);
+
 
         const paymentSuccessData = {
           userEmail: orderedAddress?.email,
@@ -67,7 +70,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
 
         setPaymentResponse(paymentSuccessData);
         try {
-          setOrderSpin(true);
+          
 
           const res = await axios.post(
             `${api}/api/payment/verify-payment`,
@@ -75,17 +78,18 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
           );
           if (res) {
             setOrderOk(true);
-            setPaymentDetails({});
             // if payment verifys successfully email confirmation wll be sent to user and seller
             await axios.post(
               `${api}/api/updates-email/send-updates`,
               emailData
             );
+            setPaymentDetails({});
           }
         } catch (error) {
           console.error(error);
         } finally {
           setOrderSpin(false);
+          setPaymentDetails({});
         }
       },
 
@@ -104,8 +108,8 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       const failedPaymentData = {
         userEmail: orderedAddress?.email,
         mongoOrderId: paymentDetails?.mongoOrderId,
-        orderId: response.error.metadata.order_id,
-        paymentId: response.error.metadata.payment_id,
+        razorpay_order_id: response.error.metadata.order_id,
+        razorpay_payment_id: response.error.metadata.payment_id,
         totalAmount: paymentDetails?.amount / 100,
         error: {
           code: response.error.code,
@@ -118,7 +122,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       };
 
       if (response) {
-        setPaymentResponse(failedEmailData);
+        setPaymentResponse(failedPaymentData);
         setFailedToggle(true);
       }
 
@@ -136,9 +140,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
         }
       } catch (error) {
         console.error(error);
-      } finally {
-        setOrderSpin(false);
-      }
+      }  
     });
 
     // Open Razorpay payment popup

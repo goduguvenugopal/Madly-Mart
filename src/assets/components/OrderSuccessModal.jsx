@@ -8,7 +8,7 @@ export const OrderSuccessModal = ({ orderOk }) => {
     <>
       {/* order placed successfull modal  */}
       {orderOk && (
-        <div className="px-5 z-10 fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-white text-black ">
+        <div className="px-5 z-20 fixed flex justify-center h-screen w-screen items-center top-0 left-0 bg-white text-black ">
           <div className="text-center flex flex-col items-center justify-center">
             <Lottie animationData={success} className="w-[15rem]" />
             <h4 className=" text-2xl font-semibold"> </h4>
@@ -41,7 +41,7 @@ export const OrderSuccessModal = ({ orderOk }) => {
 // order spinner
 export const OrderSpinner = () => {
   return (
-    <div className="flex fixed w-screen top-0 left-0 items-center justify-center h-screen bg-gray-100 p-3">
+    <div className="flex fixed w-screen top-0 left-0 items-center justify-center h-screen bg-gray-100 p-3 z-10">
       <div className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-2xl">
         <div className="w-10 h-10 mb-4 ease-linear border-4 border-t-4 border-blue-500 border-t-white rounded-full spinner animate-spin" />
         <p className=" text-[1.2rem] lg:text-2xl font-bold text-gray-800">

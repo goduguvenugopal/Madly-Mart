@@ -30,7 +30,6 @@ const PaymentFailedModal = ({
             {paymentResponse?.error?.reason && (
               <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-lg mt-4 text-left">
                 <h4 className="font-semibold">Reason:</h4>
-                <p>{paymentResponse.error.reason}</p>
                 {paymentResponse.error.description && (
                   <p className="mt-1 text-sm text-red-600">
                     {paymentResponse.error.description}

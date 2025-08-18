@@ -3,11 +3,13 @@ import axios from "axios";
 import { EnvContext, ProductsContext, UserContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
+import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
 
 const Orders = () => {
   const { api } = useContext(EnvContext);
   const { orders, setOrders } = useContext(ProductsContext);
   const { token, user } = useContext(UserContext);
+  useEmptyPaymentPayload();
 
   const navigate = useNavigate();
   const [orderSpin, setOrderSpin] = useState(false);
@@ -46,12 +48,6 @@ const Orders = () => {
       );
       setOrders(results);
     }
-  };
-
-  // navigate order status page
-  const openOrderStatusPage = (orderId) => {
-    localStorage.setItem("orderId", JSON.stringify(orderId));
-    navigate(`/orders/order_over_view/${orderId}`);
   };
 
   //  if token not navigate to home
@@ -93,12 +89,12 @@ const Orders = () => {
         orders.map((product) => (
           <div
             key={product._id}
-            className="flex flex-col items-start gap-2 border-b border-gray-400 pb-4 mb-4"
+            className="flex  flex-col items-start gap-2 border-b border-gray-400 pb-4 mb-4"
           >
             {/* Product Image */}
             <Link
               to={`/orders/order_over_view/${product._id}`}
-              className="flex active:bg-blue-300 gap-3 w-full"
+              className="flex active:bg-blue-300 gap-3 w-full "
             >
               <div className="w-[6.8rem] h-fit lg:w-[9.5rem] ">
                 <img

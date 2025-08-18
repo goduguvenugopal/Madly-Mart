@@ -24,13 +24,22 @@ const OrderOverView = () => {
   const [orderOk, setOrderOk] = useState(false);
   const [orderSpin, setOrderSpin] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
+  const [retrySpinner, setRetrySpinner] = useState(false);
   const navigate = useNavigate();
-  const { setOrderedItems, setOrderedAddress, setPaymentDetails } =
-    useContext(OrderContext);
+  const {
+    setOrderedItems,
+    setOrderedAddress,
+    setPaymentDetails,
+    paymentDetails,
+    orderedItems,
+    orderedAddress,
+  } = useContext(OrderContext);
   const { openRazorpay, paymentResponse, failedToggle } = useRazorpayPayment({
     setOrderSpin,
     setOrderOk,
   });
+
+
 
   // changing title dynamically
   useEffect(() => {
@@ -58,8 +67,8 @@ const OrderOverView = () => {
     }
   }, [orderId, orders, navigate]);
 
-  // if payment failed here the data will send again to make payemnt
-  useEffect(() => {
+  // retry payment function calling and data will send again to make payemnt
+  const retryPayment = () => {
     setPaymentDetails({
       razorpay_order_id: singleOrder?.razorpay_order_id,
       amount: parseInt(singleOrder?.totalAmount) * 100,
@@ -67,10 +76,9 @@ const OrderOverView = () => {
       mongoOrderId: singleOrder?._id,
       razorpay_key_id: singleOrder?.razorpay_key_id,
     });
-
     setOrderedItems(singleOrder?.orderedProdcuts);
     setOrderedAddress(singleOrder?.shippingAddress[0]);
-  }, [singleOrder]);
+  };
 
   // cancel order function
   const cancelOrderFunc = async (updataStatus) => {
@@ -315,12 +323,25 @@ const OrderOverView = () => {
                         <span className="font-bold text-red-500">Reason:</span>{" "}
                         Payment not completed
                       </h5>
-                      <button
-                        onClick={openRazorpay}
-                        className="bg-blue-600 mt-2 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
-                      >
-                        Retry Payment
-                      </button>
+                      {/* retry payment button  */}
+                      {paymentDetails?.razorpay_order_id &&
+                      paymentDetails?.amount &&
+                      Object.keys(orderedItems?.length > 0) &&
+                      Object.keys(orderedAddress?.length > 0) ? (
+                        <button
+                          onClick={openRazorpay}
+                          className="bg-blue-600 mt-2 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
+                        >
+                          Pay Now ₹{singleOrder?.totalAmount}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={retryPayment}
+                          className="bg-blue-600 mt-2 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
+                        >
+                          Retry Payment
+                        </button>
+                      )}
                     </div>
                   </div>
                 ) : (
