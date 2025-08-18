@@ -24,7 +24,7 @@ const Faq = () => {
               <span className="text-lg font-medium">
                 How can I track my order?
               </span>
-              <span>{activeIndex === 0 ? "-" : "+"}</span>
+              <span>{activeIndex === 0 ? "➖" : "➕"}</span>
             </button>
             <div
               className={`p-4 text-gray-700 ${activeIndex === 0 ? "" : "hidden"}`}
@@ -43,7 +43,7 @@ const Faq = () => {
               <span className="text-lg font-medium">
                 What if my product arrives damaged or defective?
               </span>
-              <span>{activeIndex === 1 ? "-" : "+"}</span>
+              <span>{activeIndex === 1 ?  "➖" : "➕"}</span>
             </button>
             <div
               className={`p-4 text-gray-700 ${activeIndex === 1 ? "" : "hidden"}`}
@@ -63,7 +63,7 @@ const Faq = () => {
               <span className="text-lg font-medium">
                 Can I cancel or change my order after placing it?
               </span>
-              <span>{activeIndex === 2 ? "-" : "+"}</span>
+              <span>{activeIndex === 2 ?  "➖" : "➕"}</span>
             </button>
             <div
               className={`p-4 text-gray-700 ${activeIndex === 2 ? "" : "hidden"}`}
@@ -82,7 +82,7 @@ const Faq = () => {
               <span className="text-lg font-medium">
                 Do you deliver across India?
               </span>
-              <span>{activeIndex === 3 ? "-" : "+"}</span>
+              <span>{activeIndex === 3 ?  "➖" : "➕"}</span>
             </button>
             <div
               className={`p-4 text-gray-700 ${activeIndex === 3 ? "" : "hidden"}`}
@@ -101,7 +101,7 @@ const Faq = () => {
               <span className="text-lg font-medium">
                 What payment methods do you accept?
               </span>
-              <span>{activeIndex === 4 ? "-" : "+"}</span>
+              <span>{activeIndex === 4 ?  "➖" : "➕"}</span>
             </button>
             <div
               className={`p-4 text-gray-700 ${activeIndex === 4 ? "" : "hidden"}`}

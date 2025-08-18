@@ -14,12 +14,10 @@ const Footer = () => {
   const { number } = useContext(EnvContext);
 
   // share app function
-
   const shareApp = async () => {
     try {
       await navigator.share({
-        text: "Madly Mart - Your one-stop shop for fresh milk, groceries, and all your needs, delivered to your doorstep with quality assurance. Shop now! :",
-        url: "https://madlymart.in",
+        url: "https://madlymartuser.vercel.app",
       });
     } catch (error) {
       console.error(error);
@@ -79,7 +77,7 @@ const Footer = () => {
                 <li className="flex ">
                   <a
                     className="text-white-600 hover:text-white-800 flex items-center gap-2"
-                    href="https://www.youtube.com/@DoraA-ZFresh"
+                    href=""
                   >
                     <FaYoutube className="bg-white text-red-600   w-8 h-8 p-1 rounded-full " />{" "}
                     YouTube
@@ -88,7 +86,7 @@ const Footer = () => {
                 <li className="flex mt-3">
                   <a
                     className="text-white-600 hover:text-white-800 flex items-center gap-2"
-                    href="https://www.instagram.com/dora_a_to_z_fresh/profilecard/?igsh=MWg4amw1bDloYnd4eQ=="
+                    href=""
                   >
                     <FaInstagram className="bg-white text-red-600 w-8 h-8 p-1 rounded-full " />{" "}
                     Instagram
@@ -111,7 +109,7 @@ const Footer = () => {
               Address
             </h2>
             <nav className="list-none mb-10">
-              <li>Hyderabd , Telangana , India.</li>
+              <li>Hyderabad , Telangana , India.</li>
               <li className="flex items-center lg:items-start flex-col">
                 <a
                   href={`tel:+91${number}`}

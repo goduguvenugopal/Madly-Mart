@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { EnvContext, UserContext } from "../App";
 import axios from "axios";
-import { Slide, toast, ToastContainer } from "react-toastify";
-import { Loading } from "./Loading";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -77,14 +75,7 @@ const Login = () => {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        transition={Slide}
-        theme="dark"
-        closeOnClick
-        autoClose={2000}
-        hideProgressBar={false}
-      />
+     
       <div className="flex justify-center items-center  p-3 select-none mt-3 mb-7 pt-24">
         {loginToggle ? (
           <>
@@ -96,11 +87,11 @@ const Login = () => {
                   src="/MadlyMart.jpg"
                   alt="Your Company"
                 />
-                <h2 className="mt-7 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">
-                  Log in
+                <h2 className="mt-5 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">
+                  Verify Login Code
                 </h2>
               </div>
-              <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
+              <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={verifyOtp}>
                   <div>
                     <label
@@ -122,7 +113,7 @@ const Login = () => {
                         id="otp"
                         placeholder="6-digit code"
                         required
-                        className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 ${
+                        className={`block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 ${
                           otpError
                             ? "outline-red-500"
                             : "outline-gray-500 focus:outline-indigo-600 "
@@ -142,9 +133,9 @@ const Login = () => {
                         submitBtn
                           ? "bg-gray-500 cursor-auto"
                           : "bg-indigo-600 hover:bg-indigo-500"
-                      } flex w-full justify-center rounded-md  px-3 py-1.5 text-md/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                      } flex w-full justify-center rounded-full  px-3 py-1.5 text-md/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                     >
-                      {submitBtn ? "Submitting..." : "Submit"}
+                      {submitBtn ? "Verifying..." : "Verify Code"}
                     </button>
                   </div>
                 </form>
@@ -181,11 +172,11 @@ const Login = () => {
                   src="/MadlyMart.jpg"
                   alt="Your Company"
                 />
-                <h2 className="mt-7 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">
+                <h2 className="mt-5 text-center text-2xl/9 font-semibold tracking-tight text-gray-900">
                   Log in
                 </h2>
               </div>
-              <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
+              <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={sendOtpFunction}>
                   <div>
                     <div className="flex items-center justify-between">
@@ -206,7 +197,7 @@ const Login = () => {
                         id="fullName"
                         required
                         placeholder="Enter your full Name"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        className="block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
                     </div>
                   </div>
@@ -229,7 +220,7 @@ const Login = () => {
                         id="email"
                         placeholder="Enter your email"
                         required
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        className="block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
                     </div>
                   </div>
@@ -238,13 +229,13 @@ const Login = () => {
                     <button
                       disabled={btnToggle && "true"}
                       type="submit"
-                      className={`flex w-full justify-center rounded-md ${
+                      className={`flex w-full justify-center rounded-full ${
                         btnToggle
                           ? "bg-gray-500 cursor-auto"
                           : "bg-indigo-600 hover:bg-indigo-500"
                       } px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                     >
-                      Continue
+                      Log in
                     </button>
                   </div>
                 </form>

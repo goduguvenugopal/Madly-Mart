@@ -118,7 +118,7 @@ const ContactUs = () => {
                 <div className="w-full">
                   <p className="text-lg font-medium">Address</p>
                   <p className="text-sm text-gray-600">
-                    Hyderabd , Telangana , India.
+                    Hyderabad , Telangana , India.
                   </p>
                 </div>
               </a>

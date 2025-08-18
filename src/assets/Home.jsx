@@ -64,11 +64,13 @@ const Home = () => {
                 >
                   <div className=" relative">
                     <LazyLoadImage
-                      effect="blur"
                       src={item?.productImage.image}
                       alt={item?.productCategoryName}
-                      className="min-h-[200px] w-full rounded-lg "
+                      className="min-h-[200px] w-full rounded-lg"
+                      effect="opacity"
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+" // custom shimmer placeholder
                     />
+
                     {item.available === "no" && (
                       <div className="absolute flex items-center justify-center  top-0 left-0 w-full h-full bg-black bg-opacity-0  text-white ">
                         <span className="bg-black text-white bg-opacity-55 rounded p-1 text-lg lg:text-2xl">

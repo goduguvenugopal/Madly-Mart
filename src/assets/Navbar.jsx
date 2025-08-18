@@ -71,8 +71,7 @@ const Navbar = () => {
   const shareApp = async () => {
     try {
       await navigator.share({
-        text: "Madly Mart - Your one-stop shop for Home & Kitchen Products, and all your needs, delivered to your doorstep with quality assurance. Shop now! :",
-        url: "https://madlymart.in",
+        url: "https://madlymartuser.vercel.app",
       });
     } catch (error) {
       console.error(error);

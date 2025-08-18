@@ -51,8 +51,6 @@ function App() {
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
 
-
-  console.log(paymentDetails);
   
   // calling visitors tracking custom hook
   useVisitorsTracking(api);
@@ -71,7 +69,7 @@ function App() {
 
     // retrieving user details
     const userDetails = localStorage.getItem("user");
-    if (user) {
+    if (userDetails) {
       setUser(JSON.parse(userDetails));
     }
 

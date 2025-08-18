@@ -39,8 +39,6 @@ const OrderOverView = () => {
     setOrderOk,
   });
 
-
-
   // changing title dynamically
   useEffect(() => {
     if (singleOrder) {
@@ -506,9 +504,9 @@ const OrderOverView = () => {
         <div className="mt-5 gap-2 flex flex-wrap items-start">
           {/* shipped address section */}
           <div className="w-full lg:w-[45%]">
-            <h5 className="mb-2 text-gray-700">Shipping Address</h5>
+            <h5 className="mb-2 font-bold text-gray-700">Delivery Details</h5>
             <div className="flex border-t pt-2 flex-col text-black  bg-white relative  items-start gap-1 mb-3 ">
-              <h5 className="mb-1 font-medium  capitalize text-lg">
+              <h5 className="mb-1 font-medium  capitalize text-sm">
                 {singleOrder?.shippingAddress[0].name}{" "}
               </h5>
               <h6 className="capitalize">
@@ -532,7 +530,7 @@ const OrderOverView = () => {
 
           {/* price details  */}
           <div className="w-full  lg:w-[45%]">
-            <h5 className="mb-2 text-gray-700">Price Details</h5>
+            <h5 className="mb-2 font-bold text-gray-700">Price Details</h5>
             <div className="flex justify-between border-t py-2 pt-2 border-b w-full">
               <span className="text-gray-900">
                 Price ({singleOrder?.orderedProdcuts?.length} items)
@@ -557,12 +555,28 @@ const OrderOverView = () => {
               </div>
             </div>
 
-            <h3 className="font-bold mt-3 text-xl  ">
-              TOTAL COST :
+            <h3 className="font-semibold mt-3 text-xl  ">
+              Total Amount :
               <span className="text-black pl-1">
                 Rs. {singleOrder?.totalAmount}
               </span>
             </h3>
+
+            <div className="mt-3 space-y-1 text-sm text-gray-600">
+              <p>
+                Payment Method:{" "}
+                <span className="font-medium text-black">
+                  Prepaid (Razorpay)
+                </span>
+              </p>
+              <p>
+                Amount Paid:{" "}
+                <span className="font-semibold text-black">
+                  ₹{singleOrder?.totalAmount}
+                </span>
+              </p>
+            </div>
+            
           </div>
         </div>
       </div>
