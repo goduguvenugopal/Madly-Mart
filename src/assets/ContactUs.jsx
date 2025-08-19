@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import { EnvContext } from "../App";
 import { scrollToTop } from "./utilis/RouteHandler";
 import Faq from "./components/Faq";
+import useEmailTemplate from "./utilis/useEmailTemplate";
 
 const ContactUs = () => {
   scrollToTop();
@@ -16,14 +17,8 @@ const ContactUs = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitSpin, setSubmitSpin] = useState(false);
+  const { customerQueryEmailData } = useEmailTemplate({ name, email, message });
 
-  const formData = {
-    email: "madlymart@gmail.com",
-    subject: "Madly Mart Customer product query",
-    html: `<h3>Customer Name : ${name}</h3>
-    <h3>Customer email : ${email}</h3>
-    <h3>Customer message : ${message}</h3>`,
-  };
   // sending mail function
   const submitFunc = async () => {
     if (!name || !email || !message) {
@@ -35,7 +30,7 @@ const ContactUs = () => {
       try {
         const res = await axios.post(
           `${api}/api/updates-email/send-updates`,
-          formData
+          customerQueryEmailData
         );
         if (res) {
           toast.success(

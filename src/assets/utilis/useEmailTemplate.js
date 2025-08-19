@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { EnvContext, OrderContext } from "../../App";
 
-const useEmailTemplate = ({ paymentResponse }) => {
+const useEmailTemplate = ({ paymentResponse, name, email, message }) => {
   const { number } = useContext(EnvContext);
   const { orderedItems, orderedAddress, paymentDetails } =
     useContext(OrderContext);
@@ -252,7 +252,42 @@ const useEmailTemplate = ({ paymentResponse }) => {
   `,
   };
 
-  return { emailData, failedEmailData, closedEmailData };
+  // customer query email data
+  const customerQueryEmailData = {
+    email: "madlymart@gmail.com",
+    subject: "📩 Madly Mart - Customer Product Query",
+    html: `
+    <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fafafa;">
+          <h2 style="color: #2c3e50; text-align: center;">Madly Mart - Customer Query</h2>
+          <p style="font-size: 14px; margin-bottom: 10px;">
+            <strong>Customer Name:</strong> ${name}
+          </p>
+          <p style="font-size: 14px; margin-bottom: 10px;">
+            <strong>Customer Email:</strong> ${email}
+          </p>
+          <p style="font-size: 14px; margin-bottom: 10px;">
+            <strong>Message:</strong><br/>
+            <span style="display: inline-block; padding: 10px; background: #fff; border-radius: 6px; border: 1px solid #ddd;">
+              ${message}
+            </span>
+          </p>
+          <p style="margin-top: 20px; font-size: 12px; color: #777; text-align: center;">
+            📧 This message was sent via the Madly Mart website contact form.
+          </p>
+        </div>
+      </body>
+    </html>
+  `,
+  };
+
+  return {
+    emailData,
+    failedEmailData,
+    closedEmailData,
+    customerQueryEmailData,
+  };
 };
 
 export default useEmailTemplate;

@@ -6,13 +6,10 @@ const useEmptyPaymentPayload = () => {
     useContext(OrderContext);
   // initial state of all payment payload
   useEffect(() => {
-    console.log("component mounted");
-
     return () => {
       setOrderedAddress({});
       setOrderedItems([]);
       setPaymentDetails({});
-      console.log("component unmounted");
     };
   }, []);
   return null;
