@@ -27,7 +27,6 @@ const ProductOverView = () => {
   const { cartItems, setCartItems, discount } = useContext(CartContext);
   const { defaultAddress, token } = useContext(UserContext);
   const { itemId } = useParams();
-  useEmptyPaymentPayload()
   const [product, setProduct] = useState({});
   const [itemImg, setItemImg] = useState("");
   const [weight, setWeight] = useState("");

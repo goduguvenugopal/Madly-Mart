@@ -14,6 +14,7 @@ import {
   OrderSuccessModal,
 } from "./components/OrderSuccessModal";
 import PaymentFailedModal from "./components/PaymentFailedModal";
+import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
 
 const OrderOverView = () => {
   const { orders, setOrders } = useContext(ProductsContext);
@@ -38,6 +39,7 @@ const OrderOverView = () => {
     setOrderSpin,
     setOrderOk,
   });
+  useEmptyPaymentPayload();
 
   // changing title dynamically
   useEffect(() => {
@@ -217,7 +219,7 @@ const OrderOverView = () => {
                 </h6>
                 {/* Remaining products ordered section */}
                 <details className="flex flex-col gap-3 w-full">
-                  <summary className="text-gray-600 cursor-pointer text-sm">
+                  <summary className="text-blue-500 cursor-pointer text-sm ">
                     See products ordered together
                   </summary>
                   {singleOrder?.orderedProdcuts.slice(1).map((item) => (
@@ -561,22 +563,22 @@ const OrderOverView = () => {
                 Rs. {singleOrder?.totalAmount}
               </span>
             </h3>
-
-            <div className="mt-3 space-y-1 text-sm text-gray-600">
-              <p>
-                Payment Method:{" "}
-                <span className="font-medium text-black">
-                  Prepaid (Razorpay)
-                </span>
-              </p>
-              <p>
-                Amount Paid:{" "}
-                <span className="font-semibold text-black">
-                  ₹{singleOrder?.totalAmount}
-                </span>
-              </p>
-            </div>
-            
+            {singleOrder.orderStatus !== "pending" && (
+              <div className="mt-3 space-y-1 text-sm text-gray-600">
+                <p>
+                  Payment Method:{" "}
+                  <span className="font-medium text-black">
+                    Prepaid (Razorpay)
+                  </span>
+                </p>
+                <p>
+                  Amount Paid:{" "}
+                  <span className="font-semibold text-black">
+                    ₹{singleOrder?.totalAmount}
+                  </span>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -3,13 +3,11 @@ import axios from "axios";
 import { EnvContext, ProductsContext, UserContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
-import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
 
 const Orders = () => {
   const { api } = useContext(EnvContext);
   const { orders, setOrders } = useContext(ProductsContext);
   const { token, user } = useContext(UserContext);
-  useEmptyPaymentPayload();
 
   const navigate = useNavigate();
   const [orderSpin, setOrderSpin] = useState(false);
@@ -199,7 +197,7 @@ const Orders = () => {
             {/* remain products ordered section  */}
             {product?.orderedProdcuts.length > 1 && (
               <details className="flex flex-col gap-3 ">
-                <summary className="text-gray-600 cursor-pointer">
+                <summary className="text-blue-500 cursor-pointer">
                   See products ordered together
                 </summary>
                 {product?.orderedProdcuts

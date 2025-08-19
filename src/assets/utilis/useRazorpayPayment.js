@@ -47,8 +47,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
             setPaymentDetails({});
           } catch (error) {
             console.error(error);
-          } finally {
-            setPaymentDetails({});
           }
         },
       },
@@ -57,7 +55,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
         // Send details to backend for verification
         setFailedToggle(false);
         setOrderSpin(true);
-
 
         const paymentSuccessData = {
           userEmail: orderedAddress?.email,
@@ -70,8 +67,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
 
         setPaymentResponse(paymentSuccessData);
         try {
-          
-
           const res = await axios.post(
             `${api}/api/payment/verify-payment`,
             paymentSuccessData
@@ -87,9 +82,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
           }
         } catch (error) {
           console.error(error);
-        } finally {
-          setOrderSpin(false);
-          setPaymentDetails({});
         }
       },
 
@@ -104,7 +96,8 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
     const rzp = new window.Razorpay(options);
 
     // Failure handler
-    rzp.on("payment.failed", async function (response) {
+    rzp.on("payment.failed", async (response) => {
+  
       const failedPaymentData = {
         userEmail: orderedAddress?.email,
         mongoOrderId: paymentDetails?.mongoOrderId,
@@ -121,30 +114,25 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
         },
       };
 
-      if (response) {
+      try {
         setPaymentResponse(failedPaymentData);
         setFailedToggle(true);
-      }
 
-      try {
-        const res = await axios.post(
+        await axios.post(
           `${api}/api/payments/failed-payment`,
           failedPaymentData
         );
-        if (res) {
-          // if payment verification failed email will be sent to user and seller
-          await axios.post(
-            `${api}/api/updates-email/send-updates`,
-            failedEmailData
-          );
-        }
+        await axios.post(
+          `${api}/api/updates-email/send-updates`,
+          failedEmailData
+        );
       } catch (error) {
         console.error(error);
-      }  
+      }
     });
 
-    // Open Razorpay payment popup
     rzp.open();
+    // Open Razorpay payment popup
   });
 
   return { openRazorpay, failedToggle, paymentResponse };

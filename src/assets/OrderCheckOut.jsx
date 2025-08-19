@@ -15,6 +15,7 @@ import {
 } from "./components/OrderSuccessModal";
 import PaymentFailedModal from "./components/PaymentFailedModal";
 import useRazorpayPayment from "./utilis/useRazorpayPayment";
+import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
@@ -33,8 +34,8 @@ const OrderCheckOut = () => {
   const navigate = useNavigate();
   const [originalAmount, setOriginalAmount] = useState(null);
   const [ChargesToggle, setChargesToggle] = useState(false);
+  useEmptyPaymentPayload();
 
- 
   const initialOrderData = {
     orderedProdcuts: [],
     shippingAddress: [],
@@ -302,14 +303,23 @@ const OrderCheckOut = () => {
               </h3>
 
               {/* place order button  */}
-
-              <button
-                onClick={placeOrder}
-                type="submit"
-                className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
-              >
-                Place Order ₹{totalAmount}
-              </button>
+              {paymentDetails?.razorpay_order_id ? (
+                <button
+                  onClick={openRazorpay}
+                  type="button"
+                  className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
+                >
+                  Place Order ₹{totalAmount}
+                </button>
+              ) : (
+                <button
+                  onClick={placeOrder}
+                  type="submit"
+                  className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
+                >
+                  Place Order ₹{totalAmount}
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ const PaymentFailedModal = ({
     <>
       {/* Payment Failed Modal */}
       {failedToggle && (
-        <div className="fixed inset-0 z-0 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+        <div className="fixed inset-0 z-0 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 ">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-center animate-scaleIn">
             {/* Failed Icon */}
             <div className="bg-red-500 w-20 h-20 rounded-full flex justify-center items-center mx-auto shadow-lg">
@@ -40,16 +40,16 @@ const PaymentFailedModal = ({
 
             {/* Action Buttons */}
             <div className="flex gap-3 flex-wrap justify-center mt-6">
-              <button
+              {/* <button
                 onClick={openRazorpay}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
               >
                 Retry Payment
-              </button>
+              </button> */}
 
               <Link
                 to="/orders"
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-5 py-2 rounded-lg shadow-md transition"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
               >
                 Go to My Orders
               </Link>

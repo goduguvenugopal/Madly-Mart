@@ -12,7 +12,6 @@ import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
 
 const Cart = () => {
   const { api } = useContext(EnvContext);
-  useEmptyPaymentPayload()
   const { token, defaultAddress } = useContext(UserContext);
   const { cartItems, setCartItems } = useContext(CartContext);
   const { orderProducts, setOrderProducts } = useContext(ProductsContext);
