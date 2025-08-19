@@ -51,6 +51,7 @@ function App() {
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
 
+  console.log(paymentDetails);
   
 
   // calling visitors tracking custom hook

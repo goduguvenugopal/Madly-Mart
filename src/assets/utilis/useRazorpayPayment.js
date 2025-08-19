@@ -28,6 +28,8 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
 
   // Function to start Razorpay payment
   const openRazorpay = useCallback(() => {
+    setFailedToggle(false);
+
     const options = {
       key: paymentDetails.razorpay_key_id,
       amount: paymentDetails.amount,
@@ -39,12 +41,12 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
       modal: {
         ondismiss: async function () {
           // This triggers when user closes popup manually
+          setFailedToggle(true);
           try {
             await axios.post(
               `${api}/api/updates-email/send-updates`,
               closedEmailData
             );
-            setPaymentDetails({});
           } catch (error) {
             console.error(error);
           }
@@ -97,7 +99,6 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
 
     // Failure handler
     rzp.on("payment.failed", async (response) => {
-  
       const failedPaymentData = {
         userEmail: orderedAddress?.email,
         mongoOrderId: paymentDetails?.mongoOrderId,

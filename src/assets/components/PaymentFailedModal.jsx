@@ -40,16 +40,16 @@ const PaymentFailedModal = ({
 
             {/* Action Buttons */}
             <div className="flex gap-3 flex-wrap justify-center mt-6">
-              {/* <button
+              <button
                 onClick={openRazorpay}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
               >
                 Retry Payment
-              </button> */}
+              </button>
 
               <Link
                 to="/orders"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
+                className="bg-gray-500 hover:bg-gray-600 text-white font-medium px-5 py-2 rounded-lg shadow-md transition"
               >
                 Go to My Orders
               </Link>
