@@ -454,12 +454,12 @@ const ProductOverView = () => {
                   {/* buy now button  */}
                   <div
                     onClick={orderCheckOutFunc}
-                    className={`w-full text-center transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
+                    className={`w-full text-center  text-white transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
                       product.itemStock === "" ||
                       product.itemStock === "0" ||
                       stock <= 0
                         ? "bg-gray-400 pointer-events-none"
-                        : "bg-yellow-400 text-black "
+                        : "bg-yellow-400 "
                     }`}
                   >
                     {product.itemStock === "" ||
@@ -479,7 +479,7 @@ const ProductOverView = () => {
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full text-center bg-yellow-400 font-semibold text-black border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-500 rounded-full"
+                    className="w-full text-center bg-yellow-400 font-semibold text-white border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-500 rounded-full"
                   >
                     Buy now
                   </Link>

@@ -69,7 +69,7 @@ const AllProducts = () => {
 
   return (
     <>
-      <div className="p-3 mt-3 mb-5 pt-24 w-full">
+      <div className="p-3 mt-3 mb-5 pt-24 ">
         <h5 className="text-center text-2xl font-semibold capitalize">
           {category.replace("vegetables", "vegetable")} Products
         </h5>
@@ -113,11 +113,11 @@ const AllProducts = () => {
           </>
         ) : (
            
-            <section className="flex text-center flex-col font-medium justify-center items-center h-[45vh]  w-full">
+            <section className="flex text-center flex-col font-medium justify-center items-center h-[45vh] ">
               <h2 className="text-xl font-semibold text-gray-700">
                 No Products
               </h2>
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 mt-1">
                 Please check back later or explore other categories.
               </p>
             </section>
