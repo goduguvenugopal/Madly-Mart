@@ -46,7 +46,7 @@ const Home = () => {
       <Carousel />
       <div className="p-3 mt-5 pb-5 w-full">
         <h5 className="text-center text-2xl font-semibold">
-          Product Categories
+          All Categories
         </h5>
         <hr className="my-2 border border-orange-500" />
         <div className="mt-4  place-items-center py-6 grid grid-cols-3 gap-y-5 gap-x-5 md:gap-y-7 lg:gap-y-9 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">

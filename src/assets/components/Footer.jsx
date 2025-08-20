@@ -128,7 +128,7 @@ const Footer = () => {
           </div>
           <div className="lg:w-1/4 md:w-1/2 w-full px-4">
             <h2 className="title-font font-medium text-orange-600 tracking-widest text-sm mb-3">
-              HELP
+              Help
             </h2>
             <nav className="list-none mb-10">
               <li>
@@ -161,6 +161,45 @@ const Footer = () => {
                   className="text-white-600 hover:text-white-800"
                 >
                   Shipping and Delivery Policy{" "}
+                </Link>
+              </li>
+            </nav>
+          </div>
+           <div className="lg:w-1/4 md:w-1/2 w-full px-4">
+            <h2 className="title-font font-medium text-orange-600 tracking-widest text-sm mb-3">
+              Quick Links
+            </h2>
+            <nav className="list-none mb-10">
+              <li>
+                <Link
+                  to="/"
+                  className="text-white-600 hover:text-white-800"
+                >
+                 Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/orders"
+                  className="text-white-600 hover:text-white-800"
+                >
+                  Orders
+                 </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shopall"
+                  className="text-white-600 hover:text-white-800"
+                >
+                 Shop All
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-white-600 hover:text-white-800"
+                >
+                 Contact Us
                 </Link>
               </li>
             </nav>
