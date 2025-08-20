@@ -51,8 +51,6 @@ function App() {
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
 
-  console.log(paymentDetails);
-  
 
   // calling visitors tracking custom hook
   useVisitorsTracking(api);
@@ -150,7 +148,7 @@ function App() {
           `${api}/api/category/get-category-products`
         );
         if (res) {
-          setCategories(res.data?.retrievedProducts?.reverse());
+          setCategories(res.data?.retrievedProducts);
         }
       } catch (error) {
         console.error(error);
@@ -170,7 +168,7 @@ function App() {
         console.error(error);
       }
     };
-
+    
     fetchDiscount();
   }, []);
 
@@ -190,7 +188,6 @@ function App() {
         console.error(error);
       }
     };
-
     if (token) {
       fetchCartItems();
     }

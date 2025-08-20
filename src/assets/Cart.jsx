@@ -150,6 +150,7 @@ const Cart = () => {
                           effect="blur"
                           src={item?.products[0]?.itemImage[0]?.image}
                           alt={item.itemName}
+                          placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                           className="w-full h-full
                     rounded-lg"
                         />
@@ -260,14 +261,14 @@ const Cart = () => {
                                 item.products[0].itemName
                               )
                             }
-                            className="font-semibold text-sm  p-1 bg-red-500 hover:bg-red-700 rounded-full  hover:text-white border-none w-24 text-center text-white "
+                            className="font-semibold text-sm transition p-1 bg-red-500 hover:bg-red-700 rounded-full  hover:text-white border-none w-24 text-center text-white "
                           >
                             Remove
                           </button>
                         )}
                         <button
                           onClick={() => orderCheckOutFunc(item)}
-                          className="font-semibold text-sm  p-1 bg-yellow-400 hover:bg-yellow-500 rounded-full   border-none w-24 text-center text-black "
+                          className="font-semibold transition text-sm  p-1 bg-yellow-400 hover:bg-yellow-500 rounded-full   border-none w-24 text-center text-black "
                         >
                           Buy now
                         </button>
@@ -302,7 +303,7 @@ const Cart = () => {
                   <div className="mt-2">
                     <button
                       onClick={() => orderCheckOutFunc(cartItems)}
-                      className="w-full bg-orange-500 text-white h-[3rem] rounded-full text-lg font-semibold hover:bg-orange-700"
+                      className="w-full bg-orange-500 text-white h-[3rem] rounded-full text-lg font-semibold hover:bg-orange-700 transition"
                     >
                       Proceed to Checkout
                     </button>

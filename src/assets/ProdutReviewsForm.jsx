@@ -15,8 +15,8 @@ const ProdutReviewsForm = ({ itemId }) => {
   const [image, setImage] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [reviewToggle, setReviewToggle] = useState(false);
-  const { api } = useContext(EnvContext);
-  const { user } = useContext(UserContext);
+  const { api  } = useContext(EnvContext);
+  const { user , token} = useContext(UserContext);
   const [productReviewImg, setProductReviewImg] = useState(null);
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
@@ -40,7 +40,6 @@ const ProdutReviewsForm = ({ itemId }) => {
     // review form data converting to object
     const formData = new FormData();
     formData.append("productId", itemId);
-    formData.append("userId", user?._id);
     formData.append("userName", user?.fullName);
     formData.append("rating", rating?.toString());
     formData.append("reviewText", reviewText);
@@ -51,7 +50,11 @@ const ProdutReviewsForm = ({ itemId }) => {
         return toast.warning("Please give rating");
       }
       setLoader(true);
-      const res = await axios.post(`${api}/api/add/reviews`, formData);
+      const res = await axios.post(`${api}/api/add/reviews`, formData,{
+        headers : {
+          token : token
+        }
+      });
       if (res) {
         toast.success("Thank you for sharing your valuable review!", {
           className: "custom-toast",
@@ -240,19 +243,19 @@ const ProdutReviewsForm = ({ itemId }) => {
                       setReviewToggle(false);
                     }}
                     type="button"
-                    className="flex w-full border-2 border-orange-600 justify-center rounded-md  px-3 py-1.5 text-[1rem] font-semibold  shadow-xs hover:bg-orange-600 hover:text-white"
+                    className="flex w-full border-2 transition border-orange-600 justify-center rounded-full  px-3 py-1.5 text-[1rem] font-semibold  shadow-xs hover:bg-orange-600 hover:text-white"
                   >
                     Cancel Review
                   </button>
                   {loader ? (
-                    <button className="flex w-full items-center gap-3 border-2 justify-center rounded-md bg-blue-500 border-blue-500 px-3 py-1.5 text-[1rem] font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <button className="flex w-full transition items-center gap-3 border-2 justify-center rounded-full bg-blue-500 border-blue-500 px-3 py-1.5 text-[1rem] font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       <div className="animate-spin rounded-full h-7 w-7 border-4 border-t-blue-500  border-t-4 border-r-4 border-white border-solid"></div>{" "}
                       Submitting...
                     </button>
                   ) : (
                     <button
                       type="submit"
-                      className="flex w-full border-2 justify-center rounded-md bg-blue-500 border-blue-500 px-3 py-1.5 text-[1rem] font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="flex w-full border-2 transition justify-center rounded-full bg-blue-500 border-blue-500 px-3 py-1.5 text-[1rem] font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Submit Review
                     </button>

@@ -153,8 +153,6 @@ const ProductOverView = () => {
     capacity,
   ]);
 
- 
-
   // add to cart function
   const addToCartFunc = async () => {
     if (itemQty < parseInt(product.minOrderQty)) {
@@ -261,18 +259,19 @@ const ProductOverView = () => {
             />
             {/* mapping list of product images  */}
             <div className="w-full overflow-x-auto scrollbar-hide-card">
-              <div className="flex flex-row gap-3 w-fit flex-nowrap ">
+              <div className="flex flex-row gap-2 w-fit flex-nowrap ">
                 {product?.itemImage?.map((item) => (
                   <div
                     onClick={() => setItemImg(item.image)}
                     key={item._id}
-                    className="w-[5rem] h-fit lg:w-32 "
+                    className="w-[5rem] lg:w-32 "
                   >
                     <LazyLoadImage
                       effect="blur"
                       src={item.image}
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                       alt={product.itemName}
-                      className={`w-full rounded-lg cursor-pointer hover:border-2 hover:border-blue-600 ${
+                      className={`w-full rounded-lg h-28 lg:h-40 cursor-pointer transition hover:border-2 hover:border-blue-600 ${
                         itemImg === item.image ? "border-2 border-blue-600" : ""
                       }`}
                     />
@@ -455,12 +454,12 @@ const ProductOverView = () => {
                   {/* buy now button  */}
                   <div
                     onClick={orderCheckOutFunc}
-                    className={`w-full text-center cursor-pointer font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
+                    className={`w-full text-center transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
                       product.itemStock === "" ||
                       product.itemStock === "0" ||
                       stock <= 0
                         ? "bg-gray-400 pointer-events-none"
-                        : "bg-yellow-400  "
+                        : "bg-yellow-400 text-black "
                     }`}
                   >
                     {product.itemStock === "" ||
@@ -474,13 +473,13 @@ const ProductOverView = () => {
                 <>
                   <Link
                     to="/login"
-                    className="w-full text-center bg-blue-800 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
+                    className="w-full text-center transition bg-blue-800 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
                   >
                     Add to cart
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full text-center bg-yellow-300 font-semibold text-black border-0 py-3 px-6 focus:outline-none hover:bg-yellow-400 rounded-full"
+                    className="w-full text-center bg-yellow-400 font-semibold text-black border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-500 rounded-full"
                   >
                     Buy now
                   </Link>

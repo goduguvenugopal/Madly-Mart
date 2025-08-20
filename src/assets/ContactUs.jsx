@@ -192,13 +192,13 @@ const ContactUs = () => {
               </div>
               <div className="p-2 w-full">
                 {submitSpin ? (
-                  <button className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg">
+                  <button className="flex mx-auto transition text-white bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg">
                     Submitting...
                   </button>
                 ) : (
                   <button
                     onClick={submitFunc}
-                    className="flex mx-auto text-white bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg"
+                    className="flex mx-auto text-white transition bg-indigo-500 border-2-0 py-2 px-10 focus:outline-none hover:bg-indigo-600 rounded-full text-lg"
                   >
                     Submit
                   </button>

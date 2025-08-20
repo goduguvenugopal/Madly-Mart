@@ -102,6 +102,7 @@ const Orders = () => {
                   }
                   alt={product?.orderedProdcuts[0]?.products[0]?.itemName}
                   className="w-full h-fit object-cover rounded-lg"
+                  placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                 />
               </div>
 
@@ -209,6 +210,7 @@ const Orders = () => {
                     >
                       <div className="w-[5.3rem] h-fit lg:w-[6.8rem] ">
                         <img
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                           src={item.products[0]?.itemImage[0]?.image}
                           alt={item.products[0]?.itemName}
                           className="w-full h-fit object-cover rounded-lg"

@@ -16,6 +16,7 @@ import {
 import PaymentFailedModal from "./components/PaymentFailedModal";
 import useRazorpayPayment from "./utilis/useRazorpayPayment";
 import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
+import { filter } from "framer-motion/client";
 
 const OrderCheckOut = () => {
   const { api, number } = useContext(EnvContext);
@@ -26,7 +27,7 @@ const OrderCheckOut = () => {
     setOrderedItems,
     setOrderedAddress,
   } = useContext(OrderContext);
-  const { cartItems, discount } = useContext(CartContext);
+  const { setCartItems, discount } = useContext(CartContext);
   const { orderProducts } = useContext(ProductsContext);
   const [orderOk, setOrderOk] = useState(false);
   const [orderSpin, setOrderSpin] = useState(false);
@@ -79,6 +80,7 @@ const OrderCheckOut = () => {
     setOrderedItems(orderProducts);
     setOrderedAddress(defaultAddress[0]);
   }, [orderProducts, totalAmount, discount]);
+  console.log(orderProducts);
 
   // create order
   const placeOrder = async () => {
@@ -102,6 +104,14 @@ const OrderCheckOut = () => {
           // if order created successfully next razorpay modal opens
           const orderRes = res.data;
           setPaymentDetails(orderRes);
+
+          // extract productIds from ordered products
+          const orderedIds = orderProducts.map((item) => item.productId);
+
+          // remove the cart products which are ordered
+          setCartItems((prev) =>
+            prev.filter((item) => !orderedIds?.includes(item.productId))
+          );
         }
       } catch (error) {
         console.error(error);
@@ -207,6 +217,7 @@ const OrderCheckOut = () => {
                       src={item?.products[0]?.itemImage[0]?.image}
                       className="h-fit w-[5rem] rounded-lg"
                       alt="Book 1"
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                     />
                     <div>
                       <p className="font-semibold w-full md:w-[13rem] text-sm overflow-x-auto">
@@ -307,7 +318,7 @@ const OrderCheckOut = () => {
                 <button
                   onClick={openRazorpay}
                   type="button"
-                  className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
+                  className="mt-4 transition text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
                 >
                   Place Order ₹{totalAmount}
                 </button>
@@ -315,7 +326,7 @@ const OrderCheckOut = () => {
                 <button
                   onClick={placeOrder}
                   type="submit"
-                  className="mt-4 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
+                  className="mt-4 transition text-lg bg-blue-600 hover:bg-blue-700 text-white w-full font-bold h-12 rounded-full"
                 >
                   Place Order ₹{totalAmount}
                 </button>

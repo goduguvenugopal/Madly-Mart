@@ -68,7 +68,7 @@ const Home = () => {
                       alt={item?.productCategoryName}
                       className="min-h-[200px] w-full rounded-lg"
                       effect="opacity"
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+" // custom shimmer placeholder
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                     />
 
                     {item.available === "no" && (
@@ -90,7 +90,9 @@ const Home = () => {
             </>
           ) : (
             <div className="text-lg font-medium text-center w-screen">
-              No Products
+              <h2 className="text-xl font-semibold text-gray-700">
+                No Products
+              </h2>
             </div>
           )}
         </div>

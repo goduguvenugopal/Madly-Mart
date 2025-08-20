@@ -25,6 +25,7 @@ const RecentlyViewedProducts = () => {
                   <LazyLoadImage
                     src={item?.itemImage[0]?.image}
                     alt={item?.itemName}
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                     effect="blur"
                     className="min-h-[180px] w-full rounded-lg"
                   />

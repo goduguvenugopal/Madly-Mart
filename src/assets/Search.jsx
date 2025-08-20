@@ -42,7 +42,7 @@ const Search = () => {
               type="text"
               name="text"
               id="text"
-              className=' w-full h-[3rem] lg:w-96 border-2  py-1.5 pl-12 pr-20 text-gray-900 outline-none border-blue-700 placeholder:text-gray-800   sm:text-md sm:leading-6 placeholder="0.00'
+              className='rounded-full w-full h-[3rem] lg:w-96 border-2  py-1.5 pl-12 pr-20 text-gray-900 outline-none border-blue-700 placeholder:text-gray-800   sm:text-md sm:leading-6 placeholder="0.00'
             />
             <span className="left-4 top-[0.9rem] absolute text-blue-700">
               <FaSearch size={20} />
@@ -68,6 +68,7 @@ const Search = () => {
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                       className="min-h-[180px] w-full rounded-lg"
                     />
                   </div>

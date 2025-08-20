@@ -89,6 +89,7 @@ const AllProducts = () => {
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
+                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                       className="min-h-[180px] w-full rounded-lg"
                     />
                   </div>
@@ -110,8 +111,13 @@ const AllProducts = () => {
               ))}
             </>
           ) : (
-            <div className="text-lg font-medium flex justify-center items-center h-[70vh] w-[95vw]">
-              No Products
+            <div className=" flex text-center flex-col font-medium justify-center items-center h-[45vh] w-screen">
+              <h2 className="text-xl font-semibold text-gray-700">
+                No Products
+              </h2>
+              <p className="text-gray-500 mt-2">
+                Please check back later or explore other categories.
+              </p>
             </div>
           )}
         </div>
@@ -119,43 +125,45 @@ const AllProducts = () => {
         <hr className="my-4 border border-orange-500" />
 
         {/* pagination section  */}
-        <div className="flex select-none justify-center items-center  w-full">
-          <span
-            onClick={pageDecrement}
-            className={` text-white  hover:bg-orange-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium   cursor-pointer ${
-              pageNum === 1
-                ? "pointer-events-none bg-gray-400"
-                : " bg-orange-500"
-            }`}
-          >
-            <FaLessThan />
-          </span>
-          <div className="overflow-auto scrollbar-hide-card flex gap-2  px-3">
-            {itemsLength.map((num, index) => (
-              <span
-                key={index}
-                onClick={() => changePageFunction(num)}
-                className={`border-[0.09rem] hover:bg-blue-600 hover:text-white  hover:border-blue-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium  cursor-pointer ${
-                  pageNum === num
-                    ? "bg-blue-600 border-blue-600 text-white"
-                    : "border-gray-500"
-                }`}
-              >
-                {num}
-              </span>
-            ))}
+        {categoryItems.length > 10 && (
+          <div className="flex select-none justify-center items-center  w-full">
+            <span
+              onClick={pageDecrement}
+              className={` text-white  hover:bg-orange-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium   cursor-pointer ${
+                pageNum === 1
+                  ? "pointer-events-none bg-gray-400"
+                  : " bg-orange-500"
+              }`}
+            >
+              <FaLessThan />
+            </span>
+            <div className="overflow-auto scrollbar-hide-card flex gap-2  px-3">
+              {itemsLength.map((num, index) => (
+                <span
+                  key={index}
+                  onClick={() => changePageFunction(num)}
+                  className={`border-[0.09rem] hover:bg-blue-600 hover:text-white  hover:border-blue-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium  cursor-pointer ${
+                    pageNum === num
+                      ? "bg-blue-600 border-blue-600 text-white"
+                      : "border-gray-500"
+                  }`}
+                >
+                  {num}
+                </span>
+              ))}
+            </div>
+            <span
+              onClick={pageIncrement}
+              className={`  text-white    hover:bg-orange-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium   cursor-pointer ${
+                pageNum === itemsLength.length
+                  ? "pointer-events-none bg-gray-400"
+                  : " bg-orange-500"
+              }`}
+            >
+              <FaGreaterThan />
+            </span>
           </div>
-          <span
-            onClick={pageIncrement}
-            className={`  text-white    hover:bg-orange-600 p-3 flex items-center justify-center rounded-full h-9 w-9 font-medium   cursor-pointer ${
-              pageNum === itemsLength.length
-                ? "pointer-events-none bg-gray-400"
-                : " bg-orange-500"
-            }`}
-          >
-            <FaGreaterThan />
-          </span>
-        </div>
+        )}
       </div>
       <RecentlyViewedProducts />
       <InstallApp />

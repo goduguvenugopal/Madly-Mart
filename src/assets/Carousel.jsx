@@ -41,6 +41,7 @@ const Carousel = () => {
             <div className="min-w-full min-h-full" key={index}>
               <div className=" flex items-center justify-center">
                 <img
+                  placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                   src={src.image}
                   alt={`Image ${index + 1}`}
                   className="w-full h-auto max-h-[500px] object-contain lg:max-w-screen-lg"
