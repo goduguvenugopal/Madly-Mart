@@ -69,28 +69,28 @@ const AllProducts = () => {
 
   return (
     <>
-      <div className="p-3 mt-3 mb-5 pt-24">
+      <div className="p-3 mt-3 mb-5 pt-24 w-full">
         <h5 className="text-center text-2xl font-semibold capitalize">
           {category.replace("vegetables", "vegetable")} Products
         </h5>
         <hr className="my-2 border border-orange-500" />
 
-        <div className="mt-6 w-full pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {categoryItems.length ? (
-            <>
+        {categoryItems.length ? (
+          <>
+            <div className="mt-6  place-items-center w-full  pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {categoryItems.map((item) => (
                 <Link
                   to={`/product_over_view/${item._id}`}
                   key={item._id}
-                  className="group  w-full h-full  md:w-52   lg:w-72  relative  hover:opacity-85"
+                  className="group w-[9rem] h-fit  md:w-52   lg:w-72  relative  hover:opacity-85"
                 >
-                  <div>
+                  <div className="w-full">
                     <LazyLoadImage
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
                       effect="blur"
                       placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-                      className="min-h-[180px] w-full rounded-lg"
+                      className="min-h-[9rem] w-full rounded-lg"
                     />
                   </div>
 
@@ -109,18 +109,20 @@ const AllProducts = () => {
                   )}
                 </Link>
               ))}
-            </>
-          ) : (
-            <div className=" flex text-center flex-col font-medium justify-center items-center h-[45vh] w-screen">
+            </div>
+          </>
+        ) : (
+           
+            <section className="flex text-center flex-col font-medium justify-center items-center h-[45vh]  w-full">
               <h2 className="text-xl font-semibold text-gray-700">
                 No Products
               </h2>
               <p className="text-gray-500 mt-2">
                 Please check back later or explore other categories.
               </p>
-            </div>
-          )}
-        </div>
+            </section>
+        
+        )}
 
         <hr className="my-4 border border-orange-500" />
 

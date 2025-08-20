@@ -271,7 +271,7 @@ const ProductOverView = () => {
                       src={item.image}
                       placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                       alt={product.itemName}
-                      className={`w-full rounded-lg h-28 lg:h-40 cursor-pointer transition hover:border-2 hover:border-blue-600 ${
+                      className={`w-full rounded-lg h-[5rem] lg:h-[8rem] cursor-pointer transition hover:border-2 hover:border-blue-600 ${
                         itemImg === item.image ? "border-2 border-blue-600" : ""
                       }`}
                     />

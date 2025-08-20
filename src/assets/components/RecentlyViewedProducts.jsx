@@ -14,12 +14,12 @@ const RecentlyViewedProducts = () => {
             Recently Viewed
           </h5>
 
-          <div className="mt-8 w-full  grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          <div className="mt-8 w-full   place-items-center grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {viewedProducts?.map((item) => (
               <Link
                 to={`/product_over_view/${item?._id}`}
                 key={item?._id}
-                className="group  w-full h-full  md:w-52   lg:w-72  relative  hover:opacity-85"
+                className="group  w-[9rem] h-fit  md:w-52   lg:w-72  relative  hover:opacity-85"
               >
                 <div>
                   <LazyLoadImage
@@ -27,7 +27,7 @@ const RecentlyViewedProducts = () => {
                     alt={item?.itemName}
                       placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
                     effect="blur"
-                    className="min-h-[180px] w-full rounded-lg"
+                    className="min-h-[9rem] w-full rounded-lg"
                   />
                 </div>
 

@@ -10,12 +10,12 @@ const RelatedProducts = ({ relatedProducts }) => {
           <h5 className="text-2xl font-medium text-black">Related Products</h5>
           <hr className="border border-gray-200 mb-5 mt-3 lg:mt-3" />
 
-          <div className="mt-4 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          <div className="mt-4 grid grid-cols-2   place-items-center gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {relatedProducts.map((item) => (
               <Link
                 to={`/product_over_view/${item._id}`}
                 key={item._id}
-                className="group  w-full h-full  md:w-52   lg:w-72  relative  hover:opacity-85"
+                className="group  w-[9rem] h-fit  md:w-52   lg:w-72  relative  hover:opacity-85"
               >
                 <div>
                   <LazyLoadImage
@@ -23,7 +23,7 @@ const RelatedProducts = ({ relatedProducts }) => {
                     alt={item.itemName}
                     effect="blur"
                     placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-                    className="min-h-[180px] w-full rounded-lg"
+                    className="min-h-[9rem] w-full rounded-lg"
                   />
                 </div>
 

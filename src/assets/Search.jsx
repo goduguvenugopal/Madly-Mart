@@ -31,8 +31,8 @@ const Search = () => {
 
   return (
     <>
-      <div className="mt-20 px-3 pb-10">
-        <div className="flex justify-center pt-9 mb-7">
+      <div className="mt-16 px-3 pb-10">
+        <div className="flex justify-center pt-9 mb-5 sticky top-14 z-10 pb-2">
           <div className="relative w-full sm:w-auto">
             <input
               ref={searchRef}
@@ -50,18 +50,18 @@ const Search = () => {
           </div>
         </div>
 
-        <h5 className="text-xl font-semibold mt-4">
+        <h5 className="text-xl font-semibold mt-3">
           Search Results : {searchProducts.length}
         </h5>
 
         {searchProducts.length ? (
           <>
-            <div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <div className="mt-6 grid  place-items-center grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {searchProducts.map((item) => (
                 <Link
                   to={`/product_over_view/${item._id}`}
                   key={item._id}
-                  className="group  w-full h-full  md:w-52   lg:w-72   relative  hover:opacity-85"
+                  className="group  w-[9rem] h-fit  md:w-52   lg:w-72   relative  hover:opacity-85"
                 >
                   <div>
                     <LazyLoadImage
@@ -69,7 +69,7 @@ const Search = () => {
                       alt={item.itemName}
                       effect="blur"
                       placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-                      className="min-h-[180px] w-full rounded-lg"
+                      className="min-h-[9rem] w-full rounded-lg"
                     />
                   </div>
 

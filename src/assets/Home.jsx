@@ -49,7 +49,7 @@ const Home = () => {
           Product Categories
         </h5>
         <hr className="my-2 border border-orange-500" />
-        <div className="mt-4 py-6 grid grid-cols-3 gap-y-5 gap-x-5 md:gap-y-7 lg:gap-y-9 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
+        <div className="mt-4  place-items-center py-6 grid grid-cols-3 gap-y-5 gap-x-5 md:gap-y-7 lg:gap-y-9 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
           {categories?.length > 0 ? (
             <>
               {categories?.map((item) => (
