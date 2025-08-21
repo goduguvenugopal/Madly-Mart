@@ -1,29 +1,44 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, {
+  useState,
+  createContext,
+  useEffect,
+  Suspense,
+  lazy,
+} from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+// ✅ Keep normal imports
 import Navbar from "./assets/Navbar";
-import PageNotFound from "./assets/utilis/PageNotFound";
-import Home from "./assets/Home";
-import Cart from "./assets/Cart";
-import ContactUs from "./assets/ContactUs";
 import { RouteHandler } from "./assets/utilis/RouteHandler";
-import Search from "./assets/Search";
 import axios from "axios";
-import Profile from "./assets/components/Profile";
-import { Loading } from "./assets/Loading";
-import AllProducts from "./assets/AllProducts";
-import ProductOverView from "./assets/ProductOverView";
-import "react-lazy-load-image-component/src/effects/blur.css";
-import Orders from "./assets/Orders";
-import Login from "./assets/Login";
-import OrderCheckOut from "./assets/OrderCheckOut";
-import OrderOverView from "./assets/OrderOverView";
-import ProdutReviewsForm from "./assets/ProdutReviewsForm";
 import { useVisitorsTracking } from "./assets/utilis/useVisitorsTracking";
-import TermsAndConditions from "./assets/pages/TermsAndConditions";
-import PrivacyPolicy from "./assets/pages/PrivacyPolicy";
-import RefundAndCancellation from "./assets/pages/RefundAndCancellation";
-import ShippingAndDelivery from "./assets/pages/ShippingAndDelivery";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { Loading } from "./assets/Loading";
+
+// ✅ Lazy imports (code-splitting)
+const PageNotFound = lazy(() => import("./assets/utilis/PageNotFound"));
+const Home = lazy(() => import("./assets/Home"));
+const Cart = lazy(() => import("./assets/Cart"));
+const ContactUs = lazy(() => import("./assets/ContactUs"));
+const Search = lazy(() => import("./assets/Search"));
+const Profile = lazy(() => import("./assets/components/Profile"));
+const AllProducts = lazy(() => import("./assets/AllProducts"));
+const ProductOverView = lazy(() => import("./assets/ProductOverView"));
+const Orders = lazy(() => import("./assets/Orders"));
+const Login = lazy(() => import("./assets/Login"));
+const OrderCheckOut = lazy(() => import("./assets/OrderCheckOut"));
+const OrderOverView = lazy(() => import("./assets/OrderOverView"));
+const ProdutReviewsForm = lazy(() => import("./assets/ProdutReviewsForm"));
+const TermsAndConditions = lazy(() =>
+  import("./assets/pages/TermsAndConditions")
+);
+const PrivacyPolicy = lazy(() => import("./assets/pages/PrivacyPolicy"));
+const RefundAndCancellation = lazy(() =>
+  import("./assets/pages/RefundAndCancellation")
+);
+const ShippingAndDelivery = lazy(() =>
+  import("./assets/pages/ShippingAndDelivery")
+);
 
 export const CartContext = createContext();
 export const UserContext = createContext();
@@ -245,46 +260,47 @@ function App() {
               }}
             >
               <Navbar />
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route
+                    path="/products_by_category/:category"
+                    element={<AllProducts />}
+                  />
+                  <Route
+                    path="/product_over_view/:itemId"
+                    element={<ProductOverView />}
+                  />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/contact" element={<ContactUs />} />
+                  <Route path="/reviewform" element={<ProdutReviewsForm />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/order_check_out" element={<OrderCheckOut />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route
+                    path="/orders/order_over_view/:orderId"
+                    element={<OrderOverView />}
+                  />
+                  <Route path="/login" element={<Login />} />
 
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                  path="/products_by_category/:category"
-                  element={<AllProducts />}
-                />
-                <Route
-                  path="/product_over_view/:itemId"
-                  element={<ProductOverView />}
-                />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/contact" element={<ContactUs />} />
-                <Route path="/reviewform" element={<ProdutReviewsForm />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/order_check_out" element={<OrderCheckOut />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route
-                  path="/orders/order_over_view/:orderId"
-                  element={<OrderOverView />}
-                />
-                <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/terms_and_conditions"
+                    element={<TermsAndConditions />}
+                  />
+                  <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                  <Route
+                    path="/refund_and_cancellation"
+                    element={<RefundAndCancellation />}
+                  />
+                  <Route
+                    path="/shipping_and_delivery"
+                    element={<ShippingAndDelivery />}
+                  />
 
-                <Route
-                  path="/terms_and_conditions"
-                  element={<TermsAndConditions />}
-                />
-                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-                <Route
-                  path="/refund_and_cancellation"
-                  element={<RefundAndCancellation />}
-                />
-                <Route
-                  path="/shipping_and_delivery"
-                  element={<ShippingAndDelivery />}
-                />
-
-                <Route path="*" element={<PageNotFound />} />
-              </Routes>
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
+              </Suspense>
             </OrderContext.Provider>
           </ProductsContext.Provider>
         </CartContext.Provider>
