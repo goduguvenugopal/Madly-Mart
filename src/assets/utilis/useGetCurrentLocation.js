@@ -21,7 +21,6 @@ const useGetCurrentLocation = () => {
             .get(url)
             .then((response) => {
               const comp = response.data.results[0].components;
-
               const address = {
                 village: comp.village || "",
                 town: comp.town || "",

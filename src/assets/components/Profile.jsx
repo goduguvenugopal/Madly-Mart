@@ -22,13 +22,13 @@ const Profile = () => {
   const [addressToggle, setAddressToggle] = useState(false);
   const initialData = {
     name: "",
-    phone: null,
+    phone: "",
     email: user?.email,
     district: "",
     village: "",
     street: "",
     state: "",
-    postalCode: null,
+    postalCode:  "",
   };
   const [addressForm, setAddressForm] = useState(initialData);
   const [addressSpin, setAddressSpin] = useState(false);
@@ -89,7 +89,7 @@ const Profile = () => {
       village: currentAddress?.city,
       street: currentAddress?.fullAddress,
       state: currentAddress?.state,
-      postalCode: currentAddress?.pincode,
+      postalCode: parseInt(currentAddress?.pincode),
     });
   }, [currentAddress]);
 
