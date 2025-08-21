@@ -365,10 +365,10 @@ const Profile = () => {
 
       {LocationSpin && <FlipkartSpin />}
       {/* add address section modal  */}
-      {addressToggle && (
+      {!addressToggle && (
         <div
           onClick={() => setAddressToggle(false)}
-          className="bg-gray-700 mt-3  pt-24 bg-opacity-50 fixed top-0 left-0 w-screen h-screen p-4 flex justify-center pb-8 lg:pb-10"
+          className="bg-gray-700 mt-2  pt-20 bg-opacity-50 fixed top-0 left-0 w-screen h-screen p-4 flex justify-center pb-8 lg:pb-10"
         >
           <div
             onClick={(e) => e.stopPropagation()}

@@ -80,7 +80,7 @@ const OrderCheckOut = () => {
     setOrderedItems(orderProducts);
     setOrderedAddress(defaultAddress[0]);
   }, [orderProducts, totalAmount, discount]);
-  console.log(orderProducts);
+ 
 
   // create order
   const placeOrder = async () => {

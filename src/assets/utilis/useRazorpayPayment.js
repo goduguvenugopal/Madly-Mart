@@ -134,7 +134,7 @@ const useRazorpayPayment = ({ setOrderSpin, setOrderOk }) => {
 
     rzp.open();
     // Open Razorpay payment popup
-  },[]);
+  });
 
   return { openRazorpay, failedToggle, paymentResponse };
 };
