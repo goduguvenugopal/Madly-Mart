@@ -8,7 +8,7 @@ import { Slide, toast, ToastContainer } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import useGetCurrentLocation from "../utilis/useGetCurrentlocation";
+import useGetCurrentLocation from "../utilis/useGetCurrentLocation";
 
 const Profile = () => {
   const { token, setUser, user, defaultAddress, setDefaultAddress } =
