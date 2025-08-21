@@ -82,8 +82,8 @@ const Profile = () => {
   // get current loaction
   useEffect(() => {
     setAddressForm({
-      name: "",
-      phone: null,
+      name: addressForm.name,
+      phone: addressForm.phone,
       email: user?.email,
       district: currentAddress?.district,
       village: currentAddress?.city,
