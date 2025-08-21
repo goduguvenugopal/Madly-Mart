@@ -8,6 +8,7 @@ import { Slide, toast, ToastContainer } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import useGetCurrentLocation from "../utilis/useGetCurrentlocation";
 
 const Profile = () => {
   const { token, setUser, user, defaultAddress, setDefaultAddress } =
@@ -31,6 +32,8 @@ const Profile = () => {
   };
   const [addressForm, setAddressForm] = useState(initialData);
   const [addressSpin, setAddressSpin] = useState(false);
+  const { getCurrentLocation, currentAddress, error, LocationSpin } =
+    useGetCurrentLocation();
 
   useEffect(() => {
     // fetching user details
@@ -75,6 +78,20 @@ const Profile = () => {
     };
     fetchAddress();
   }, [token]);
+
+  // get current loaction
+  useEffect(() => {
+    setAddressForm({
+      name: "",
+      phone: null,
+      email: user?.email,
+      district: currentAddress?.district,
+      village: currentAddress?.city,
+      street: currentAddress?.fullAddress,
+      state: currentAddress?.state,
+      postalCode: currentAddress?.pincode,
+    });
+  }, [currentAddress]);
 
   // if token not navigate to login page
   useEffect(() => {
@@ -346,6 +363,7 @@ const Profile = () => {
         </div>
       </div>
 
+      {LocationSpin && <FlipkartSpin />}
       {/* add address section modal  */}
       {addressToggle && (
         <div
@@ -445,7 +463,20 @@ const Profile = () => {
                         />
                       </div>
                     </div>
+
+                    {/* get current location section */}
+                    <div className="mt-3 text-red-500 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={getCurrentLocation}
+                        className="p-1 rounded capitalize flex items-center gap-2 bg-blue-600 hover:bg-blue-800 transition text-white"
+                      >
+                        <FaLocationDot /> use current location
+                      </button>
+                    </div>
                   </div>
+
+                  <span className="text-red-500">{error}</span>
 
                   <div className="sm:col-span-3">
                     <label
@@ -508,17 +539,7 @@ const Profile = () => {
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1  outline-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
                     </div>
-
-                    <div className="mt-3 text-red-500 flex justify-end">
-                      <button
-                        type="button"
-                        className="p-1 rounded capitalize flex items-center gap-2 bg-blue-500 text-white"
-                      >
-                        <FaLocationDot /> use current location
-                      </button>
-                    </div>
                   </div>
-
                   <div className="sm:col-span-2">
                     <label
                       htmlFor="street"

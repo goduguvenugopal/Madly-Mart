@@ -35,6 +35,7 @@ function App() {
   const [token, setToken] = useState("");
   const api = import.meta.env.VITE_API;
   const number = import.meta.env.VITE_NUMBER;
+  const location_api_key = import.meta.env.VITE_LOCATION_API_KEY;
   const [carousel, setCarousel] = useState({});
   const [products, setProducts] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -50,7 +51,6 @@ function App() {
   const [orderedItems, setOrderedItems] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
   RouteHandler(cartItems);
-
 
   // calling visitors tracking custom hook
   useVisitorsTracking(api);
@@ -168,7 +168,7 @@ function App() {
         console.error(error);
       }
     };
-    
+
     fetchDiscount();
   }, []);
 
@@ -199,7 +199,7 @@ function App() {
 
   return (
     // useContext provider wrapped to child components for state management
-    <EnvContext.Provider value={{ api, number }}>
+    <EnvContext.Provider value={{ api, number, location_api_key }}>
       <UserContext.Provider
         value={{
           token,
