@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-// ✅ Keep normal imports
+//  normal imports
 import Navbar from "./assets/Navbar";
 import { RouteHandler } from "./assets/utilis/RouteHandler";
 import axios from "axios";
@@ -15,7 +15,7 @@ import { useVisitorsTracking } from "./assets/utilis/useVisitorsTracking";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Loading } from "./assets/Loading";
 
-// ✅ Lazy imports (code-splitting)
+// Lazy imports (code-splitting)
 const PageNotFound = lazy(() => import("./assets/utilis/PageNotFound"));
 const Home = lazy(() => import("./assets/Home"));
 const Cart = lazy(() => import("./assets/Cart"));

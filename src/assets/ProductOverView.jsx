@@ -17,13 +17,13 @@ import HelmetComponent from "./components/HelmetComponent";
 import DefaultAddress from "./components/DefaultAddress";
 import RelatedProducts from "./components/RelatedProducts";
 import ProductVariants from "./utilis/ProductVariants";
-import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
+ 
 
 const ProductOverView = () => {
   scrollToTop();
   const { products, viewedProducts, setViewedProducts, setOrderProducts } =
     useContext(ProductsContext);
-  const { number, api } = useContext(EnvContext);
+  const { api } = useContext(EnvContext);
   const { cartItems, setCartItems, discount } = useContext(CartContext);
   const { defaultAddress, token } = useContext(UserContext);
   const { itemId } = useParams();
