@@ -82,7 +82,7 @@ const ProductOverView = () => {
       let updated = viewedProducts.filter((item) => item._id !== itemId);
       updated.unshift(results);
       updated = updated.slice(0, 8);
-      localStorage.setItem("viewedProducts", JSON.stringify(updated));
+      localStorage.setItem("madlyViewedProducts", JSON.stringify(updated));
       setViewedProducts(updated);
     }
   }, [products, itemId]);

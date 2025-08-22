@@ -89,7 +89,7 @@ function App() {
     }
 
     // retrieving reviewed products from session storage
-    const isViewdedProducts = localStorage.getItem("viewedProducts");
+    const isViewdedProducts = localStorage.getItem("madlyViewedProducts");
     if (isViewdedProducts) {
       setViewedProducts(JSON.parse(isViewdedProducts));
     }

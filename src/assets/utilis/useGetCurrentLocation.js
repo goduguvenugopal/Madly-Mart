@@ -50,7 +50,7 @@ const useGetCurrentLocation = () => {
       setLocationSpin(false);
       setError("Geolocation is not supported by this browser.");
     }
-  });
+  }, [location_api_key]);
 
   return { getCurrentLocation, currentAddress, LocationSpin, error };
 };
