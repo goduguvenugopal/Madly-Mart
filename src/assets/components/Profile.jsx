@@ -368,11 +368,11 @@ const Profile = () => {
       {!addressToggle && (
         <div
           onClick={() => setAddressToggle(false)}
-          className="bg-gray-700 mt-2  pt-20 bg-opacity-50 fixed top-0 left-0 w-screen h-screen p-4 flex justify-center pb-8 lg:pb-10"
+          className="bg-gray-700  lg:mt-2 pt-20 bg-opacity-50 fixed top-0 left-0 w-screen h-screen p-4 flex justify-center pb-12 lg:pb-10"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="py-5 scrollbar-hide-card bg-white rounded-lg h-full w-full sm:w-[60%] md:w-[50%] lg:w-[40%]   overflow-auto "
+            className="pb-2 pt-4 lg:py-5 scrollbar-hide-card bg-white rounded-lg h-full w-full sm:w-[60%] md:w-[50%] lg:w-[40%]   overflow-auto "
           >
             <div className="isolate relative bg-white px-3 rounded-lg">
               <div
