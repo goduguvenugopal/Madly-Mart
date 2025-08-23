@@ -105,6 +105,15 @@ const ProductOverView = () => {
     }
   }, [product]);
 
+  // Break description after every 20 words
+  function breakDescription(desc) {
+     const sentences = desc
+    .split(".")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+    return  sentences;
+  }
+
   // item image initial value function
   useEffect(() => {
     if (product?.itemImage?.length > 0) {
@@ -504,10 +513,12 @@ const ProductOverView = () => {
         {/* Description section  */}
 
         {product?.itemDescription && (
-          <div className="lg:px-9">
+          <div className="lg:px-9 w-fit">
             <hr className="border  border-gray-200 mb-2 lg:mt-5" />
             <h5 className="font-bold text-lg mb-2">Description</h5>
-            <p className="font-serif ">{product.itemDescription}</p>
+            {breakDescription(product.itemDescription).map((part, i) => (
+              <p className="text-gray-800 font-sans" key={i}>{part}</p>
+            ))}
 
             {/* decription points  */}
             <ul className="mt-4 pl-4">
