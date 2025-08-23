@@ -14,15 +14,12 @@ const AllProducts = () => {
   const [categoryItems, setCategoryItems] = useState([]);
   const [categoryItems1, setCategoryItems1] = useState([]);
   const [pageNum, setPageNum] = useState(0);
+  const scrollTop = useRef(null);
 
   // changing title dynamically
   useEffect(() => {
     if (category) {
-      document.title = `${category
-        .replace("vegetables", "vegetable")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join("")} Products`;
+      document.title = `${category} Products`;
     } else {
       document.title = "Welcome to Madly Mart";
     }
@@ -52,14 +49,23 @@ const AllProducts = () => {
   //  page increment function
   const pageIncrement = () => {
     setPageNum((prev) => prev + 1);
+    if (scrollTop.current) {
+      scrollTop.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
   //  page decrement function
   const pageDecrement = () => {
     setPageNum((prev) => prev - 1);
+    if (scrollTop.current) {
+      scrollTop.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
     setCategoryItems(categoryItems1.slice(pageNum * 10 - 10, pageNum * 10));
+     if (scrollTop.current) {
+      scrollTop.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [pageNum]);
 
   // pagination function
@@ -69,7 +75,7 @@ const AllProducts = () => {
 
   return (
     <>
-      <div className="p-3 mt-3 mb-5 pt-24 ">
+      <div ref={scrollTop} className="p-3 mt-3 mb-5 pt-24">
         <h5 className="text-center text-2xl font-semibold capitalize">
           {category.replace("vegetables", "vegetable")} Products
         </h5>
@@ -77,7 +83,10 @@ const AllProducts = () => {
 
         {categoryItems.length ? (
           <>
-            <div className="mt-6  place-items-center w-full  pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <div
+               
+              className="mt-6  place-items-center w-full  pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
+            >
               {categoryItems.map((item) => (
                 <Link
                   to={`/product_over_view/${item._id}`}
@@ -112,22 +121,18 @@ const AllProducts = () => {
             </div>
           </>
         ) : (
-           
-            <section className="flex text-center flex-col font-medium justify-center items-center h-[45vh] ">
-              <h2 className="text-xl font-semibold text-gray-700">
-                No Products
-              </h2>
-              <p className="text-gray-500 mt-1">
-                Please check back later or explore other categories.
-              </p>
-            </section>
-        
+          <section className="flex text-center flex-col font-medium justify-center items-center h-[45vh] ">
+            <h2 className="text-xl font-semibold text-gray-700">No Products</h2>
+            <p className="text-gray-500 mt-1">
+              Please check back later or explore other categories.
+            </p>
+          </section>
         )}
 
         <hr className="my-4 border border-orange-500" />
 
         {/* pagination section  */}
-        {categoryItems.length > 10 && (
+        {categoryItems1.length > 10 && (
           <div className="flex select-none justify-center items-center  w-full">
             <span
               onClick={pageDecrement}

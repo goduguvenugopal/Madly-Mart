@@ -17,7 +17,6 @@ import HelmetComponent from "./components/HelmetComponent";
 import DefaultAddress from "./components/DefaultAddress";
 import RelatedProducts from "./components/RelatedProducts";
 import ProductVariants from "./utilis/ProductVariants";
- 
 
 const ProductOverView = () => {
   scrollToTop();
@@ -34,7 +33,7 @@ const ProductOverView = () => {
   const [capacity, setCapacity] = useState("");
   const [size, setSize] = useState("");
   const [itemCost, setItemCost] = useState("");
-  const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState("");
   const [itemQty, setItemQty] = useState(1);
   const [originalCost, setOriginalCost] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -60,7 +59,7 @@ const ProductOverView = () => {
     capacity: "",
     weight: "",
     size: "",
-    stock: 0,
+    stock: "",
     products: [],
   });
 
@@ -102,7 +101,7 @@ const ProductOverView = () => {
       setItemCost(product?.itemCost);
       setItemQty(1);
       setOriginalCost(product?.offerCost);
-      setStock(products?.itemStock);
+      setStock(product?.itemStock);
     }
   }, [product]);
 
@@ -118,8 +117,15 @@ const ProductOverView = () => {
     try {
       await navigator.share({
         title: `Check out ${product.itemName} on Madly Mart!`,
-        text: `Hello! Welcome to Madly Mart! ⚡ Take a look at this product: "${product.itemName}"\n\nDescription: ${product.itemDescription}\nPrice: ₹${product.itemCost}\n\nDiscover more by clicking the link below:`,
-        url: `https://www.madlymart.in/product_over_view/${itemId}`,
+        text: `Hello! Welcome to Madly Mart! ⚡ Take a look at this product: "${
+          product.itemName
+        }"\n\nDescription: ${product.itemDescription.tosubstring(
+          0,
+          100
+        )}...\nPrice: ₹${
+          product.itemCost
+        }\n\nDiscover more by clicking the link below:`,
+        url: `https://www.madlymart.com/product_over_view/${itemId}`,
       });
     } catch (error) {
       console.error(error);
@@ -152,6 +158,10 @@ const ProductOverView = () => {
     size,
     capacity,
   ]);
+
+  useEffect(() => {
+    setItemQty(1);
+  }, [capacity, size, color, weight]);
 
   // add to cart function
   const addToCartFunc = async () => {
@@ -243,7 +253,8 @@ const ProductOverView = () => {
             <LazyLoadImage
               onClick={() => setZoomImg(itemImg)}
               alt="ecommerce"
-              className=" w-full h-auto rounded-lg "
+              placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
+              className="min-h-[300px] w-full h-auto rounded-lg "
               src={itemImg}
               effect="blur"
             />
@@ -402,9 +413,7 @@ const ProductOverView = () => {
                 <FaPlus
                   className="cursor-pointer  text-lg hover:text-blue-600"
                   onClick={() => {
-                    if (itemQty < stock) {
-                      setItemQty(itemQty + 1);
-                    } else if (itemQty < parseInt(product.itemStock)) {
+                    if (itemQty < parseInt(stock)) {
                       setItemQty(itemQty + 1);
                     } else {
                       toast.warning(`Contact us for larger quantity orders.`, {
@@ -454,12 +463,12 @@ const ProductOverView = () => {
                   {/* buy now button  */}
                   <div
                     onClick={orderCheckOutFunc}
-                    className={`w-full text-center  text-white transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-500 rounded-full ${
+                    className={`w-full text-center  text-white transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-600 rounded-full ${
                       product.itemStock === "" ||
                       product.itemStock === "0" ||
                       stock <= 0
                         ? "bg-gray-400 pointer-events-none"
-                        : "bg-yellow-400 "
+                        : "bg-yellow-500 "
                     }`}
                   >
                     {product.itemStock === "" ||
@@ -479,7 +488,7 @@ const ProductOverView = () => {
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full text-center bg-yellow-400 font-semibold text-white border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-500 rounded-full"
+                    className="w-full text-center bg-yellow-500 font-semibold text-white border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-600 rounded-full"
                   >
                     Buy now
                   </Link>
@@ -518,7 +527,6 @@ const ProductOverView = () => {
       <RecentlyViewedProducts />
       {/* product review form component  */}
       <ProductReviewsForm itemId={itemId} />
-
       <Footer />
     </>
   );
