@@ -1,18 +1,76 @@
- 
-Key Features:
-✅ Wide Range of Products – Order groceries, household essentials, and more.
-✅ User Authentication – Secure login & signup with JWT authentication.
-✅ Smart Search & Filters – Easily find products by category, price, or name.
-✅ Add to Cart & Checkout – Seamless shopping experience with order tracking.
-✅ Admin Dashboard – Manage products, orders, and user accounts.
-✅ Payment Integration – Supports secure online payments.
-✅ Mobile-Responsive Design – Optimized for all devices.
+🛒 MadlyMart
 
-Built with MongoDB, Express.js, React.js, and Node.js, this project demonstrates expertise in full-stack development, API management, database handling, and UI/UX design. 🚀
+MadlyMart is a full-stack e-commerce platform built to provide a modern shopping experience with features inspired by platforms like Zomato & Amazon. It allows buyers to browse products by category, manage carts, track orders in real-time, and enjoy a responsive interface, while sellers get a dedicated portal to manage their products, offers, and inventory.
 
+The application ensures security and scalability using JWT-based authentication, email verification, and a robust backend.
 
+🚀 Features
+👤 For Buyers
 
+🛍️ Browse products by category (Electronics, Fashion, Groceries, etc.)
 
+🛒 Add/remove items from cart with automatic price calculation
+
+📦 Place orders and track them in real-time
+
+📱 Responsive UI (works seamlessly on mobile, tablet, desktop)
+
+🔐 Secure login/signup with JWT authentication & email verification
+
+🧾 Order history & invoices
+
+🛒 For Sellers
+
+🖥️ Dedicated seller dashboard
+
+➕ Add, update, delete products
+
+🎯 Create offers and discounts
+
+📊 Track orders & manage inventory
+
+⚙️ Common Features
+
+🔑 JWT Authentication & Role-based access (Buyer/Seller/Admin)
+
+📧 Email verification & notifications
+
+⚡ Optimized APIs with Node.js & Express
+
+☁️ Cloud-hosted images with Cloudinary
+
+🔍 Search & filter functionality
+
+🛠️ Tech Stack
+Frontend
+
+⚛️ React.js (with Vite for fast builds)
+
+🎨 TailwindCSS / Bootstrap for styling
+
+🔄 Axios for API communication
+
+🌍 Deployed on Vercel
+
+Backend
+
+🟢 Node.js with Express.js
+
+🗄️ MongoDB for database
+
+🔐 JWT for authentication
+
+📧 Nodemailer for email verification & notifications
+
+🌍 Hosted on AWS EC2
+
+Other Tools & Libraries
+
+🖼️ Firebase / Cloudinary for image handling
+
+📦 PM2 for process management
+
+🔒 dotenv for environment variable management
 
 # React + Vite
 
