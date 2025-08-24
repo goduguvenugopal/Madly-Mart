@@ -15,17 +15,19 @@ import {
 } from "./components/OrderSuccessModal";
 import PaymentFailedModal from "./components/PaymentFailedModal";
 import useEmptyPaymentPayload from "./utilis/useEmptyPaymentPayload";
+import RelatedProducts from "./components/RelatedProducts";
 
 const OrderOverView = () => {
-  const { orders, setOrders } = useContext(ProductsContext);
+  const { orders, setOrders, products } = useContext(ProductsContext);
   const { api, number } = useContext(EnvContext);
   const { orderId } = useParams();
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [singleOrder, setSingleOrder] = useState(null);
   const [cancelSpin, setCancelSpin] = useState(false);
   const [orderOk, setOrderOk] = useState(false);
   const [orderSpin, setOrderSpin] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
-  const [retrySpinner, setRetrySpinner] = useState(false);
+
   const navigate = useNavigate();
   const {
     setOrderedItems,
@@ -80,6 +82,20 @@ const OrderOverView = () => {
     setOrderedAddress(singleOrder?.shippingAddress[0]);
   };
 
+  // related products filter function
+  useEffect(() => {
+    const results = products?.filter(
+      (item) =>
+        item?.itemSubCategory ===
+        singleOrder?.orderedProdcuts[0]?.products[0]?.itemSubCategory
+    );
+    if (results.length > 1) {
+      setRelatedProducts(results);
+    }
+  }, [singleOrder, products, orders]);
+
+  console.log(relatedProducts);
+  
   // cancel order function
   const cancelOrderFunc = async (updataStatus) => {
     setCancelModal(false);
@@ -502,6 +518,9 @@ const OrderOverView = () => {
             )}
           </div>
         </div>
+
+        {/* related Products */}
+        <RelatedProducts relatedProducts={relatedProducts} />
 
         <div className="mt-5 gap-2 flex flex-wrap items-start">
           {/* shipped address section */}

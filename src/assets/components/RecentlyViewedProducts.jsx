@@ -14,7 +14,7 @@ const RecentlyViewedProducts = () => {
             Recently Viewed
           </h5>
 
-          <div className="mt-8 w-full   place-items-center grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          <div className="mt-5 w-full   place-items-center grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {viewedProducts?.map((item) => (
               <Link
                 to={`/product_over_view/${item?._id}`}

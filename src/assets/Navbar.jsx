@@ -71,7 +71,7 @@ const Navbar = () => {
   const shareApp = async () => {
     try {
       await navigator.share({
-        url: "https://madlymartuser.vercel.app",
+        url: "https://www.madlymart.com",
       });
     } catch (error) {
       console.error(error);
@@ -106,43 +106,41 @@ const Navbar = () => {
               to="/"
               className="text-[1.2rem] flex items-center  hover:text-blue-600 gap-3  w-fit"
             >
-              <FaHome /> Home
+              Home
             </Link>
             {token ? (
               <>
                 <Link
-                  to="/orders"
-                  className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
-                >
-                  {" "}
-                  <BsFillBoxSeamFill size={17} />
-                  My Orders{" "}
-                </Link>
-                <Link
                   to="/profile"
                   className="text-[1.2rem] flex items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
                 >
-                  <CgProfile size={22} /> Profile
+                  Profile
                 </Link>
               </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
-                >
-                  {" "}
-                  <BsFillBoxSeamFill size={17} />
-                  My Orders{" "}
-                </Link>
-                <Link
-                  to="/login"
                   className="text-[1.2rem] flex items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
                 >
-                  <CgProfile size={22} /> Profile
+                  Profile
                 </Link>
               </>
             )}
+            <Link
+              to="/shopall"
+              className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
+            >
+              {" "}
+              Shop All{" "}
+            </Link>
+            <Link
+              to="/contact"
+              className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
+            >
+              {" "}
+              Contact us{" "}
+            </Link>
           </div>
         </nav>
 
@@ -203,25 +201,37 @@ const Navbar = () => {
             to="/"
             className="text-[1.2rem] flex items-center lg:hidden  hover:text-blue-600  gap-3  w-fit"
           >
-            <FaHome /> Home
+            Home
           </Link>
           {token ? (
             <>
               <Link
                 onClick={() => setOffcanvas(false)}
-                to="/orders"
-                className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
-              >
-                {" "}
-                <BsFillBoxSeamFill size={17} />
-                My Orders{" "}
-              </Link>
-              <Link
-                onClick={() => setOffcanvas(false)}
                 to="/profile"
                 className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
               >
-                <CgProfile size={22} /> Profile
+                Profile
+              </Link>
+              <Link
+                onClick={() => setOffcanvas(false)}
+                to="/shopall"
+                className="text-[1.2rem] flex items-center lg:hidden w-fit gap-[0.9rem]  hover:text-blue-600 "
+              >
+                Shop All
+              </Link>
+              <Link
+                onClick={() => setOffcanvas(false)}
+                to="/orders"
+                className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
+              >
+                My Orders
+              </Link>
+              <Link
+                onClick={() => setOffcanvas(false)}
+                to="/contact"
+                className="text-[1.2rem] flex items-center lg:hidden  w-fit gap-[0.7rem]  hover:text-blue-600 "
+              >
+                Contact Us
               </Link>
             </>
           ) : (
@@ -231,26 +241,18 @@ const Navbar = () => {
                 to="/login"
                 className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
               >
-                {" "}
-                <BsFillBoxSeamFill size={17} />
-                My Orders{" "}
+                My Orders
               </Link>
               <Link
                 onClick={() => setOffcanvas(false)}
                 to="/login"
                 className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
               >
-                <CgProfile size={22} /> Profile
+                Profile
               </Link>
             </>
           )}
-          <Link
-            onClick={() => setOffcanvas(false)}
-            to="/contact"
-            className="text-[1.2rem] flex items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
-          >
-            <MdPhone size={22} /> Contact Us
-          </Link>
+
           {token ? (
             <div
               onClick={() => {
@@ -266,16 +268,18 @@ const Navbar = () => {
               to="/login"
               className="text-[1.2rem] cursor-pointer flex items-center  w-fit   gap-[0.7rem]  hover:text-blue-600 "
             >
-              <MdLogout size={23} /> Log out
+              Log out
             </div>
           ) : (
-            <Link
-              onClick={() => setOffcanvas(false)}
-              to="/login"
-              className="text-[1.2rem] flex items-center  w-fit   gap-[0.7rem]  hover:text-blue-600 "
-            >
-              <MdLogin size={23} /> Login
-            </Link>
+            <>
+              <Link
+                onClick={() => setOffcanvas(false)}
+                to="/login"
+                className="text-[1.2rem] flex items-center  w-fit   gap-[0.7rem]  hover:text-blue-600 "
+              >
+                Login
+              </Link>
+            </>
           )}
 
           <div className=" absolute left-5 bottom-5 flex flex-wrap gap-3">

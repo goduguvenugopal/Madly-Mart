@@ -39,6 +39,7 @@ const RefundAndCancellation = lazy(() =>
 const ShippingAndDelivery = lazy(() =>
   import("./assets/pages/ShippingAndDelivery")
 );
+const ShopAll = lazy(() => import("./assets/ShopAll"));
 
 export const CartContext = createContext();
 export const UserContext = createContext();
@@ -278,6 +279,7 @@ function App() {
                   <Route path="/order_check_out" element={<OrderCheckOut />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/orders" element={<Orders />} />
+                  <Route path="/shopall" element={<ShopAll />} />
                   <Route
                     path="/orders/order_over_view/:orderId"
                     element={<OrderOverView />}

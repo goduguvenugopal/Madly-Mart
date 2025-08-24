@@ -33,7 +33,7 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, [user]);
+  }, [user , api]);
 
   // filter orders function based on order status
   const inputSelectHandleFunc = (e) => {

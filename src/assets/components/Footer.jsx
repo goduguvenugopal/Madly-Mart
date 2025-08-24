@@ -17,7 +17,7 @@ const Footer = () => {
   const shareApp = async () => {
     try {
       await navigator.share({
-        url: "https://madlymartuser.vercel.app",
+        url: "https://www.madlymart.com",
       });
     } catch (error) {
       console.error(error);
