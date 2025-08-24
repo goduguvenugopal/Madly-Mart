@@ -141,10 +141,10 @@ const Cart = () => {
                 {cartItems?.map((item) => (
                   <div
                     key={item._id}
-                    className="py-8 flex gap-x-[1.1rem] lg:gap-x-6 flex-nowrap"
+                    className="py-4 border flex gap-x-[1.1rem] lg:gap-x-6 flex-nowrap"
                   >
                     {/* image section  */}
-                    <div className="flex flex-col gap-1 w-[30%] min-h-[180px] lg:h-auto  lg:w-[12rem] ">
+                    <div className="flex flex-col gap-1 w-[30%] min-h-20 lg:h-auto  lg:w-[12rem] ">
                       <Link to={`/product_over_view/${item.productId}`}>
                         <LazyLoadImage
                           effect="blur"
@@ -249,7 +249,7 @@ const Cart = () => {
                         {cartSpin ? (
                           <>
                             <FlipkartSpin />
-                            <button className="font-semibold text-sm  p-1 bg-red-500 hover:bg-red-700 rounded-full  hover:text-white border-none w-24 text-center text-white ">
+                            <button className="font-semibold text-sm border  p-1 border-red-500 hover:border-red-700 rounded-full  w-24 text-center text-gray-600 ">
                               Remove
                             </button>
                           </>
@@ -261,14 +261,14 @@ const Cart = () => {
                                 item.products[0].itemName
                               )
                             }
-                            className="font-semibold text-sm transition p-1 bg-red-500 hover:bg-red-700 rounded-full  hover:text-white border-none w-24 text-center text-white "
+                            className="font-semibold text-sm border  p-1 border-red-500 hover:border-red-700 rounded-full  w-24 text-center text-gray-600 "
                           >
                             Remove
                           </button>
                         )}
                         <button
                           onClick={() => orderCheckOutFunc(item)}
-                          className="font-semibold transition text-sm  p-1 bg-yellow-400 hover:bg-yellow-500 rounded-full   border-none w-24 text-center text-black "
+                          className="font-bold transition text-sm  p-1 bg-yellow-500 hover:bg-yellow-600 rounded-full   border border-yellow-500 w-24 text-center text-white"
                         >
                           Buy now
                         </button>

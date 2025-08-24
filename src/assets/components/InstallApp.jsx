@@ -8,7 +8,7 @@ const InstallApp = () => {
         try {
             await navigator.share(({
                 text: "Madly Mart - Your one-stop shop for fresh milk, groceries, and all your needs, delivered to your doorstep with quality assurance. Shop now! :",
-                url: "https://www.madlymart.in"
+                url: "https://www.madlymart.com"
             }))
         } catch (error) {
             console.error(error);

@@ -448,14 +448,14 @@ const ProductOverView = () => {
                       ) ? (
                         <Link
                           to="/cart"
-                          className="w-full text-center bg-orange-900 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-orange-700 rounded-full"
+                          className="w-full text-center bg-orange-900 font-bold lg:font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-orange-700 rounded-full"
                         >
                           Go to cart
                         </Link>
                       ) : (
                         <button
                           onClick={addToCartFunc}
-                          className={`w-full bg-blue-800  font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full ${
+                          className={`w-full bg-blue-800 font-bold lg:font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full ${
                             product.itemStock === "" ||
                             product.itemStock === "0" ||
                             stock <= 0
@@ -472,7 +472,7 @@ const ProductOverView = () => {
                   {/* buy now button  */}
                   <div
                     onClick={orderCheckOutFunc}
-                    className={`w-full text-center  text-white transition cursor-pointer font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-600 rounded-full ${
+                    className={`w-full text-center  text-white transition cursor-pointer font-bold lg:font-semibold text-whit border-0 py-3 px-6 focus:outline-none hover:bg-yellow-600 rounded-full ${
                       product.itemStock === "" ||
                       product.itemStock === "0" ||
                       stock <= 0
@@ -491,13 +491,13 @@ const ProductOverView = () => {
                 <>
                   <Link
                     to="/login"
-                    className="w-full text-center transition bg-blue-800 font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
+                    className="w-full text-center transition bg-blue-800 font-bold lg:font-semibold text-white border-0 py-3 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
                   >
                     Add to cart
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full text-center bg-yellow-500 font-semibold text-white border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-600 rounded-full"
+                    className="w-full text-center bg-yellow-500 font-bold lg:font-semibold text-white border-0 py-3 px-6 focus:outline-none transition hover:bg-yellow-600 rounded-full"
                   >
                     Buy now
                   </Link>

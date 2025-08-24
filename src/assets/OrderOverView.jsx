@@ -94,7 +94,7 @@ const OrderOverView = () => {
     }
   }, [singleOrder, products, orders]);
 
-  console.log(relatedProducts);
+  
   
   // cancel order function
   const cancelOrderFunc = async (updataStatus) => {
@@ -522,7 +522,7 @@ const OrderOverView = () => {
         {/* related Products */}
         <RelatedProducts relatedProducts={relatedProducts} />
 
-        <div className="mt-5 gap-2 flex flex-wrap items-start">
+        <div className="mt-8 gap-2 flex flex-wrap items-start">
           {/* shipped address section */}
           <div className="w-full lg:w-[45%]">
             <h5 className="mb-2 font-bold text-gray-700">Delivery Details</h5>

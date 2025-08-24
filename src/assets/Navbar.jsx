@@ -236,10 +236,17 @@ const Navbar = () => {
             </>
           ) : (
             <>
+             <Link
+                onClick={() => setOffcanvas(false)}
+                to="/shopall"
+                className="text-[1.2rem] flex items-center lg:hidden w-fit gap-[0.9rem]  hover:text-blue-600 "
+              >
+                Shop All
+              </Link>
               <Link
                 onClick={() => setOffcanvas(false)}
                 to="/login"
-                className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
+                className="text-[1.2rem] flex items-center  w-fit gap-[0.9rem]  hover:text-blue-600 "
               >
                 My Orders
               </Link>
@@ -249,6 +256,13 @@ const Navbar = () => {
                 className="text-[1.2rem] flex lg:hidden items-center  w-fit gap-[0.7rem]  hover:text-blue-600 "
               >
                 Profile
+              </Link>
+               <Link
+                onClick={() => setOffcanvas(false)}
+                to="/contact"
+                className="text-[1.2rem] flex items-center lg:hidden  w-fit gap-[0.7rem]  hover:text-blue-600 "
+              >
+                Contact Us
               </Link>
             </>
           )}
