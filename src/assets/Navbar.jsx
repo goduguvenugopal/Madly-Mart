@@ -308,7 +308,7 @@ const Navbar = () => {
       </div>
 
       {/* download share app section  */}
-      {!installApp && (
+      {installApp && (
         <main className="fixed top-0 left-0 p-3 h-screen w-screen bg-black bg-opacity-55 z-20 flex justify-center items-center">
           <section className="container mb-7 px-5 py-10 mx-auto flex items-center md:flex-row flex-col rounded bg-gray-700 lg:w-[50%] relative">
             <span
