@@ -66,7 +66,7 @@ Backend
 
 Other Tools & Libraries
 
-🖼️ Firebase / Cloudinary for image handling
+🖼️ Cloudinary for image handling
 
 📦 PM2 for process management
 
