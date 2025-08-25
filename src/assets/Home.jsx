@@ -10,6 +10,7 @@ import { MdClose } from "react-icons/md";
 import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 import OffersPopUp from "./utilis/OffersPopUp";
+import Shimmer from "./components/Shimmer";
 
 const Home = () => {
   const { categories } = useContext(ProductsContext);
@@ -17,6 +18,7 @@ const Home = () => {
   const [images, setImages] = useState([]);
   const [lastImg, setLastImg] = useState(images?.length);
   const [toggle, setToggle] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setImages(carousel?.carouselImage?.reverse());
@@ -45,9 +47,7 @@ const Home = () => {
       {/* categories section  */}
       <Carousel />
       <div className="p-3 mt-5 pb-5 w-full">
-        <h5 className="text-center text-2xl font-semibold">
-          All Categories
-        </h5>
+        <h5 className="text-center text-2xl font-semibold">All Categories</h5>
         <hr className="my-2 border border-orange-500" />
         <div className="mt-4  place-items-center py-6 grid grid-cols-3 gap-y-5 gap-x-5 md:gap-y-7 lg:gap-y-9 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
           {categories?.length > 0 ? (
@@ -63,12 +63,18 @@ const Home = () => {
                   className="group flex flex-col  w-[6.1rem]   h-fit  md:w-52   lg:w-[14rem]   transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 "
                 >
                   <div className="relative w-full h-full  md:w-full   lg:w-full ">
+                    {/* Shimmer until loaded */}
+                    {!loaded && (
+                      <div className="absolute inset-0">
+                        <Shimmer height="h-[5rem]" width="w-full" rounded="lg" />
+                      </div>
+                    )}
                     <LazyLoadImage
                       src={item?.productImage?.image}
                       alt={item?.productCategoryName}
-                      className="min-h-20 w-full rounded-lg"
+                      className="min-h-20 w-full rounded-lg object-cover"
                       effect="opacity"
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
+                      onLoad={() => setLoaded(true)}
                     />
 
                     {item.available === "no" && (

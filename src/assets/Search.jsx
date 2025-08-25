@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import { ProductsContext } from "../App";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { scrollToTop } from "./utilis/RouteHandler";
+import Shimmer from "./components/Shimmer";
 
 const Search = () => {
   scrollToTop();
   const { products } = useContext(ProductsContext);
   const [searchProducts, setsearchProducts] = useState(products);
   const [text, setText] = useState("");
+  const [loaded, setLoaded] = useState(false);
   const searchRef = useRef();
   const changeHandling = (e) => {
     setText(e.target.value);
@@ -63,12 +65,22 @@ const Search = () => {
                   key={item._id}
                   className="group  w-[9rem] h-fit  md:w-52   lg:w-72   relative  hover:opacity-85"
                 >
-                  <div>
+                  <div className="w-full relative">
+                    {/* Shimmer until loaded */}
+                    {!loaded && (
+                      <div className="absolute inset-0">
+                        <Shimmer
+                          height="h-[9rem]"
+                          width="w-full"
+                          rounded="lg"
+                        />
+                      </div>
+                    )}
                     <LazyLoadImage
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
-                      effect="blur"
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
+                      effect="opacity"
+                      onLoad={() => setLoaded(true)}
                       className="min-h-[9rem] w-full rounded-lg"
                     />
                   </div>

@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ProductsContext } from "../../App";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Shimmer from "./Shimmer";
 
 const RecentlyViewedProducts = () => {
   const { viewedProducts } = useContext(ProductsContext);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <>
@@ -21,12 +23,18 @@ const RecentlyViewedProducts = () => {
                 key={item?._id}
                 className="group  w-[9rem] h-fit  md:w-52   lg:w-72  relative  hover:opacity-85"
               >
-                <div>
+                <div className="relative w-full">
+                  {/* Shimmer until loaded */}
+                  {!loaded && (
+                    <div className="absolute inset-0">
+                      <Shimmer height="h-[9rem]" width="w-full" rounded="lg" />
+                    </div>
+                  )}
                   <LazyLoadImage
                     src={item?.itemImage[0]?.image}
                     alt={item?.itemName}
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-                    effect="blur"
+                    effect="opacity"
+                    onLoad={() => setLoaded(true)}
                     className="min-h-[9rem] w-full rounded-lg"
                   />
                 </div>

@@ -17,6 +17,7 @@ import HelmetComponent from "./components/HelmetComponent";
 import DefaultAddress from "./components/DefaultAddress";
 import RelatedProducts from "./components/RelatedProducts";
 import ProductVariants from "./utilis/ProductVariants";
+import Shimmer from "./components/Shimmer";
 
 const ProductOverView = () => {
   scrollToTop();
@@ -38,6 +39,9 @@ const ProductOverView = () => {
   const [originalCost, setOriginalCost] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [zoomImg, setZoomImg] = useState("");
+  const [loaded, setLoaded] = useState(false);
+   
+
   const navigate = useNavigate();
   const [cartSpin, setCartSpin] = useState(false);
   const initialData = {
@@ -107,11 +111,11 @@ const ProductOverView = () => {
 
   // Break description after every 20 words
   function breakDescription(desc) {
-     const sentences = desc
-    .split(".")
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
-    return  sentences;
+    const sentences = desc
+      .split(".")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+    return sentences;
   }
 
   // item image initial value function
@@ -258,14 +262,24 @@ const ProductOverView = () => {
       <section className="text-gray-600 p-3 select-none mt-3 mb-7 pt-24">
         <div className="flex flex-row lg:pb-2 gap-2 lg:gap-0 gap-x-[3rem] lg:gap-x-0 lg:justify-around flex-wrap">
           {/* image section  */}
-          <div className="relative flex flex-col gap-3 w-full sm:w-[48%]">
+          <div className="relative flex  flex-col gap-3 w-full sm:w-[48%]">
+            {/* Shimmer until loaded */}
+            {!loaded && (
+              <div className="absolute inset-0">
+                <Shimmer
+                  height="h-[350px]"
+                  width="w-full"
+                  rounded="lg"
+                />
+              </div>
+            )}
             <LazyLoadImage
               onClick={() => setZoomImg(itemImg)}
               alt="ecommerce"
-              placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-              className="min-h-[300px] w-full h-auto rounded-lg "
+              className="min-h-[350px] w-full h-auto rounded-lg "
               src={itemImg}
-              effect="blur"
+              onLoad={() => setLoaded(true)}
+              effect="opacity"
             />
             <PiShareNetwork
               title="Share"
@@ -286,10 +300,21 @@ const ProductOverView = () => {
                     key={item._id}
                     className="w-[5rem] lg:w-32 "
                   >
+                    {/* Shimmer until loaded */}
+                    {!loaded && (
+                      <div className="absolute inset-0">
+                        <Shimmer
+                          height="h-[5rem]"
+                          width="w-full"
+                          rounded="lg"
+                          lgHeight="h-[8rem]"
+                        />
+                      </div>
+                    )}
                     <LazyLoadImage
-                      effect="blur"
+                      effect="opacity"
                       src={item.image}
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
+                      onLoad={() => setLoaded(true)}
                       alt={product.itemName}
                       className={`w-full rounded-lg h-[5rem] lg:h-[8rem] cursor-pointer transition hover:border-2 hover:border-blue-600 ${
                         itemImg === item.image ? "border-2 border-blue-600" : ""
@@ -517,7 +542,9 @@ const ProductOverView = () => {
             <hr className="border  border-gray-200 mb-2 lg:mt-5" />
             <h5 className="font-bold text-lg mb-2">Description</h5>
             {breakDescription(product.itemDescription).map((part, i) => (
-              <p className="text-gray-800 font-sans" key={i}>{part}</p>
+              <p className="text-gray-800 font-sans" key={i}>
+                {part}
+              </p>
             ))}
 
             {/* decription points  */}

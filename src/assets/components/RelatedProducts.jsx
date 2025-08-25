@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
+import Shimmer from "./Shimmer";
 
 const RelatedProducts = ({ relatedProducts }) => {
+    const [loaded, setLoaded] = useState(false);
+  
   return (
     <>
       {relatedProducts.length > 1 && (
@@ -19,12 +22,22 @@ const RelatedProducts = ({ relatedProducts }) => {
                     key={item._id}
                     className="group shrink-0 w-[9rem] md:w-52 lg:w-72 h-fit relative hover:opacity-85"
                   >
-                    <div>
+                    <div className="relative w-full">
+                      {/* Shimmer until loaded */}
+                      {!loaded && (
+                        <div className="absolute inset-0">
+                          <Shimmer
+                            height="h-[9rem]"
+                            width="w-full"
+                            rounded="lg"
+                          />
+                        </div>
+                      )}
                       <LazyLoadImage
                         src={item.itemImage[0]?.image}
                         alt={item.itemName}
-                        effect="blur"
-                        placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
+                        effect="opacity"
+                        onLoad={() => setLoaded(true)}
                         className="min-h-[9rem] w-full rounded-lg"
                       />
                     </div>

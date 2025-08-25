@@ -7,7 +7,6 @@ const InstallApp = () => {
     const shareApp = async () => {
         try {
             await navigator.share(({
-                text: "Madly Mart - Your one-stop shop for fresh milk, groceries, and all your needs, delivered to your doorstep with quality assurance. Shop now! :",
                 url: "https://www.madlymart.com"
             }))
         } catch (error) {
@@ -30,7 +29,7 @@ const InstallApp = () => {
                     </h1>
                 </div>
                 <div className="flex items-center flex-wrap justify-center gap-3 w-full">
-                    <a href='/Dora A to Z Fresh.apk' download="Dora A to Z Fresh.apk" className="bg-gray-100 text-center h-10 inline-flex gap-2 text-black py-2 px-5 rounded-full items-center hover:bg-gray-200 focus:outline-none w-[11rem]">
+                    <a href='/MadlyMart.apk' download="MadlyMart.apk" className="bg-gray-100 text-center h-10 inline-flex gap-2 text-black py-2 px-5 rounded-full items-center hover:bg-gray-200 focus:outline-none w-[11rem]">
                         <FaDownload
 
                             className="w-4 h-4"

@@ -38,8 +38,8 @@ const Footer = () => {
         </div>
         <div className="flex items-center flex-wrap justify-center gap-3 w-full">
           <a
-            href="/Madly Mart.apk"
-            download="Madly Mart.apk"
+            href="/MadlyMart.apk"
+            download="MadlyMart.apk"
             className="bg-gray-100 text-center h-10 inline-flex gap-2 text-black py-2 px-5 rounded-full items-center hover:bg-gray-200 focus:outline-none w-[11rem]"
           >
             <FaDownload className="w-4 h-4" />

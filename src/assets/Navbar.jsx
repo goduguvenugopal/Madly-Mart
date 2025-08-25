@@ -322,7 +322,7 @@ const Navbar = () => {
       </div>
 
       {/* download share app section  */}
-      {installApp && (
+      {!installApp && (
         <main className="fixed top-0 left-0 p-3 h-screen w-screen bg-black bg-opacity-55 z-20 flex justify-center items-center">
           <section className="container mb-7 px-5 py-10 mx-auto flex items-center md:flex-row flex-col rounded bg-gray-700 lg:w-[50%] relative">
             <span
@@ -342,8 +342,8 @@ const Navbar = () => {
             </div>
             <div className="flex items-center flex-wrap justify-center gap-3 w-full">
               <a
-                href="/Dora A to Z Fresh.apk"
-                download="Dora A to Z Fresh.apk"
+                href="/MadlyMart.apk"
+                download="MadlyMart.apk"
                 className="bg-gray-100 text-center h-10 inline-flex gap-2 text-black py-2 px-5 rounded-full items-center hover:bg-gray-200 focus:outline-none w-[11rem]"
               >
                 <FaDownload className="w-4 h-4" />

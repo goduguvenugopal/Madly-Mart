@@ -6,6 +6,7 @@ import { scrollToTop } from "./utilis/RouteHandler";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 import InstallApp from "./components/InstallApp";
 import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
+import Shimmer from "./components/Shimmer";
 
 const AllProducts = () => {
   scrollToTop();
@@ -15,6 +16,7 @@ const AllProducts = () => {
   const [categoryItems1, setCategoryItems1] = useState([]);
   const [pageNum, setPageNum] = useState(0);
   const scrollTop = useRef(null);
+  const [loaded, setLoaded] = useState(false);
 
   // changing title dynamically
   useEffect(() => {
@@ -63,7 +65,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     setCategoryItems(categoryItems1.slice(pageNum * 10 - 10, pageNum * 10));
-     if (scrollTop.current) {
+    if (scrollTop.current) {
       scrollTop.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [pageNum]);
@@ -83,10 +85,7 @@ const AllProducts = () => {
 
         {categoryItems.length ? (
           <>
-            <div
-               
-              className="mt-6  place-items-center w-full  pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
-            >
+            <div className="mt-6  place-items-center w-full  pb-5 grid grid-cols-2 gap-y-6 gap-x-5 md:gap-y-7 lg:gap-y-6  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {categoryItems.map((item) => (
                 <Link
                   to={`/product_over_view/${item._id}`}
@@ -94,12 +93,18 @@ const AllProducts = () => {
                   className="group w-[9rem] h-fit  md:w-52   lg:w-72  relative  hover:opacity-85"
                 >
                   <div className="w-full">
+                    {/* Shimmer until loaded */}
+                    {!loaded && (
+                      <div className="absolute inset-0">
+                        <Shimmer height="h-[9rem]" width="w-full" rounded="lg"/>
+                      </div>
+                    )}
                     <LazyLoadImage
                       src={item.itemImage[0]?.image}
                       alt={item.itemName}
-                      effect="blur"
-                      placeholderSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PC9zdmc+"
-                      className="min-h-[9rem] w-full rounded-lg"
+                      effect="opacity"
+                      onLoad={() => setLoaded(true)}
+                      className="min-h-[9rem] w-full rounded-lg object-cover"
                     />
                   </div>
 
