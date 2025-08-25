@@ -132,7 +132,7 @@ const ProductOverView = () => {
         title: `Check out ${product.itemName} on Madly Mart!`,
         text: `Hello! Welcome to Madly Mart! ⚡ Take a look at this product: "${
           product.itemName
-        }"\n\nDescription: ${product.itemDescription.tosubstring(
+        }"\n\nDescription: ${product.itemDescription?.substring(
           0,
           100
         )}...\nPrice: ₹${
